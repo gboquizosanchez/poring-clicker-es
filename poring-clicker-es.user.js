@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.9.5
+// @version      1.9.6
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -58,6 +58,13 @@
     'Switch to light mode': 'Cambiar a modo claro',
     'Switch to dark mode': 'Cambiar a modo oscuro',
     'Sound settings': 'Ajustes de sonido',
+    'All Sound': 'Todo el sonido',
+    'BGM (Music)': 'BGM (música)',
+    'SFX (Effects)': 'SFX (efectos)',
+    'Monster Hits': 'Golpes a monstruos',
+    'Mixed': 'Mixto',
+    'On': 'Sí',
+    'Off': 'No',
     'Review SpringRO at RateMyServer.Net': 'Valora SpringRO en RateMyServer.Net',
     'BG by MrPoring': 'Fondo de MrPoring',
     'Ragnarok Online and its game assets are the property of their respective rights holders.':
@@ -648,8 +655,16 @@
     'Create a new party:': 'Crea un grupo nuevo:',
     'Party name': 'Nombre del grupo',
     'Create party': 'Crear grupo',
+    'Create Party': 'Crear grupo',
     'Party Job Bonuses': 'Bonificaciones de oficio del grupo',
     'Invite Link': 'Enlace de invitación',
+    'Link copied!': '¡Enlace copiado!',
+    'Party not found': 'No se ha encontrado el grupo',
+    'Party not found.': 'No se ha encontrado el grupo.',
+    'Invalid party code': 'Código de grupo no válido',
+    'Invalid party code.': 'Código de grupo no válido.',
+    'Your party is fighting without you this round - wait for the next encounter to ready up.':
+      'Tu grupo está luchando sin ti en esta ronda: espera al siguiente combate para prepararte.',
     'Leader': 'Líder',
     'Active Party Bonuses': 'Bonificaciones de grupo activas',
     'Damage': 'Daño',
@@ -659,6 +674,37 @@
 
     // MVP rhythm fight
     'MVP Boss': 'Jefe MVP',
+    'MVP Defeated!': '¡MVP derrotado!',
+    'Collect Reward': 'Recoger recompensa',
+    'Outcome': 'Resultado',
+
+    // Save conflict
+    'Save Out of Date': 'Partida desactualizada',
+    'Your progress was saved from another tab or device. Refresh to load the latest save.':
+      'Tu progreso se ha guardado desde otra pestaña u otro dispositivo. Recarga para cargar la última partida.',
+    'Refresh Now': 'Recargar ahora',
+
+    // MVP results
+    'Glorious Victory': 'Victoria gloriosa',
+    'Victory': 'Victoria',
+    'Defeat': 'Derrota',
+    'Steady hands, sharp timing - the spoils are yours.': 'Pulso firme y ritmo preciso: el botín es tuyo.',
+    'Accuracy': 'Precisión',
+    'Best Combo': 'Mejor combo',
+    'Contribution': 'Aportación',
+    'Aloe Leaflet': 'Hoja de aloe',
+    'Yggdrasil Berry': 'Baya de Yggdrasil',
+    'Pyramid': 'Pirámide',
+
+    // Special cards
+    'Special Cards': 'Cartas especiales',
+    'New': 'Nueva',
+    'Scratch to reveal': 'Rasca para descubrirla',
+    'Collect Rewards': 'Recoger recompensas',
+    'Defeated': 'Derrotado',
+    'Ready:': 'Listos:',
+    'Ready Up': 'Estoy listo',
+    'Cancel Ready': 'Ya no estoy listo',
     'Stamina': 'Energía',
     'Timing': 'Desfase',
     'Calibrate': 'Calibrar',
@@ -814,6 +860,7 @@
     'crit': 'crítico',
     'damage': 'daño',
     'crit chance': 'prob. de crítico',
+    'crit rate': 'prob. de crítico',
     'discount': 'descuento',
     'dmg': 'daño',
     'double click': 'doble clic',
@@ -956,6 +1003,21 @@
     [/^ATK: ([\d.,]+) base \+ ([\d.,]+) refine\s*= ?([\d.,]+)$/i, 'ATQ: $1 base + $2 refinado = $3'],
     [/^Equipment Drops \((.+)\)$/i, 'Botín de equipo ($1)'],
     [/^Members \((.+)\)$/i, 'Miembros ($1)'],
+    [/^MVP RAID - (.+) appears!$/, (_, boss) => `INCURSIÓN MVP - ¡Aparece ${tr(boss)}!`],
+    [/^Ready: (.+?) \(need ([\d.,]+)\+\)$/i, 'Listos: $1 (mín. $2)'],
+    [/^([\d.,]+%) perfect$/i, '$1 perfectos'],
+    [/^([\d.,]+) cards?$/i, (_, n) => `${n} ${n === '1' ? 'carta' : 'cartas'}`],
+    [/^(✓\s*)?You're ready$/i, (_, check = '') => `${check}Estás listo`],
+    [/^Waiting for ([\d.,]+) more$/i, (_, n) => `${n === '1' ? 'Falta' : 'Faltan'} ${n} más`],
+    [/^([\d.,]+) pts$/i, '$1 ptos.'],
+    [/^\+([\d.,]+) (.+) Card!$/, (_, n, name) => `¡+${n} Carta de ${name}!`],
+    [/^Card chance ([\d.,]+%)$/i, 'Prob. de carta $1'],
+    [/^performance ([\d.,]+%)$/i, 'rendimiento $1'],
+    // Perfect / Good / Miss → Perfecto / Bien / Fallo
+    [/^([\d.,]+)P ([\d.,]+)G ([\d.,]+)M$/, '$1P $2B $3F'],
+    [/^Costs ([\d.,]+) stamina per ready member\. Any ready player can start\.$/i,
+      'Cuesta $1 de energía por cada miembro listo. Cualquier jugador listo puede empezar.'],
+    [/^MVP Raid - (.+) appears!$/i, (_, boss) => `Incursión MVP - ¡Aparece ${tr(boss)}!`],
     [/^([\d.,]+) taps?(\.?)$/i, (_, n, dot) => `${n} ${n === '1' ? 'pulsación' : 'pulsaciones'}${dot}`],
     [/^(.+?)\s*\(Leader\)$/, (m, name) => m.replace('(Leader)', '(Líder)')],
     [/^([\d.,]+%) to clear$/i, '$1 para superarlo'],
@@ -1034,6 +1096,8 @@
       const t = BONUS[term.toLowerCase()];
       return t ? `${n} ${t}${times}` : null;
     }],
+    // Rewards: "+5 White Herb"
+    [/^\+([\d.,]+) (.+)$/, (_, n, item) => `+${n} ${tr(item)}`],
   ];
 
   // Compound strings are split and each part translated on its own.
