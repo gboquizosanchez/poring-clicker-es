@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.9.4
+// @version      1.9.5
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -665,6 +665,9 @@
     'Notes feel early or late (e.g. on Bluetooth headphones)? Calibrate by tapping along to a few clicks.':
       '¿Las notas van adelantadas o retrasadas (p. ej., con auriculares Bluetooth)? Calibra pulsando al ritmo de unos cuantos clics.',
     'Turn sound effects on to calibrate.': 'Activa los efectos de sonido para calibrar.',
+    'Not enough taps landed on the clicks. Try again.': 'No has acertado suficientes clics. Inténtalo de nuevo.',
+    'Tap A / S / D, an arrow key or Space, or here, on every click you hear':
+      'Pulsa A / S / D, una flecha o Espacio, o aquí, con cada clic que oigas',
     '90-second rhythm fight. Everyone plays the same notes. Use A / S / D or the arrow keys (← ↓ →) for left / middle / right, or press the matching lane when notes cross the line. Keep holding long notes for bonus points. The notes get faster each phase: steady beats, quick doubles, then A-S-D stairs in the finale, and RUSH sections fall faster still for ×1.5 score. Every hit damages the boss and perfects hit hardest; a miss or wrong lane breaks your combo and drains your meter. Higher-tier bosses demand more perfects. Keep your meter above 60 to claim rewards.':
       'Combate de ritmo de 90 segundos. Todos tocan las mismas notas. Usa A / S / D o las flechas (← ↓ →) para izquierda / centro / derecha, o pulsa el carril correspondiente cuando las notas crucen la línea. Mantén pulsadas las notas largas para ganar puntos extra. Las notas se aceleran en cada fase: ritmos constantes, dobles rápidas y, en el final, escaleras A-S-D; las secciones RUSH caen aún más rápido y dan ×1.5 de puntuación. Cada acierto daña al jefe y los perfectos golpean más fuerte; un fallo o un carril equivocado rompe tu combo y vacía tu medidor. Los jefes de más nivel exigen más perfectos. Mantén el medidor por encima de 60 para reclamar las recompensas.',
 
@@ -683,6 +686,7 @@
     'Old Home': 'Antiguo hogar',
     "Master's Realm": 'Reino del Maestro',
     'Poring Paradise': 'Paraíso Poring',
+    'Byalan Island': 'Isla Byalan',
     'Clock Tower': 'Torre del Reloj',
     'Toy Factory': 'Fábrica de Juguetes',
     'Cursed Abbey': 'Abadía Maldita',
@@ -952,6 +956,7 @@
     [/^ATK: ([\d.,]+) base \+ ([\d.,]+) refine\s*= ?([\d.,]+)$/i, 'ATQ: $1 base + $2 refinado = $3'],
     [/^Equipment Drops \((.+)\)$/i, 'Botín de equipo ($1)'],
     [/^Members \((.+)\)$/i, 'Miembros ($1)'],
+    [/^([\d.,]+) taps?(\.?)$/i, (_, n, dot) => `${n} ${n === '1' ? 'pulsación' : 'pulsaciones'}${dot}`],
     [/^(.+?)\s*\(Leader\)$/, (m, name) => m.replace('(Leader)', '(Líder)')],
     [/^([\d.,]+%) to clear$/i, '$1 para superarlo'],
     [/^(Timing) ([+\-]?[\d.,]+ ?ms)$/i, (_, word, ms) =>
