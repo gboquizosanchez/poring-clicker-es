@@ -1,44 +1,85 @@
-# Poring Clicker en español
+<div align="center">
 
-[English](README.md)
+<img src="icon.svg" width="100" alt="Poring">
 
-Userscript que traduce al español de España la interfaz del [Poring Clicker de SpringRO](https://springro.com/clicker) sobre la marcha.
+# `gboquizosanchez/poring-clicker-es`
 
-## Instalación
+**Userscript de traducción al español del Poring Clicker de SpringRO**
+
+[![Userscript](https://img.shields.io/badge/Userscript-Tampermonkey-00485B?logo=tampermonkey&logoColor=white)](https://www.tampermonkey.net/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES2020-F7DF1E?logo=javascript&logoColor=black)](poring-clicker-es.user.js)
+[![Idioma](https://img.shields.io/badge/Idioma-es--ES-C60B1E)](README.es.md)
+
+---
+
+*Juega al [Poring Clicker de SpringRO](https://springro.com/clicker) en español de España, traducido sobre la marcha en tu navegador.*
+
+*Read in English: [README.md](README.md)*
+
+</div>
+
+---
+
+## Descripción
+
+Userscript de [Tampermonkey](https://www.tampermonkey.net/) que traduce al español la interfaz del Poring Clicker a medida que el juego la dibuja: menús, pestañas, logros, cartas, mascotas, equipo y avisos de la partida. No cambia nada del funcionamiento del juego, solo el texto que ves.
+
+> [!NOTE]
+> Los nombres que la comunidad de Ragnarok Online ya conoce (Poring, Jellopy, Prontera…) se mantienen. Los nombres de jugadores y clanes y los mensajes del chat no se traducen nunca.
+
+---
+
+## 📦 Instalación
 
 1. Instala [Tampermonkey](https://www.tampermonkey.net/) en tu navegador.
 2. Abre el panel de Tampermonkey y crea un script nuevo.
-3. Sustituye su contenido por [`poring-clicker-es.user.js`](poring-clicker-es.user.js) y guarda (Ctrl+S).
+3. Sustituye su contenido por [`poring-clicker-es.user.js`](poring-clicker-es.user.js) y guarda (<kbd>Ctrl</kbd>+<kbd>S</kbd>).
 4. Recarga `https://springro.com/clicker`.
 
-Para actualizar, pega la versión nueva encima de la anterior y recarga la página.
+> [!IMPORTANT]
+> El repositorio es privado, así que Tampermonkey no puede actualizar el script solo. Para actualizar, pega la versión nueva encima de la anterior y recarga la página.
 
-## Qué se traduce
+---
 
-- Menús, pestañas, botones, logros, cartas, mascotas, equipo y avisos del juego.
-- Objetos, cartas y habilidades, salvo los nombres que la comunidad ya conoce (Poring, Jellopy, Prontera…).
-- Los nombres de jugadores y clanes y los mensajes del chat no se traducen nunca.
-
-## Buscar textos sin traducir
+## 🔍 Buscar textos sin traducir
 
 El script apunta todos los textos en inglés que no ha sabido traducir.
 
 1. Juega un rato y pasa por todas las pestañas.
-2. Abre la consola de DevTools (F12) y ejecuta:
+2. Abre la consola de DevTools (<kbd>F12</kbd>) y ejecuta:
 
-   ```js
-   copy(untranslated().join('\n'))
-   ```
+```js
+copy(untranslated().join('\n'))
+```
 
 3. La lista queda copiada en el portapapeles, lista para añadirla al diccionario.
 
-## Cómo funciona
+---
 
-- **`DICTIONARY`**: texto exacto → traducción.
-- **`RULES`**: expresiones regulares para textos con números o nombres (`Kill 10 Poring` → `Elimina a 10 Poring`).
-- **Textos partidos**: el juego suele partir una frase en varios nodos (`Sell: `, `2`, `z each`). El script los junta, traduce la frase entera y la vuelve a repartir sin tocar los números, así que los contadores siguen funcionando.
-- Un `MutationObserver` traduce el contenido nuevo una vez por fotograma.
+## 🔧 Cómo funciona
 
-## Versiones
+| Pieza | Qué hace |
+|-------|----------|
+| `DICTIONARY` | Texto exacto → traducción (`Kills` → `Bajas`). |
+| `RULES` | Expresiones regulares para textos con números o nombres (`Kill 10 Poring` → `Elimina a 10 Poring`). |
+| Textos partidos | El juego suele partir una frase en varios nodos (`Sell: `, `2`, `z each`). El script los junta, traduce la frase entera y la vuelve a repartir sin tocar los números, así que los contadores siguen funcionando. |
+| `MutationObserver` | Traduce el contenido nuevo una vez por fotograma, para no ralentizar el juego. |
 
-La versión está en la cabecera `@version` y cada versión publicada lleva su etiqueta (`1.9.0`, …).
+---
+
+## 🏷️ Versiones
+
+La versión está en la cabecera `@version` del script, y cada versión publicada lleva su etiqueta en el repositorio (`1.9.0`, …).
+
+---
+
+## Créditos
+
+- **Autor**: [Germán Boquizo Sánchez](mailto:germanboquizosanchez@gmail.com)
+- **Juego**: [SpringRO](https://springro.com/)
+
+---
+
+## 📄 Aviso legal
+
+Proyecto no oficial de un aficionado, sin relación con SpringRO ni respaldado por este. Ragnarok Online es una marca de Gravity Co., Ltd.
