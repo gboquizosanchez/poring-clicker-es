@@ -31,13 +31,15 @@ A [Tampermonkey](https://www.tampermonkey.net/) userscript that translates the P
 
 ## 📦 Installation
 
-1. Install [Tampermonkey](https://www.tampermonkey.net/) in your browser.
-2. Open the Tampermonkey dashboard and create a new script.
-3. Replace its content with [`poring-clicker-es.user.js`](poring-clicker-es.user.js) and save (<kbd>Ctrl</kbd>+<kbd>S</kbd>).
-4. Reload `https://springro.com/clicker`.
+1. Install a userscript manager: [Tampermonkey](https://www.tampermonkey.net/), [Violentmonkey](https://violentmonkey.github.io/) or OrangeMonkey.
+2. Open **[poring-clicker-es.user.js](https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js)** and confirm the installation.
+3. Reload `https://springro.com/clicker`.
+
+> [!TIP]
+> The script updates itself: your manager checks this repository for a newer `@version` (or use its **Check for updates** option).
 
 > [!IMPORTANT]
-> The repository is private, so Tampermonkey cannot update the script on its own. To update, paste the new version over the old one and reload the page.
+> If you installed an earlier version by pasting it by hand, remove it first: a pasted script has no update address and you would end up with two copies.
 
 ---
 

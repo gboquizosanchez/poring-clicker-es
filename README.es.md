@@ -31,13 +31,15 @@ Userscript de [Tampermonkey](https://www.tampermonkey.net/) que traduce al espa�
 
 ## 📦 Instalación
 
-1. Instala [Tampermonkey](https://www.tampermonkey.net/) en tu navegador.
-2. Abre el panel de Tampermonkey y crea un script nuevo.
-3. Sustituye su contenido por [`poring-clicker-es.user.js`](poring-clicker-es.user.js) y guarda (<kbd>Ctrl</kbd>+<kbd>S</kbd>).
-4. Recarga `https://springro.com/clicker`.
+1. Instala un gestor de userscripts: [Tampermonkey](https://www.tampermonkey.net/), [Violentmonkey](https://violentmonkey.github.io/) u OrangeMonkey.
+2. Abre **[poring-clicker-es.user.js](https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js)** y confirma la instalación.
+3. Recarga `https://springro.com/clicker`.
+
+> [!TIP]
+> El script se actualiza solo: tu gestor comprueba en este repositorio si hay un `@version` más nuevo (o usa su opción **Check for updates**).
 
 > [!IMPORTANT]
-> El repositorio es privado, así que Tampermonkey no puede actualizar el script solo. Para actualizar, pega la versión nueva encima de la anterior y recarga la página.
+> Si instalaste una versión anterior pegándola a mano, bórrala primero: un script pegado no tiene dirección de actualización y acabarías con dos copias.
 
 ---
 
