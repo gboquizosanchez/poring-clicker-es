@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.9.0
+// @version      1.9.1
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -632,6 +632,19 @@
     'Slotted:': 'Insertadas:',
     'Available:': 'Disponibles:',
 
+    // MVP & parties
+    'MVP Stamina': 'Energía MVP',
+    'Full': 'Llena',
+    'MVP stamina regenerates automatically. You can check it without joining a party.':
+      'La energía MVP se regenera sola. Puedes consultarla sin unirte a un grupo.',
+    'Join': 'Unirse',
+    'Create': 'Crear',
+    'Enter a party code to join:': 'Introduce un código de grupo para unirte:',
+
+    // Kafra upgrades
+    'Upgrade': 'Mejorar',
+    "% of last prestige's zeny as starting zeny": '% del zeny del último prestigio como zeny inicial',
+
     // Zones
     'Geffen Outskirts': 'Afueras de Geffen',
     'Payon Forest': 'Bosque de Payon',
@@ -911,6 +924,15 @@
     [/^\+([\d.,]+) Success!$/i, '¡+$1 con éxito!'],
     [/^ATK: ([\d.,]+) base \+ ([\d.,]+) refine\s*= ?([\d.,]+)$/i, 'ATQ: $1 base + $2 refinado = $3'],
     [/^Equipment Drops \((.+)\)$/i, 'Botín de equipo ($1)'],
+    [/^MVP Stamina ([\d.,]+) of ([\d.,]+)(\. Full)?$/i, (_, n, max, full) =>
+      `Energía MVP ${n} de ${max}` + (full ? '. Llena' : '')],
+    [/^([+\-]?[\d.,]+)% of last prestige's zeny as starting zeny$/i,
+      '$1% del zeny del último prestigio como zeny inicial'],
+    [/^Next: (.+)$/i, (_, x) => {
+      const t = translateCore(x);
+      return t == null ? null : `Siguiente: ${t}`;
+    }],
+    [/^([\d.,]+\+?) unique jobs$/i, '$1 clases distintas'],
     // Pet DPS: "+24+12 DPS(+2 buff 58s)"
     [/^(.*)\(\+([\d.,]+) buff ([\d.,]+s?)\)$/i, '$1(+$2 mejora $3)'],
     [/^([\d.,]+) mobs?$/i, '$1 monst.'],
@@ -995,7 +1017,9 @@
     if (set.size < MAX_TRACKED) set.add(value);
   }
 
-  function translateCore(text) {
+  // strict: compound text only counts as translated when every part is
+  // (used when joining nodes, so a half-translated mix never gets glued together)
+  function translateCore(text, strict = false) {
     text = text.replace(/\s+/g, ' '); // non-breaking or repeated spaces
     if (Object.prototype.hasOwnProperty.call(DICTIONARY, text)) return DICTIONARY[text];
 
@@ -1019,13 +1043,17 @@
       const parts = text.split(sep);
       if (sep === ', ' && !parts.every((p) => /^[+\-]/.test(p))) continue;
       let changed = false;
+      let complete = true;
       const out = parts.map((part) => {
-        const t = translateCore(part.trim());
-        if (t == null) return part;
+        const t = translateCore(part.trim(), strict);
+        if (t == null) {
+          complete = false;
+          return part;
+        }
         changed = true;
         return t;
       });
-      if (changed) return out.join(sep);
+      if (changed && (complete || !strict)) return out.join(sep);
     }
     return null;
   }
@@ -1104,7 +1132,7 @@
     const joined = units.map((u) => u.text).join('');
     const trimmed = joined.trim();
     if (!trimmed || !/[A-Za-z]/.test(trimmed)) return;
-    const out = translateCore(trimmed);
+    const out = translateCore(trimmed, true);
     if (out == null || out === trimmed) return;
     const full = joined.replace(trimmed, () => out);
 
