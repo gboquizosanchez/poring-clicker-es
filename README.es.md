@@ -9,6 +9,7 @@
 [![Userscript](https://img.shields.io/badge/Userscript-Tampermonkey-00485B?logo=tampermonkey&logoColor=white)](https://www.tampermonkey.net/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2020-F7DF1E?logo=javascript&logoColor=black)](poring-clicker-es.user.js)
 [![Idioma](https://img.shields.io/badge/Idioma-es--ES-C60B1E)](README.es.md)
+[![Licencia: MIT](https://img.shields.io/badge/Licencia-MIT-22C55E.svg)](LICENSE.md)
 
 ---
 
@@ -82,6 +83,8 @@ La versión está en la cabecera `@version` del script, y cada versión publicad
 
 ---
 
-## 📄 Aviso legal
+## 📄 Licencia
+
+Este proyecto es software libre con [licencia MIT](LICENSE.md).
 
 Proyecto no oficial de un aficionado, sin relación con SpringRO ni respaldado por este. Ragnarok Online es una marca de Gravity Co., Ltd.
