@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.10.0
+// @version      1.10.1
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -127,8 +127,6 @@
     'Passive:': 'Pasiva:',
     'Allocate stat points to customize your build. Stats and stat points reset on prestige.':
       'Reparte puntos de atributo para personalizar tu personaje. Los atributos y sus puntos se reinician al hacer prestigio.',
-    'Stat and skill resets share a cost that doubles each time, up to 10,000,000z. Resets to 5,000z on prestige.':
-      'Los reinicios de atributos y habilidades comparten un coste que se duplica cada vez, hasta 10,000,000z. Vuelve a 5,000z al hacer prestigio.',
 
     // Classes
     'Novice': 'Aprendiz',
@@ -210,8 +208,6 @@
     'Armor Detail': 'Detalle de la armadura',
     'Garment Detail': 'Detalle de la capa',
     'Footgear Detail': 'Detalle del calzado',
-    'Accessory 1 Detail': 'Detalle del accesorio 1',
-    'Accessory 2 Detail': 'Detalle del accesorio 2',
     'EQUIPPED': 'EQUIPADO',
     'In use': 'En uso',
     'active': 'activo',
@@ -330,7 +326,6 @@
     'Bonus zeny!': '¡Zeny extra!',
     'Bonus item!': '¡Objeto extra!',
     'Broken!': '¡Roto!',
-    'Failure resets to +0!': '¡Al fallar, vuelve a +0!',
     'refine=': 'refinado =',
     'refine': 'refinado',
     'Claim All Rewards': 'Reclamar todas las recompensas',
@@ -543,7 +538,6 @@
     'Full Kennel': 'Caseta llena',
     'Evolution': 'Evolución',
     'Final Form': 'Forma final',
-    'Full Roster Tier 2': 'Plantilla completa rango 2',
     'Ultimate Kennel': 'Caseta definitiva',
     'War Beast Recruit': 'Recluta de bestias de guerra',
     'Kennel of War': 'Caseta de guerra',
@@ -598,17 +592,10 @@
     'Attempt your first enchantment': 'Intenta tu primer encantamiento',
     'Roll a Rare enchantment': 'Consigue un encantamiento raro',
     'Roll an Epic enchantment': 'Consigue un encantamiento épico',
-    'Roll the mythical Legendary enchantment (~0.01%)': 'Consigue el mítico encantamiento legendario (~0.01%)',
     'Equip a weapon': 'Equipa un arma',
     'Equip an armor': 'Equipa una armadura',
     'Collect all cards': 'Consigue todas las cartas',
-    'Collect all cards and merge every one to Tier 3':
-      'Consigue todas las cartas y fusiónalas todas hasta el rango 3',
     'Obtain your first card': 'Consigue tu primera carta',
-    'Merge your first card to Tier 1': 'Fusiona tu primera carta hasta el rango 1',
-    'All 10 pets evolved to Tier 2 or beyond and max fed':
-      'Las 10 mascotas evolucionadas al rango 2 o más y bien alimentadas',
-    'All 10 pets evolved to Tier 3 and max fed': 'Las 10 mascotas evolucionadas al rango 3 y bien alimentadas',
     'Unlock your first WoE battle pet': 'Desbloquea tu primera mascota de batalla de WoE',
     'Adopt your first pet': 'Adopta tu primera mascota',
     'Participate in your first MVP encounter': 'Participa en tu primer combate MVP',
@@ -617,8 +604,6 @@
     'Max the Card Binder': 'Sube al máximo la carpeta de cartas',
     'Max the Auto-Clicker': 'Sube al máximo el autoclic',
     'Unlock the Vault': 'Desbloquea la cámara acorazada',
-    'Reach Lv99, Job Lv50, all stats allocated, and all slots equipped':
-      'Alcanza el Nv. 99 y el Nv. de oficio 50, reparte todos los atributos y llena todas las ranuras',
     'Allocate your first stat point': 'Reparte tu primer punto de atributo',
     'Unlock all name colors': 'Desbloquea todos los colores de nombre',
 
@@ -675,7 +660,6 @@
     'Copy invite link to share with friends': 'Copia el enlace de invitación para compartirlo con tus amigos',
     'Disband Party': 'Disolver grupo',
     'Leave Party': 'Salir del grupo',
-    'Need 2+ party members.': 'Hacen falta 2 o más miembros en el grupo.',
 
     // MVP rhythm fight
     'MVP Boss': 'Jefe MVP',
@@ -779,6 +763,46 @@
     'Flawless Victory': 'Victoria impecable',
     'The Pharaoh Returns To Rest': 'El faraón vuelve a descansar',
     'Osiris': 'Osiris',
+    'Clicker': 'Clicker',
+    'Clip': 'Clip',
+    'DPS': 'DPS',
+    'PvP/WoE': 'PvP/WoE',
+    'Dokebi': 'Dokebi',
+    'Jellopy': 'Jellopy',
+    'Lunatic': 'Lunatic',
+    'Main Gauche': 'Main Gauche',
+    'Marina': 'Marina',
+    'Pecopeco': 'Pecopeco',
+    'Poring': 'Poring',
+    'Savage Babe': 'Savage Babe',
+    'Slime': 'Slime',
+    'Spore': 'Spore',
+    'Yoyo': 'Yoyo',
+    'Coral': 'Coral',
+    'Eclipse': 'Eclipse',
+    'Fabre': 'Fabre',
+    'Elder Willow': 'Elder Willow',
+    'Eddga Cub': 'Cachorro de Eddga',
+    'Moonlight Kit': 'Cría de Moonlight',
+    'Explosion Seed': 'Semilla explosiva',
+    'Scroll to top': 'Volver arriba',
+    'Baphomet': 'Baphomet',
+    'Glast Heim': 'Glast Heim',
+    'Leaving...': 'Saliendo...',
+    'Live': 'En directo',
+    'MVP Time': 'Hora MVP',
+    'This will cost': 'Esto costará',
+    'auto clicker': 'autoclic',
+    'vault': 'cámara acorazada',
+
+    // Misc screens
+    'Adventurer': 'Aventurero',
+    'Mastering': 'Dominando',
+    'Poring Power': 'Poder Poring',
+    'Max (': 'Máx. (',
+    'YouTube video player': 'Reproductor de vídeo de YouTube',
+    'Checking stamina…': 'Comprobando energía…',
+    'MVP Stamina loading. Checking stamina…': 'Cargando energía MVP. Comprobando energía…',
     'New party or guild messages': 'Mensajes nuevos del grupo o del clan',
     'Party only': 'Solo grupo',
     'Message your party...': 'Escribe a tu grupo...',
@@ -797,8 +821,6 @@
     'Not enough taps landed on the clicks. Try again.': 'No has acertado suficientes clics. Inténtalo de nuevo.',
     'Tap A / S / D, an arrow key or Space, or here, on every click you hear':
       'Pulsa A / S / D, una flecha o Espacio, o aquí, con cada clic que oigas',
-    '90-second rhythm fight. Everyone plays the same notes. Use A / S / D or the arrow keys (← ↓ →) for left / middle / right, or press the matching lane when notes cross the line. Keep holding long notes for bonus points. The notes get faster each phase: steady beats, quick doubles, then A-S-D stairs in the finale, and RUSH sections fall faster still for ×1.5 score. Every hit damages the boss and perfects hit hardest; a miss or wrong lane breaks your combo and drains your meter. Higher-tier bosses demand more perfects. Keep your meter above 60 to claim rewards.':
-      'Combate de ritmo de 90 segundos. Todos tocan las mismas notas. Usa A / S / D o las flechas (← ↓ →) para izquierda / centro / derecha, o pulsa el carril correspondiente cuando las notas crucen la línea. Mantén pulsadas las notas largas para ganar puntos extra. Las notas se aceleran en cada fase: ritmos constantes, dobles rápidas y, en el final, escaleras A-S-D; las secciones RUSH caen aún más rápido y dan ×1.5 de puntuación. Cada acierto daña al jefe y los perfectos golpean más fuerte; un fallo o un carril equivocado rompe tu combo y vacía tu medidor. Los jefes de más nivel exigen más perfectos. Mantén el medidor por encima de 60 para reclamar las recompensas.',
 
     // Kafra upgrades
     'Upgrade': 'Mejorar',
@@ -842,6 +864,7 @@
     'Close': 'Cerrar',
     'Cancel': 'Cancelar',
     'Confirm': 'Confirmar',
+    'Confirm Purchase': 'Confirmar compra',
     'Save': 'Guardar',
     'Reset': 'Reiniciar',
     'Locked': 'Bloqueado',
@@ -968,6 +991,7 @@
     'weapon atk': 'ATQ de arma',
     'world boss dmg': 'daño a jefes mundiales',
     'zeny': 'zeny',
+    'zeny from all sources': 'zeny de todas las fuentes',
     'status proc': 'prob. de estado alterado',
     'poison dot': 'daño de veneno continuo',
   };
@@ -1125,6 +1149,33 @@
     [/^(.+?)\s*\(Leader\)$/, (m, name) => m.replace('(Leader)', '(Líder)')],
     [/^([\d.,]+%) to clear$/i, '$1 para superarlo'],
     [/^cycle ([\d.,]+)$/i, (m, n) => `${m[0] === 'C' ? 'Ciclo' : 'ciclo'} ${n}`],
+    // Texts with numbers the game may change: keep the numbers as variables
+    [/^Stat and skill resets share a cost that doubles each time, up to ([\d.,]+z)\. Resets to ([\d.,]+z) on prestige\.$/i,
+      'Los reinicios de atributos y habilidades comparten un coste que se duplica cada vez, hasta $1. Vuelve a $2 al hacer prestigio.'],
+    [/^Accessory ([\d.,]+) Detail$/i, 'Detalle del accesorio $1'],
+    [/^This will cost (.+)$/i, 'Esto costará $1'],
+    [/^P([\d.,]+) Lv\.\s*([\d.,]+)$/, 'P$1 Nv. $2'],
+    // Background video titles stay as they are
+    [/^.+ \| Ragnarok Online Map Tour$/, (m) => m],
+    [/^Failure resets to \+([\d.,]+)!$/i, '¡Al fallar, vuelve a +$1!'],
+    [/^Full Roster Tier ([\d.,]+)$/i, 'Plantilla completa rango $1'],
+    [/^Roll the mythical Legendary enchantment \((~?[\d.,]+%)\)$/i, 'Consigue el mítico encantamiento legendario ($1)'],
+    [/^Collect all cards and merge every one to Tier ([\d.,]+)$/i,
+      'Consigue todas las cartas y fusiónalas todas hasta el rango $1'],
+    [/^Merge your first card to Tier ([\d.,]+)$/i, 'Fusiona tu primera carta hasta el rango $1'],
+    [/^All ([\d.,]+) pets evolved to Tier ([\d.,]+)( or beyond)? and max fed$/i, (_, n, tier, more) =>
+      `Las ${n} mascotas evolucionadas al rango ${tier}${more ? ' o más' : ''} y bien alimentadas`],
+    [/^Reach Lv\s*([\d.,]+), Job Lv\s*([\d.,]+), all stats allocated, and all slots equipped$/i,
+      'Alcanza el Nv. $1 y el Nv. de oficio $2, reparte todos los atributos y llena todas las ranuras'],
+    [/^Need ([\d.,]+)\+ party members\.$/i, 'Hacen falta $1 o más miembros en el grupo.'],
+    [/^Checking Login \(([\d.,]+)\), Character \(([\d.,]+)\), and Map \(([\d.,]+)\)$/i,
+      'Comprobando inicio de sesión ($1), personajes ($2) y mapa ($3)'],
+    [/^([\d.,]+)-second rhythm fight\. Everyone plays the same notes\. Use A \/ S \/ D or the arrow keys \(← ↓ →\) for left \/ middle \/ right, or press the matching lane when notes cross the line\. Keep holding long notes for bonus points\. The notes get faster each phase: steady beats, quick doubles, then A-S-D stairs in the finale, and RUSH sections fall faster still for ×([\d.,]+) score\. Every hit damages the boss and perfects hit hardest; a miss or wrong lane breaks your combo and drains your meter\. Higher-tier bosses demand more perfects\. Keep your meter above ([\d.,]+) to claim rewards\.$/,
+      'Combate de ritmo de $1 segundos. Todos tocan las mismas notas. Usa A / S / D o las flechas (← ↓ →) para izquierda / centro / derecha, o pulsa el carril correspondiente cuando las notas crucen la línea. Mantén pulsadas las notas largas para ganar puntos extra. Las notas se aceleran en cada fase: ritmos constantes, dobles rápidas y, en el final, escaleras A-S-D; las secciones RUSH caen aún más rápido y dan ×$2 de puntuación. Cada acierto daña al jefe y los perfectos golpean más fuerte; un fallo o un carril equivocado rompe tu combo y vacía tu medidor. Los jefes de más nivel exigen más perfectos. Mantén el medidor por encima de $3 para reclamar las recompensas.'],
+    [/^Feed ([\d.,]+)x to reach Lv\.?\s*([\d.,]+)$/i, (_, n, lv) =>
+      `Alimenta ${n} ${n === '1' ? 'vez' : 'veces'} para llegar al Nv. ${lv}`],
+    // Enchant markers and stray brackets: nothing to translate
+    [/^\[E\d*\]?$|^\(x$/, (m) => m],
     [/^(Timing) ([+\-]?[\d.,]+ ?ms)$/i, (_, word, ms) =>
       `${word === word.toUpperCase() ? 'DESFASE' : 'Desfase'} ${ms}`],
     [/^MVP Stamina ([\d.,]+) of ([\d.,]+)(?:\. (.+))?$/i, (_, n, max, rest) =>
