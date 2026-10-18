@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.1
+// @version      1.24.2
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1924,7 +1924,7 @@
     [/^This run: (.+)$/i, 'En esta partida: $1'],
     [/^Lv\.\s*([\d.,]+)\+$/i, 'Nv. $1+'],
     // Party member line: "Lv.31 Swordsman"
-    [/^Lv\.(\s*)([\d.,]+) (.+)$/, (_, sp, n, cls) => {
+    [/^Lv\.(\s*)([\d.,]+) ([^+].*)$/, (_, sp, n, cls) => {
       const t = translateCore(cls);
       return t == null ? null : `Nv.${sp}${n} ${t}`;
     }],
@@ -1986,6 +1986,8 @@
       const t = translateCore(x);
       return t == null ? null : `(${t})`;
     }],
+    [/^Claim ([\d.,]+) rewards? in this category$/i, (_, n) =>
+      `Reclamar ${n} ${n === '1' ? 'recompensa' : 'recompensas'} de esta categoría`],
     [/^Claim All Rewards \((.+)\)$/i, 'Reclamar todas las recompensas ($1)'],
     [/^Sell: (.+) each$/i, 'Venta: $1 cada uno'],
     [/^Sell All \((.+)\)$/i, 'Vender todo ($1)'],
