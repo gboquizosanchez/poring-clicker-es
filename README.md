@@ -23,7 +23,10 @@
 
 ## Overview
 
-A [Tampermonkey](https://www.tampermonkey.net/) userscript that translates the Poring Clicker interface into Spanish as the game draws it: menus, tabs, achievements, cards, pets, equipment and in-game notices. It never changes how the game works, only the text you see, plus a small extra: the total of monsters and kills under the zone list (turn it on/off with <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd>).
+A [Tampermonkey](https://www.tampermonkey.net/) userscript that translates the Poring Clicker interface into Spanish as the game draws it: menus, tabs, achievements, cards, pets, equipment and in-game notices. It never changes how the game works, only the text you see, plus two small extras:
+
+- The total of monsters and kills under the zone list (turn it on/off with <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd>).
+- A **system** theme: the sun/moon button cycles dark → light → system, and in system mode the site follows your device's light or dark setting.
 
 > [!NOTE]
 > Names the Ragnarok Online community already knows (Poring, Jellopy, Prontera…) are kept as they are. Player names, guild names and chat messages are never translated.

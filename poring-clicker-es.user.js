@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.22.3
+// @version      1.23.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -2231,6 +2231,78 @@
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // EXTRA: "system" theme. The site's sun/moon button cycles
+  // dark → light → system → dark. In system mode the site's own theme is kept in
+  // line with the OS setting by clicking its button for it, so the site stays
+  // in charge of applying and remembering the theme.
+  // ---------------------------------------------------------------------------
+  const THEME_KEY = 'poring-es:theme';
+  const SYSTEM_TITLE = 'Según el sistema (clic: modo oscuro)';
+  const THEME_TITLES = new Set([
+    'Switch to light mode', 'Switch to dark mode', 'Cambiar a modo claro', 'Cambiar a modo oscuro', SYSTEM_TITLE,
+  ]);
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+  let systemTheme = localStorage.getItem(THEME_KEY) === 'system';
+  let switchingTheme = false;
+
+  const themeButtons = () =>
+    [...document.querySelectorAll('button[title]')].filter((b) => THEME_TITLES.has(b.getAttribute('title')));
+  const siteTheme = () => document.documentElement.getAttribute('data-theme');
+
+  function setSiteTheme(theme) {
+    const button = themeButtons()[0];
+    if (!button || siteTheme() === theme) return;
+    switchingTheme = true;
+    // dispatchEvent rather than click(): click() is ignored while another click is running
+    button.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    switchingTheme = false;
+  }
+
+  function updateThemeButtons() {
+    for (const button of themeButtons()) {
+      const title = systemTheme ? SYSTEM_TITLE
+        : siteTheme() === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro';
+      if (button.getAttribute('title') !== title) button.setAttribute('title', title);
+      button.toggleAttribute('data-poring-es-system', systemTheme);
+    }
+  }
+
+  function applySystemTheme() {
+    if (systemTheme) setSiteTheme(systemDark.matches ? 'dark' : 'light');
+    observer.disconnect();
+    updateThemeButtons();
+    observe();
+  }
+
+  const MONITOR_ICON = 'data:image/svg+xml,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" ' +
+    'stroke-linecap="round" stroke-linejoin="round"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 ' +
+    '002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>');
+  const themeStyle = document.createElement('style');
+  themeStyle.textContent =
+    'button[data-poring-es-system]{position:relative}' +
+    'button[data-poring-es-system]>svg{visibility:hidden}' +
+    `button[data-poring-es-system]::after{content:"";position:absolute;inset:0;margin:auto;width:1rem;height:1rem;` +
+    `background:currentColor;-webkit-mask:url("${MONITOR_ICON}") center/contain no-repeat;` +
+    `mask:url("${MONITOR_ICON}") center/contain no-repeat}`;
+  document.documentElement.appendChild(themeStyle);
+
+  document.addEventListener('click', (e) => {
+    if (switchingTheme) return;
+    const button = e.target instanceof Element && e.target.closest('button[title]');
+    if (!button || !THEME_TITLES.has(button.getAttribute('title'))) return;
+    if (!systemTheme && siteTheme() !== 'light') return; // dark → light: the site does it
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    systemTheme = !systemTheme;
+    localStorage.setItem(THEME_KEY, systemTheme ? 'system' : 'site');
+    if (!systemTheme) setSiteTheme('dark');
+    applySystemTheme();
+    toast(`Poring Clicker ES: tema ${systemTheme ? 'según el sistema' : 'oscuro'}`);
+  }, true);
+  systemDark.addEventListener('change', applySystemTheme);
+
   // Batch DOM changes once per animation frame so the game doesn't slow down
   const pending = new Set();
   let scheduled = false;
@@ -2244,6 +2316,7 @@
     pending.clear();
     translateTitle();
     updateZoneTotals();
+    updateThemeButtons();
     observe();
   }
 
@@ -2287,6 +2360,7 @@
     translateTree(document.body);
     updateZoneTotals();
     observe();
+    applySystemTheme();
   }
   const startLater = () => setTimeout(start, 800);
   if (document.readyState === 'complete') startLater();
