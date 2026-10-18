@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.7
+// @version      1.24.8
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -265,7 +265,7 @@
     'Sell Price:': 'Precio de venta:',
     'Shiny Chance:': 'Prob. de shiny:',
     'Zeny Bonus:': 'Bonificación de zeny:',
-    'Pet Arena:': 'Arena de mascotas:',
+    'Pet Arena:': 'Arena masc.:',
     'Discount': 'Descuento',
     'Attack Speed': 'Velocidad de ataque',
     'attack speed': 'velocidad de ataque',
@@ -287,7 +287,7 @@
     'Increases weapon ATK': 'Aumenta el ATQ del arma',
     'Increases zeny bonus': 'Aumenta la bonificación de zeny',
     'Increases zeny bonus and Pet Arena/PvP/WoE HP':
-      'Aumenta la bonificación de zeny y los PV en la Arena de mascotas/PvP/WoE',
+      'Aumenta la bonificación de zeny y los PV en la Arena masc./PvP/WoE',
     'Reduces purchase costs': 'Reduce el coste de las compras',
 
     // Prestige, rebirth & Kafra upgrades
@@ -311,9 +311,9 @@
     'Invest resources into permanent upgrades. All upgrades persist through prestige.':
       'Invierte recursos en mejoras permanentes. Todas las mejoras se conservan al hacer prestigio.',
     "Cards, prestige multiplier, Kafra upgrades, Pet Arena coins, Champion's Crowns, homestead":
-      'Cartas, multiplicador de prestigio, mejoras Kafra, monedas de la Arena de mascotas, Coronas de campeón y granja',
+      'Cartas, multiplicador de prestigio, mejoras Kafra, monedas de la Arena masc., Coronas de campeón y granja',
     'Stats, stat points, kills, mob tier, equipment, inventory, pets, pet evolutions, expeditions, Pet Arena progress, WoE team and waiting-line pledges':
-      'Atributos, puntos de atributo, bajas, nivel de monstruos, equipo, inventario, mascotas, evoluciones de mascotas, expediciones, progreso en la Arena de mascotas, equipo de WoE y reservas en la cola de espera',
+      'Atributos, puntos de atributo, bajas, nivel de monstruos, equipo, inventario, mascotas, evoluciones de mascotas, expediciones, progreso en la Arena masc., equipo de WoE y reservas en la cola de espera',
     'Kafra': 'Kafra',
     'Kafra Auto-Attack': 'Autoataque Kafra',
     'Kafra Storage': 'Almacén Kafra',
@@ -388,8 +388,8 @@
     "A desert bastion guarding the kingdom's merchant routes.": 'Un bastión en el desierto que protege las rutas comerciales del reino.',
     'A merchant hub. Controlling it yields rich trade rewards.': 'Un centro comercial. Controlarlo da ricas recompensas comerciales.',
     'An island stronghold where guilds compete for arena supplies.': 'Una fortaleza en una isla donde los clanes compiten por suministros de la arena.',
-    'Pet Arena Shop': 'Tienda de la Arena de mascotas',
-    'Battle your pets through Pet Arena stages!': '¡Haz combatir a tus mascotas en las fases de la Arena de mascotas!',
+    'Pet Arena Shop': 'Tienda de la Arena masc.',
+    'Battle your pets through Pet Arena stages!': '¡Haz combatir a tus mascotas en las fases de la Arena masc.!',
     'Energy': 'Energía',
     'Coins': 'Monedas',
     'coins': 'monedas',
@@ -434,10 +434,10 @@
     'KO': 'KO',
     'Mute': 'Silenciar',
     'Unmute': 'Activar sonido',
-    'Pet Arena Challenger': 'Aspirante de la Arena de mascotas',
-    'Pet Arena Regular': 'Habitual de la Arena de mascotas',
-    'Pet Arena Veteran': 'Veterano de la Arena de mascotas',
-    'Clear your first Pet Arena stage': 'Supera tu primera fase de la Arena de mascotas',
+    'Pet Arena Challenger': 'Aspirante de la Arena masc.',
+    'Pet Arena Regular': 'Habitual de la Arena masc.',
+    'Pet Arena Veteran': 'Veterano de la Arena masc.',
+    'Clear your first Pet Arena stage': 'Supera tu primera fase de la Arena masc.',
     'Crown Collector': 'Coleccionista de coronas',
     'Crowned King': 'Rey coronado',
     'Grand Champion': 'Gran campeón',
@@ -632,7 +632,7 @@
     'acolyte': 'acólito',
     'merchant': 'mercader',
     'thief': 'ladrón',
-    'Pet Arena': 'Arena de mascotas',
+    'Pet Arena': 'Arena masc.',
     'Dungeon Expeditions': 'Expediciones a mazmorras',
     'Dungeon': 'Mazmorra',
     'Dungeon Unlocked': 'Mazmorra desbloqueada',
@@ -688,7 +688,7 @@
     'All Rewards': 'todas las recompensas',
     'Pet Auto-Feed': 'Autoalimentación de mascotas',
     'Dungeon Auto-Repeat': 'Repetición automática de mazmorras',
-    'Pet Arena Auto-Fighter': 'Autocombate en la Arena de mascotas',
+    'Pet Arena Auto-Fighter': 'Autocombate en la Arena masc.',
     'Party System': 'Sistema de grupos',
 
     // Pets
@@ -1150,7 +1150,7 @@
     'Combat stats': 'Estadísticas de combate',
     'Combat skills': 'Habilidades de combate',
     'Stat': 'Atributo',
-    'WoE / Pet Arena': 'WoE / Arena de mascotas',
+    'WoE / Pet Arena': 'WoE / Arena masc.',
     'PvP / WoE': 'PvP / WoE',
     'Attack': 'Ataque',
     'Max HP': 'PV máx.',
@@ -1732,7 +1732,7 @@
     'pet dps': 'DPS de mascotas',
     'atk': 'ATQ',
     'mvp raid damage': 'daño en incursiones MVP',
-    'pet arena coins': 'monedas de la Arena de mascotas',
+    'pet arena coins': 'monedas de la Arena masc.',
     'guild exp': 'EXP de clan',
     'zeny drop': 'zeny obtenido',
     'pet': 'mascotas',
@@ -1978,7 +1978,7 @@
     [/^Damage: ([\d.,]+×) Attack$/i, 'Daño: $1 ataque'],
     [/^Shield: ([\d.,]+×) Attack$/i, 'Escudo: $1 ataque'],
     [/^Heal: ([\d.,]+%) max HP$/i, 'Curación: $1 de los PV máx.'],
-    [/^Pet Arena cooldown: (.+)$/i, (_, cd) => `Reutilización en la Arena de mascotas: ${tr(cd).toLowerCase()}`],
+    [/^Pet Arena cooldown: (.+)$/i, (_, cd) => `Reutilización en la Arena masc.: ${tr(cd).toLowerCase()}`],
     [/^Pet details: (.+)$/i, (_, pet) => `Detalles de la mascota: ${tr(pet)}`],
     [/^(.+) details$/, (_, pet) => {
       const t = translateCore(pet);
@@ -2133,8 +2133,8 @@
     [/^Pets \((.+) DPS\)$/i, 'Mascotas ($1 DPS)'],
     [/^(.+) zone$/, (_, zone) => `Zona de ${tr(zone)}`],
     [/^Pet Arena (Bronze|Silver|Gold|Platinum|Diamond) tier$/i, (_, tier) =>
-      `Arena de mascotas, rango ${ARENA_TIERS[tier[0].toUpperCase() + tier.slice(1).toLowerCase()]}`],
-    [/^Pet Arena \((.+)\)$/i, (_, tier) => `Arena de mascotas (${ARENA_TIERS[tier] ?? tier})`],
+      `Arena masc., rango ${ARENA_TIERS[tier[0].toUpperCase() + tier.slice(1).toLowerCase()]}`],
+    [/^Pet Arena \((.+)\)$/i, (_, tier) => `Arena masc. (${ARENA_TIERS[tier] ?? tier})`],
     [/^Claim (.+)$/i, (_, x) => `Reclamar ${tr(x)}`],
 
     // Server status
@@ -2214,7 +2214,7 @@
     [/^(.+) rests ([\d.,]+) minutes after every siege, for every guild\. It does not heal defenders\.$/i,
       (_, castle, n) => `${tr(castle)} descansa ${n} minutos tras cada asedio, para todos los clanes. No cura a los defensores.`],
     // Pet Arena battle log: "Yoyo (ally) hits p2_pet1, Poring (enemy) for 494"
-    [/^Pet Arena - Stage ([\d.,]+)$/i, 'Arena de mascotas - Fase $1'],
+    [/^Pet Arena - Stage ([\d.,]+)$/i, 'Arena masc. - Fase $1'],
     [/^Select team \(([\d.,]+)-([\d.,]+)\), then click a stage:$/i, 'Elige el equipo ($1-$2) y haz clic en una fase:'],
     [/^Collect \+([\d.,]+) Coins$/i, 'Recoger +$1 monedas'],
     [/^Volume ([\d.,]+)%$/i, 'Volumen $1%'],
@@ -2241,7 +2241,7 @@
     [/^(.+?) is defeated!$/, (_, unit) => `¡${arenaUnits(unit)} cae derrotado!`],
     [/^([\d.,]+) first \/ ([\d.,]+) repeat$/i, '$1 la 1.ª vez / $2 al repetir'],
     [/^Clear (bronze|silver|gold|platinum|diamond)$/i, (_, tier) => `Superar ${tr(tier[0].toUpperCase() + tier.slice(1).toLowerCase())}`],
-    [/^Accumulate ([\d.,]+) Pet Arena coins$/i, 'Acumula $1 monedas de la Arena de mascotas'],
+    [/^Accumulate ([\d.,]+) Pet Arena coins$/i, 'Acumula $1 monedas de la Arena masc.'],
     [/^Clear (Bronze|Silver|Gold|Platinum|Diamond) Stage ([\d.,]+)$/i, (_, tier, n) => `Supera la fase ${n} de ${tr(tier)}`],
     [/^(Bronze|Silver|Gold|Platinum|Diamond) Champion$/i, (_, tier) => `Campeón de ${tr(tier)}`],
     [/^Earn ([\d.,]+) Champion's Crowns$/i, 'Consigue $1 Coronas de campeón'],
@@ -2510,7 +2510,7 @@
   // whether "vs" is its own element or loose text before the name
   const afterVs = (el) => {
     const prev = el.previousSibling;
-    const text = prev ? prev.textContent.trim() : '';
+    const text = ((prev && prev.textContent) || '').trim(); // the doctype before <html> has no text
     return /(^|\s)vs$/.test(text) ||
       (!!el.previousElementSibling && el.previousElementSibling.textContent.trim() === 'vs');
   };
