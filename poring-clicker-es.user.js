@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.15.0
+// @version      1.15.1
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -888,6 +888,20 @@
     'Broadband connection': 'Conexión de banda ancha',
     'Windows': 'Windows',
     'Linux': 'Linux',
+    'Linux setup ·': 'Instalación en Linux ·',
+    'Choose your Linux package': 'Elige tu paquete para Linux',
+    'SpringRO Linux Launcher': 'Launcher de SpringRO para Linux',
+    'Portable launcher': 'Launcher portable',
+    'Arch, Debian / Ubuntu, Fedora': 'Arch, Debian / Ubuntu, Fedora',
+    'Debian / Ubuntu': 'Debian / Ubuntu',
+    'On Debian / Ubuntu, install the package:': 'En Debian / Ubuntu, instala el paquete:',
+    'Then open SpringRO from your applications menu.': 'Después abre SpringRO desde el menú de aplicaciones.',
+    'These commands assume you saved the file in': 'Estos comandos dan por hecho que guardaste el archivo en',
+    '. If you saved it elsewhere, use that path instead.': '. Si lo guardaste en otro sitio, usa esa ruta.',
+    'Get the launcher, then let it download and patch the game.':
+      'Descarga el launcher y deja que descargue y actualice el juego.',
+    'Follow Linux setup above, then run the launcher to get the game files.':
+      'Sigue la instalación para Linux de arriba y luego abre el launcher para descargar los archivos del juego.',
     // Pieces of "+1 DPS (60s)" when the game splits it oddly: nothing to translate
     'DPS (': 'DPS (',
     's)': 's)',
@@ -1275,6 +1289,8 @@
     [/^~?[\d.,]+ ?[GM]B$|^v[\d.]+$|^Windows [\d.]+(?: \/ [\d.]+)*$/, (m) => m],
     [/^([\d.,]+ ?[GM]B) free space( \(SSD\))?$/i, (_, size, ssd = '') => `${size} libres${ssd}`],
     [/^Any DirectX ([\d.]+) capable$/i, 'Cualquiera compatible con DirectX $1'],
+    [/^\.[A-Za-z]+$/, (m) => m], // file extensions: .deb, .AppImage, .bin
+    [/^Download (\.[A-Za-z]+)$/i, 'Descargar $1'],
     [/^(.+) or better$/i, '$1 o superior'],
     [/^(.+) or equivalent$/i, '$1 o equivalente'],
     [/^([\d.,]+) items?$/i, (_, n) => `${n} ${n === '1' ? 'objeto' : 'objetos'}`],
