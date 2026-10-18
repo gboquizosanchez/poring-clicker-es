@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.22.1
+// @version      1.22.2
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -50,6 +50,7 @@
     'Online': 'En línea',
     'Offline': 'Desconectado',
     'Login': 'Iniciar sesión',
+    'Authentication required': 'Debes iniciar sesión',
     'Register': 'Registrarse',
     'Logout': 'Cerrar sesión',
     'News': 'Noticias',
@@ -775,6 +776,7 @@
     'Vadon': 'Vadon',
     'Eddga': 'Eddga',
     'Orc Hero': 'Orc Hero',
+    'Phreeoni': 'Phreeoni',
     'Shiny': 'Shiny',
 
     // MVP encounter: start, banners and boss lines
@@ -1263,6 +1265,7 @@
     '(max': '(máx.',
     '(cd:': '(reutil.:',
     '% WR': '% de victorias',
+    'ELO': 'ELO',
     // PvP record "205W 84L" arrives split: the letters come as their own nodes
     'W': 'V',
     'L': 'D',
@@ -1942,10 +1945,15 @@
     return !!next && next.tagName === 'BUTTON' && INVITE_TITLES.has(next.getAttribute('title'));
   };
 
-  // Player and guild names in the leaderboard: the name right after the rank badge
+  // Player and guild names in the leaderboard: the name right after the rank
+  // badge, either on its own or as the first line of a block (PvP: name, then
+  // "401W 182L · 69% WR · 21 streak")
+  const afterRankBadge = (el) =>
+    !!el && !!el.previousElementSibling && el.previousElementSibling.matches('.w-5.h-5');
   const isLeaderboardName = (el) =>
-    el.matches('.flex-1.truncate') &&
-    !!el.previousElementSibling && el.previousElementSibling.matches('.w-5.h-5');
+    (el.matches('.flex-1.truncate') && afterRankBadge(el)) ||
+    (!!el.parentElement && el.parentElement.matches('.flex-1') &&
+      el === el.parentElement.firstElementChild && afterRankBadge(el.parentElement));
 
   // Party member names: the button right above "Lv.31 Swordsman"
   const isPartyMemberName = (el) =>
