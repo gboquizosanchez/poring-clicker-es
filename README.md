@@ -71,6 +71,7 @@ copy(untranslated().join('\n'))
 | `DICTIONARY` | Exact text → translation (`Kills` → `Bajas`). |
 | `RULES` | Regular expressions for text with numbers or names (`Kill 10 Poring` → `Elimina a 10 Poring`). |
 | Split text | The game often splits one sentence into several nodes (`Sell: `, `2`, `z each`). The script joins them, translates the whole sentence and puts it back without touching the numbers, so live counters keep working. |
+| Canvas | Some screens (the Pet Arena battle) are drawn on a `<canvas>`, not written as text. The script hooks the page's text drawing (`fillText`) and hands it the Spanish text before it is painted. |
 | `MutationObserver` | Translates new content once per animation frame, so the game does not slow down. |
 
 ---

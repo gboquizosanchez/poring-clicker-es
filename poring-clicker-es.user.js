@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.23.9
+// @version      1.24.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -416,11 +416,17 @@
     'Watch the battle in the main area!': '¡Mira el combate en la zona principal!',
     'Loading sprites…': 'Cargando sprites…',
     'Skip to Results': 'Saltar a los resultados',
+    'Turn Order': 'Orden de turnos',
+    'Elemental Triangle': 'Triángulo elemental',
+    'Counter': 'Contraataque',
+    'Crit': 'Crítico',
+    'Exit': 'Salir',
     'cleared': 'superadas',
     'Unit': 'Unidad',
     'Dealt': 'Infligido',
     'Taken': 'Recibido',
     'Healed': 'Curado',
+    'Shields given': 'Escudos dados',
     'KO': 'KO',
     'Mute': 'Silenciar',
     'Unmute': 'Activar sonido',
@@ -1650,6 +1656,10 @@
     const m = unit.match(/^(.+) \((ally|enemy)\)$/);
     return m ? `${tr(m[1])} (${m[2] === 'ally' ? 'aliado' : 'enemigo'})` : tr(unit);
   }).join(', ');
+  const ARENA_STATUS = {
+    ATK_UP: 'ATQ ↑', ATK_DOWN: 'ATQ ↓', DEF_UP: 'DEF ↑', DEF_DOWN: 'DEF ↓',
+    STUN: 'aturdimiento', POISON: 'veneno', BURN: 'quemadura', SLEEP: 'sueño',
+  };
   const ARENA_TIERS = { Bronze: 'Bronce', Silver: 'Plata', Gold: 'Oro', Platinum: 'Platino', Diamond: 'Diamante' };
 
   const BANNER = { HP: 'PV', Drops: 'Botín', 'Guaranteed Drop': 'Botín garantizado' };
@@ -2103,8 +2113,13 @@
     [/^VICTORY for (ally|enemy) side!$/i, (_, side) =>
       `¡VICTORIA del bando ${side.toLowerCase() === 'ally' ? 'aliado' : 'enemigo'}!`],
     [/^(.+?) casts (.+)$/, (_, unit, skill) => `${arenaUnits(unit)} usa ${tr(skill)}`],
-    [/^(.+?) hits (.+) for ([\d.,]+)( \(blocked\))?$/, (_, unit, targets, n, blocked) =>
-      `${arenaUnits(unit)} golpea a ${arenaUnits(targets)} por ${n}${blocked ? ' (bloqueado)' : ''}`],
+    [/^(.+?) hits (.+) for ([\d.,]+)( \(blocked\))?( CRITICAL)?$/, (_, unit, targets, n, blocked, crit) =>
+      `${arenaUnits(unit)} golpea a ${arenaUnits(targets)} por ${n}${blocked ? ' (bloqueado)' : ''}${crit ? ' CRÍTICO' : ''}`],
+    [/^(.+?) shields (.+) \(([\d.,]+)\)$/, (_, unit, target, n) => `${arenaUnits(unit)} protege a ${arenaUnits(target)} (${n})`],
+    [/^(.+?) gets ([A-Z_]+) \(([\d.,]+)t\)$/, (_, unit, status, turns) =>
+      `${arenaUnits(unit)} recibe ${ARENA_STATUS[status] ?? status} (${turns} t)`],
+    [/^(.+) \((ally|enemy)\)$/, (text) => arenaUnits(text)],
+    [/^(.+?)'s shield breaks$/, (_, unit) => `Se rompe el escudo de ${arenaUnits(unit)}`],
     [/^(.+?) is defeated!$/, (_, unit) => `¡${arenaUnits(unit)} cae derrotado!`],
     [/^([\d.,]+) first \/ ([\d.,]+) repeat$/i, '$1 la 1.ª vez / $2 al repetir'],
     [/^Clear (bronze|silver|gold|platinum|diamond)$/i, (_, tier) => `Superar ${tr(tier[0].toUpperCase() + tier.slice(1).toLowerCase())}`],
@@ -2796,6 +2811,53 @@
     (document.head || document.documentElement).appendChild(bridge);
     bridge.remove();
   } catch (e) { /* the page's security policy may block it: use the shortcut */ }
+
+  // Canvas text (the Pet Arena battle is drawn, not written): a page-side patch
+  // of fillText/strokeText/measureText asks the sandbox for each new text
+  // through the same kind of synchronous DOM event, and caches the answer.
+  const ARENA_ID = /^p\d+_pet\d+$/;
+  document.addEventListener('poring-es:canvas', () => {
+    const root = document.documentElement;
+    const text = root.dataset.poringEsCanvasIn || '';
+    const trimmed = text.trim();
+    let out = text;
+    if (/[A-Za-z]/.test(trimmed) && !NUMERIC.test(trimmed) && !DURATION.test(trimmed) && !ARENA_ID.test(trimmed)) {
+      const t = translateCore(trimmed);
+      if (t != null) out = text.replace(trimmed, t);
+      else if (!missing.has(trimmed) && !ignoredNames.has(trimmed)) {
+        missing.set(trimmed, { page: location.pathname, element: '<canvas>', section: '', sentence: '' });
+      }
+    }
+    root.dataset.poringEsCanvasOut = out;
+  });
+  try {
+    const canvasBridge = document.createElement('script');
+    canvasBridge.textContent = `(() => {
+      const proto = CanvasRenderingContext2D.prototype;
+      const root = document.documentElement;
+      const cache = new Map();
+      const translate = (text) => {
+        if (typeof text !== 'string' || !/[A-Za-z]/.test(text)) return text;
+        let out = cache.get(text);
+        if (out === undefined) {
+          root.dataset.poringEsCanvasIn = text;
+          document.dispatchEvent(new CustomEvent('poring-es:canvas'));
+          out = root.dataset.poringEsCanvasOut ?? text;
+          delete root.dataset.poringEsCanvasIn;
+          delete root.dataset.poringEsCanvasOut;
+          if (cache.size > 2000) cache.clear();
+          cache.set(text, out);
+        }
+        return out;
+      };
+      for (const name of ['fillText', 'strokeText', 'measureText']) {
+        const original = proto[name];
+        proto[name] = function (text, ...rest) { return original.call(this, translate(text), ...rest); };
+      }
+    })();`;
+    (document.head || document.documentElement).appendChild(canvasBridge);
+    canvasBridge.remove();
+  } catch (e) { /* blocked by the page's security policy: the canvas stays in English */ }
 
   // 3. Shortcut that needs no console at all: Alt+Shift+U copies the list.
   function toast(message) {

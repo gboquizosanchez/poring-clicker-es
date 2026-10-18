@@ -71,6 +71,7 @@ copy(untranslated().join('\n'))
 | `DICTIONARY` | Texto exacto → traducción (`Kills` → `Bajas`). |
 | `RULES` | Expresiones regulares para textos con números o nombres (`Kill 10 Poring` → `Elimina a 10 Poring`). |
 | Textos partidos | El juego suele partir una frase en varios nodos (`Sell: `, `2`, `z each`). El script los junta, traduce la frase entera y la vuelve a repartir sin tocar los números, así que los contadores siguen funcionando. |
+| Canvas | Algunas pantallas (el combate de la Arena de mascotas) se dibujan en un `<canvas>` en lugar de escribirse como texto. El script intercepta la función con la que la página pinta el texto (`fillText`) y le pasa el texto en español antes de dibujarlo. |
 | `MutationObserver` | Traduce el contenido nuevo una vez por fotograma, para no ralentizar el juego. |
 
 ---
