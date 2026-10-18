@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.11.0
+// @version      1.11.1
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -62,6 +62,8 @@
     'BGM (Music)': 'BGM (música)',
     'SFX (Effects)': 'SFX (efectos)',
     'Monster Hits': 'Golpes a monstruos',
+    'Monster hit and death sounds in the clicker. MVP fight sounds are not affected.':
+      'Sonidos de golpes y muertes de monstruos en el clicker. No afecta a los sonidos de los combates MVP.',
     'Mixed': 'Mixto',
     'On': 'Sí',
     'Off': 'No',
@@ -803,6 +805,26 @@
     'Savage': 'Savage',
     'Swordfish': 'Swordfish',
     'Zealotus': 'Zealotus',
+    'Creamy': 'Creamy',
+    'Hornet': 'Hornet',
+    'Marionette': 'Marionette',
+    'Poporing': 'Poporing',
+    'Rocker': 'Rocker',
+    'Roda Frog': 'Roda Frog',
+    'Smokie': 'Smokie',
+    'Vocal': 'Vocal',
+    'Bigfoot': 'Bigfoot',
+    'Muka': 'Muka',
+    'Nine Tail': 'Nine Tail',
+    'Scorpion': 'Scorpion',
+    'Moonlight Flower': 'Moonlight Flower',
+    'Marin': 'Marin',
+    'Gladius': 'Gladius',
+    'Drops': 'Drops', // the monster; the loot header is handled by isLootHeader()
+    'Prontera Field': 'Campo de Prontera',
+    'Defeat all standard mobs in this zone first to challenge the boss':
+      'Elimina primero a todos los monstruos normales de esta zona para desafiar al jefe',
+    'Timing offset cleared.': 'Desfase borrado.',
     'ATK': 'ATQ',
     'Champion Crowns': 'Coronas de campeón',
     'Lifetime Damage': 'Daño acumulado',
@@ -1175,7 +1197,15 @@
     [/^This will cost (.+)$/i, 'Esto costará $1'],
     [/^P([\d.,]+) Lv\.\s*([\d.,]+)$/, 'P$1 Nv. $2'],
     // Background video titles stay as they are
-    [/^.+ \| Ragnarok Online Map Tour$/, (m) => m],
+    [/^.+ \| Ragnarok Online .+ Tour$/, (m) => m],
+    [/^This run: (.+)$/i, 'En esta partida: $1'],
+    [/^Lv\.\s*([\d.,]+)\+$/i, 'Nv. $1+'],
+    [/^Reach Lv\.\s*([\d.,]+) to access (.+)$/i, (_, lv, zone) => `Alcanza el Nv. ${lv} para acceder a ${tr(zone)}`],
+    [/^Defeat (.+) first to unlock this mob in your current run$/i, (_, mob) =>
+      `Elimina a ${tr(mob)} primero para desbloquear este monstruo en tu partida actual`],
+    [/^Saved ([+\-]?[\d.,]+ ?ms)\. Notes now line up with what you hear\.$/i,
+      'Guardado: $1. Ahora las notas coinciden con lo que oyes.'],
+    [/^(\|\s*)(EXP|Zeny):$/, (m) => m],
     [/^Failure resets to \+([\d.,]+)!$/i, '¡Al fallar, vuelve a +$1!'],
     [/^Full Roster Tier ([\d.,]+)$/i, 'Plantilla completa rango $1'],
     [/^Roll the mythical Legendary enchantment \((~?[\d.,]+%)\)$/i, 'Consigue el mítico encantamiento legendario ($1)'],
@@ -1194,7 +1224,7 @@
     [/^Feed ([\d.,]+)x to reach Lv\.?\s*([\d.,]+)$/i, (_, n, lv) =>
       `Alimenta ${n} ${n === '1' ? 'vez' : 'veces'} para llegar al Nv. ${lv}`],
     // Enchant markers and stray brackets: nothing to translate
-    [/^\[E\d*\]?$|^\(x$/, (m) => m],
+    [/^\[E\d*\]?$|^\(x$|^[kz]\)$/, (m) => m],
     [/^(Timing) ([+\-]?[\d.,]+ ?ms)$/i, (_, word, ms) =>
       `${word === word.toUpperCase() ? 'DESFASE' : 'Desfase'} ${ms}`],
     [/^MVP Stamina ([\d.,]+) of ([\d.,]+)(?:\. (.+))?$/i, (_, n, max, rest) =>
