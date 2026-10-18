@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.20.1
+// @version      1.21.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1011,6 +1011,51 @@
     'Need help? Open a ticket and we\'ll get back to you.': '¿Necesitas ayuda? Abre un ticket y te responderemos.',
     'New Ticket': 'Nuevo ticket',
     'No tickets yet.': 'Aún no tienes tickets.',
+
+    // GM command log (/transparency/gm-log)
+    'Breadcrumb': 'Ruta de navegación',
+    'Log entries': 'Entradas del registro',
+    'Filter changes by type': 'Filtrar cambios por tipo',
+    'Progression': 'Progresión',
+    'Bans & jails': 'Baneos y encarcelamientos',
+    'Refresh': 'Actualizar',
+    'Newest first': 'Más recientes primero',
+    'UTC': 'UTC',
+    'Account ban requested': 'Baneo de cuenta solicitado',
+    'Jail placement': 'Encarcelamiento',
+    'Jail release': 'Liberación de la cárcel',
+    'Command': 'Comando',
+    'Character:': 'Personaje:',
+    'GM character': 'Personaje GM',
+    'GM': 'GM',
+    'Entry': 'Entrada',
+    'Details': 'Detalles',
+    'for': 'de',
+    ', entry': ', entrada',
+    'For questions about an entry,': 'Si tienes dudas sobre una entrada,',
+    'contact support': 'contacta con soporte',
+    'and include its number.': 'e indica su número.',
+    'Bible': 'Biblia',
+    'Drainliar': 'Drainliar',
+
+    // Economy tracker (/transparency/economy)
+    'Economy Tracker': 'Seguimiento de la economía',
+    'All significant economic activity is tracked publicly.': 'Toda la actividad económica relevante se registra de forma pública.',
+    'Zeny Summary': 'Resumen de zeny',
+    'Vending': 'Ventas en puestos',
+    'vending': 'ventas en puestos',
+    'Trade': 'Intercambio',
+    'trade': 'intercambios',
+    'Admin': 'Admin',
+    'NPC Shop': 'Tienda NPC',
+    'NPC Script': 'Script de NPC',
+    'Expense': 'Gasto',
+    'Date': 'Fecha',
+    'Type': 'Tipo',
+    'Transactions': 'Transacciones',
+    'Gained': 'Ganado',
+    'Spent': 'Gastado',
+    'Net': 'Neto',
     'Choose your Linux package': 'Elige tu paquete para Linux',
     'SpringRO Linux Launcher': 'Launcher de SpringRO para Linux',
     'Portable launcher': 'Launcher portable',
@@ -1444,7 +1489,16 @@
     [/^See the last ([\d.,]+) drops$/i, 'Ver las últimas $1 cartas'],
     [/^Quantity requested: (.+)$/i, 'Cantidad solicitada: $1'],
     [/^Requested: (.+?) zeny$/i, 'Solicitado: $1 zeny'],
-    [/^(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4})$/,
+    [/^Requested time: (.+)$/i, 'Tiempo solicitado: $1'],
+    [/^for (.+)$/, (_, what) => {
+      const t = translateCore(what);
+      return t == null ? null : `de ${t}`;
+    }],
+    [/^Showing ([\d.,]+)[–-]([\d.,]+) of ([\d.,]+) entries$/i, 'Mostrando $1–$2 de $3 entradas'],
+    [/^No (.+) records found\.$/i, (_, type) => {
+      const t = translateCore(type);
+      return t == null ? null : `No hay registros de ${t}.`;
+    }],    [/^(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4})$/,
       (_, month, day, year) => {
         const mm = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
           'September', 'October', 'November', 'December'].indexOf(month) + 1;
@@ -1808,14 +1862,27 @@
   // News: the posts themselves (title and excerpt) stay in English; only the
   // page around them (badges, dates, buttons) is translated
   const isNewsPost = (el) =>
+    location.pathname.startsWith('/news') &&
     /^(H1|H2|H3|H4|P|LI|ARTICLE)$/.test(el.tagName) && !!el.closest('a[href^="/news/"], article');
 
   // Links to a player's, character's or guild's page (transparency, rankings…)
   const isProfileLink = (el) =>
     el.tagName === 'A' && /\/(players?|characters?|chars?|guilds?)\//i.test(el.getAttribute('href') || '');
 
+  // GM log: "Character: <span>Name</span>" and "<dt>GM</dt><dd>Name</dd>".
+  // "GM character" is a label, not a name, so it is still translated.
+  const firstText = (el) => (el && el.firstChild && el.firstChild.nodeType === Node.TEXT_NODE
+    ? englishOf(el.firstChild).trim() : '');
+  const isLogName = (el) =>
+    (el.tagName === 'SPAN' && el.parentElement && el.parentElement.tagName === 'P' &&
+      firstText(el.parentElement) === 'Character:' && el.textContent.trim() !== 'GM character' &&
+      el.textContent.trim() !== 'Personaje GM') ||
+    (el.tagName === 'DD' && !!el.previousElementSibling && el.previousElementSibling.tagName === 'DT' &&
+      /^GM$/.test(el.previousElementSibling.textContent.trim()));
+
   const isPlayerText = (el) =>
-    isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isNewsPost(el) || isProfileLink(el);
+    isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isNewsPost(el) ||
+    isProfileLink(el) || isLogName(el);
 
   function shouldSkip(node) {
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
