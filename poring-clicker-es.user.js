@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.23.2
+// @version      1.23.3
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -207,6 +207,7 @@
     'Teal': 'Turquesa',
     'Frost': 'Escarcha',
     'Void': 'Vacío',
+    'Empty': 'Vacío',
     'Illusion': 'Ilusión',
 
     // Equipment
@@ -328,8 +329,29 @@
     'PvP Auto Arena': 'Arena PvP automática',
     'Pet Arena': 'Arena de mascotas',
     'Dungeon Expeditions': 'Expediciones a mazmorras',
+    'Dungeon': 'Mazmorra',
+    'Dungeon Unlocked': 'Mazmorra desbloqueada',
+    'Send pets on expeditions for loot!': '¡Envía mascotas de expedición a por botín!',
+    'Send pets on expeditions simultaneously.': 'Envía mascotas de expedición a la vez.',
+    'Pet EXP': 'EXP de mascota',
+    'View >': 'Ver >',
+    'Prontera Culvert': 'Alcantarillas de Prontera',
+    'Orc Dungeon': 'Mazmorra Orca',
+    'Endless Tower': 'Torre sin fin',
+    'Sewer Survivor': 'Superviviente de las cloacas',
+    'Active Expeditions': 'Expediciones activas',
+    'Depart': 'Partir',
+    'Rewards:': 'Recompensas:',
+    'Power:': 'Poder:',
+    'Buff:': 'Mejora:',
+    'm)': 'm)',
+    'Dungeon Token': 'Ficha de mazmorra',
+    'Red Potion': 'Poción roja',
+    'Orange Potion': 'Poción naranja',
     'Zone Events': 'Eventos de zona',
     'Monster Invasion': 'Invasión de monstruos',
+    'Treasure Hunter': 'Cazatesoros',
+    'Element Storm': 'Tormenta elemental',
     'Mob respawn time halved': 'Los monstruos reaparecen el doble de rápido',
     'Claim': 'Reclamar',
     'Almost there!': '¡Ya casi lo tienes!',
@@ -1778,6 +1800,13 @@
       const b = translateCore(bonus);
       return n == null || b == null ? null : `${n}: ${b}`;
     }],
+    // Expeditions: "10m | Power: 100", "Select party (1-3 pets):"
+    [/^Select party \(([\d.,]+)-([\d.,]+) pets\):$/i, 'Elige el grupo ($1-$2 mascotas):'],
+    [/^(\S+) \| Power: ([\d.,]+)$/i, '$1 | Poder: $2'],
+    // Zone events: "2x zeny from all kills", "+50% damage to all mobs"
+    [/^\+([\d.,]+)% damage to all mobs$/i, '+$1% de daño a todos los monstruos'],
+    [/^([\d.,]+)x (zeny|EXP) from all kills$/i, (_, n, what) =>
+      `${what.toLowerCase() === 'exp' ? 'EXP' : 'Zeny'} x${n} en todas las bajas`],
     // Stat bonuses: "+5% Crit", "+20 DPS", "-15% purchase costs"
     [/^([+\-][\d.,]+%?) (.+?)( \([\d.,]+x\))?$/, (_, n, term, times = '') => {
       const t = BONUS[term.toLowerCase()];
@@ -1801,6 +1830,8 @@
   const ATTRIBUTES = ['title', 'placeholder', 'aria-label', 'alt'];
   // Numbers with units or suffixes: "1.22T", "2.5x", "(2.5x)", "377K/1.0M", "3.0Kz"
   const NUMERIC = /^\(?[+\-]?[\d.,]+[kKMBT]?(?:\/[\d.,]+[kKMBT]?)?\s*(?:x|z|%|\/s|s)?\)?$/;
+  // Countdowns and durations: "9m 57s", "1h 30m", "10m" (the same in Spanish)
+  const DURATION = /^\(?(?:\d+\s*[dhms]\s*)+\)?$/;
   const MAX_TRACKED = 5000;
   const DICTIONARY_VALUES = new Set(Object.values(DICTIONARY));
   const known = new Set(DICTIONARY_VALUES); // Spanish output, never re-translated
@@ -1927,7 +1958,7 @@
     if (ignoredNames.has(trimmed)) return null;
     // Damage pop-ups ("1230!") get the Spanish opening mark
     if (/^[\d.,]+[kKMB]?!$/.test(trimmed)) return original.replace(trimmed, () => '¡' + trimmed);
-    if (!trimmed || !/[A-Za-z]/.test(trimmed) || NUMERIC.test(trimmed) || known.has(trimmed)) {
+    if (!trimmed || !/[A-Za-z]/.test(trimmed) || NUMERIC.test(trimmed) || DURATION.test(trimmed) || known.has(trimmed)) {
       return null;
     }
     const out = translateCore(trimmed);
