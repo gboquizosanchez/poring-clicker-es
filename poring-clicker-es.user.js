@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.21.1
+// @version      1.21.2
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -959,6 +959,9 @@
     'Server Transparency': 'Transparencia del servidor',
     'Card drops, GM commands and the server economy.': 'Cartas conseguidas, comandos de GM y economía del servidor.',
     'Recent Card Drops': 'Cartas conseguidas recientemente',
+    'Card Drops': 'Cartas conseguidas',
+    'Monster': 'Monstruo',
+    'Time': 'Hora',
     'The latest cards found by players.': 'Las últimas cartas encontradas por los jugadores.',
     'found': 'encontró',
     'from': 'de',
@@ -1015,6 +1018,10 @@
     'Need help? Open a ticket and we\'ll get back to you.': '¿Necesitas ayuda? Abre un ticket y te responderemos.',
     'New Ticket': 'Nuevo ticket',
     'No tickets yet.': 'Aún no tienes tickets.',
+    'Create Ticket': 'Crear ticket',
+    'Subject': 'Asunto',
+    'Message': 'Mensaje',
+    'Submit': 'Enviar',
 
     // GM command log (/transparency/gm-log)
     'Breadcrumb': 'Ruta de navegación',
@@ -1023,6 +1030,11 @@
     'Progression': 'Progresión',
     'Bans & jails': 'Baneos y encarcelamientos',
     'Refresh': 'Actualizar',
+    'Refreshing…': 'Actualizando…',
+    'Refreshing...': 'Actualizando...',
+    'Entries': 'Entradas',
+    'No entries in this category': 'No hay entradas en esta categoría',
+    'View all entries': 'Ver todas las entradas',
     'Newest first': 'Más recientes primero',
     'UTC': 'UTC',
     'Account ban requested': 'Baneo de cuenta solicitado',
@@ -1486,7 +1498,9 @@
       return `${day.padStart(2, '0')}/${String(mm).padStart(2, '0')}/${year}`;
     }],
     [/^(·\s*)?\d{1,2}:\d{2} UTC$/, (m) => m],
-    [/^[a-z]{2,}_[a-z0-9_-]+$/, (m) => m], // map codes: gef_fild01, new_1-3
+    [/^[a-z]+_[a-z0-9_-]+$|^[a-z]+\d+$/, (m) => m], // map codes: gef_fild01, c_tower3, anthell01
+    [/^The last ([\d.,]+) cards found on the server, newest first\.$/i,
+      'Las últimas $1 cartas encontradas en el servidor, de la más reciente a la más antigua.'],
     [/^Net zeny flow \((.+)\)$/i, 'Flujo neto de zeny ($1)'],
     [/^Player trades \((.+)\)$/i, 'Intercambios entre jugadores ($1)'],
     [/^Vending sales \((.+)\)$/i, 'Ventas en puestos ($1)'],
@@ -1883,8 +1897,10 @@
     );
 
   // Links to a player's, character's or guild's page (transparency, rankings…)
+  // Also links to a monster in the database: monster names keep their RO name
   const isProfileLink = (el) =>
-    el.tagName === 'A' && /\/(players?|characters?|chars?|guilds?)\//i.test(el.getAttribute('href') || '');
+    el.tagName === 'A' &&
+    /\/(players?|characters?|chars?|guilds?)\/|^\/database\/mobs\//i.test(el.getAttribute('href') || '');
 
   // GM log: "Character: <span>Name</span>" and "<dt>GM</dt><dd>Name</dd>".
   // "GM character" is a label, not a name, so it is still translated.
