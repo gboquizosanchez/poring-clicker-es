@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.13.2
+// @version      1.14.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -849,6 +849,10 @@
     'Loading inventory...': 'Cargando inventario...',
     'No items found.': 'No se han encontrado objetos.',
     'Clear (': 'Limpiar (',
+    'Gift Box': 'Caja de regalo',
+    // Pieces of "+1 DPS (60s)" when the game splits it oddly: nothing to translate
+    'DPS (': 'DPS (',
+    's)': 's)',
     'Baphomet': 'Baphomet',
     'Glast Heim': 'Glast Heim',
     'Leaving...': 'Saliendo...',
@@ -1477,8 +1481,18 @@
     return null;
   }
 
+  // Names (your nick, friends…) that must never be translated or listed.
+  // Kept in the browser, not in the script, so updates don't wipe them:
+  // edit them with Alt+Shift+N.
+  const IGNORE_KEY = 'poring-es:ignored-names';
+  const loadIgnored = () => {
+    try { return new Set(JSON.parse(localStorage.getItem(IGNORE_KEY) || '[]')); } catch (e) { return new Set(); }
+  };
+  let ignoredNames = loadIgnored();
+
   function translateText(original) {
     const trimmed = original.trim();
+    if (ignoredNames.has(trimmed)) return null;
     // Damage pop-ups ("1230!") get the Spanish opening mark
     if (/^[\d.,]+[kKMB]?!$/.test(trimmed)) return original.replace(trimmed, () => '¡' + trimmed);
     if (!trimmed || !/[A-Za-z]/.test(trimmed) || NUMERIC.test(trimmed) || known.has(trimmed)) {
@@ -1819,5 +1833,21 @@
     );
   });
 
-  console.log('[Poring Clicker ES] Translator active. Alt+Shift+U copies untranslated text, or run untranslated() in the console.');
+  // 4. Alt+Shift+N: names to leave alone (your nick, friends…), comma-separated
+  document.addEventListener('keydown', (e) => {
+    if (!(e.altKey && e.shiftKey && e.code === 'KeyN')) return;
+    e.preventDefault();
+    const answer = prompt(
+      'Poring Clicker ES: nombres que no se traducen (tu nick, amigos…), separados por comas:',
+      [...ignoredNames].join(', ')
+    );
+    if (answer === null) return;
+    const names = answer.split(',').map((n) => n.trim()).filter(Boolean);
+    localStorage.setItem(IGNORE_KEY, JSON.stringify(names));
+    ignoredNames = new Set(names);
+    names.forEach((n) => missing.delete(n));
+    toast(`Poring Clicker ES: ${names.length} ${names.length === 1 ? 'nombre guardado' : 'nombres guardados'}`);
+  });
+
+  console.log('[Poring Clicker ES] Translator active. Alt+Shift+U copies untranslated text, Alt+Shift+N sets names to ignore.');
 })();
