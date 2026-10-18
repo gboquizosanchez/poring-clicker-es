@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.17.1
+// @version      1.18.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
 // @match        https://springro.com/account*
 // @match        https://springro.com/download*
 // @match        https://springro.com/news*
+// @match        https://springro.com/rules*
 // @homepageURL  https://github.com/gboquizosanchez/poring-clicker-es
 // @updateURL    https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js
 // @downloadURL  https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js
@@ -433,6 +434,9 @@
     'Double Attack': 'Ataque doble',
     'Loud Exclamation': 'Grito fuerte',
     'Pushcart': 'Carro',
+    'Ice Wall': 'Muro de hielo',
+    'Safety Wall': 'Muro de seguridad',
+    'Land Protector': 'Protector de tierra',
 
     // Monsters & mobs
     'Elite mobs': 'monstruos élite',
@@ -899,6 +903,51 @@
     'Event': 'Evento',
     'Announcement': 'Anuncio',
     'Read full post': 'Leer la entrada completa',
+
+    // Rules page
+    'Server Rules': 'Normas del servidor',
+    'General Conduct': 'Conducta general',
+    'Botting & Cheating': 'Bots y trampas',
+    'Accounts': 'Cuentas',
+    'Trading & Economy': 'Comercio y economía',
+    'Gameplay': 'Juego',
+    'Chat & Naming': 'Chat y nombres',
+    'Play fair, be respectful, and have fun. Breaking these rules may result in warnings, temporary bans, or permanent bans at GM discretion.':
+      'Juega limpio, sé respetuoso y diviértete. Incumplir estas normas puede suponer avisos, baneos temporales o baneos permanentes, a criterio de los GM.',
+    'Be respectful to all players and staff.': 'Respeta a todos los jugadores y al equipo.',
+    'No harassment, hate speech, or discrimination of any kind.': 'Prohibido el acoso, el discurso de odio y cualquier tipo de discriminación.',
+    'Do not impersonate GMs or other players.': 'No te hagas pasar por GM ni por otros jugadores.',
+    'Scamming other players is strictly prohibited.': 'Está totalmente prohibido estafar a otros jugadores.',
+    'No bots, macros, auto-clickers, or automation of any kind.': 'Prohibidos los bots, las macros, los autoclics y cualquier tipo de automatización.',
+    'No third-party programs of any kind that provide unfair advantages.': 'Prohibido cualquier programa de terceros que dé ventajas injustas.',
+    'No exploiting bugs or glitches. Please report them instead and potentially get rewarded for it.':
+      'Prohibido aprovecharse de bugs o fallos. Repórtalos y podrías llevarte una recompensa.',
+    'No client modifications or gameplay-affecting GRF replacements unless approved by a GM.':
+      'Prohibido modificar el cliente o sustituir GRF que afecten al juego salvo con la aprobación de un GM.',
+    'One account per player. No account sharing.': 'Una cuenta por jugador. Prohibido compartir cuentas.',
+    'No multi-clienting. Dual-player household exception (siblings, partners): play independently - leeching or buff-botting between household accounts bans all of them.':
+      'Prohibido usar varios clientes a la vez. Excepción para dos jugadores en el mismo hogar (hermanos, parejas): jugad por separado; aprovecharse de EXP ajena o hacer de bot de mejoras entre cuentas del mismo hogar supone el baneo de todas ellas.',
+    'You are responsible for your account\'s security. Stolen items are not recoverable.':
+      'Eres responsable de la seguridad de tu cuenta. Los objetos robados no se recuperan.',
+    'GMs will never ask for your password! Anyone who does is scamming you.':
+      '¡Los GM nunca te pedirán tu contraseña! Quien lo haga te está estafando.',
+    'No real-money trading (RMT) of items, zeny, or accounts. Vectors include trades, drops, mail, and vending. Off-value trades will be traced.':
+      'Prohibido comerciar con dinero real (RMT) con objetos, zeny o cuentas, ya sea mediante intercambios, objetos tirados al suelo, correo o puestos de venta. Se rastrearán los intercambios con valores fuera de lo normal.',
+    'Vending: no false shop titles, no buy-stores below NPC sell value, no stacking on others\' vendor cells. Do unto others as you would have them do unto you.':
+      'Puestos de venta: nada de títulos engañosos, ni tiendas de compra por debajo del precio de venta al NPC, ni ponerte en la casilla de otro vendedor. Trata a los demás como quieras que te traten a ti.',
+    'No kill-stealing.': 'Prohibido robar bajas (KS).',
+    'MVPs and MiniBosses are free-for-all. No tagging, no claiming.': 'Los MVP y minijefes son de todos. No se marcan ni se reclaman.',
+    'No full-map pulling. Don\'t leave low-HP mobs sitting.': 'Prohibido arrastrar monstruos por todo el mapa. No dejes monstruos con pocos PV abandonados.',
+    'No Ice Wall, Safety Wall, Land Protector, or buff-overwriting in others\' grind spots.':
+      'Prohibido usar Muro de hielo, Muro de seguridad o Protector de tierra, o sobrescribir mejoras, en las zonas donde farmean otros.',
+    'Don\'t block town portals or exits with skills.': 'No bloquees con habilidades los portales ni las salidas de las ciudades.',
+    'Keep public chat civil and appropriate.': 'Mantén el chat público educado y adecuado.',
+    'No spam, all-caps walls, or repeated messages in public channels.': 'Prohibido el spam, los muros en mayúsculas y los mensajes repetidos en los canales públicos.',
+    'Trade messages belong in trade chat only.': 'Los mensajes de comercio, solo en el chat de comercio.',
+    'No offensive, impersonating, or unreadable character/guild names.': 'Prohibidos los nombres de personaje o de clan ofensivos, ilegibles o que suplanten a otros.',
+    'No promoting or recruiting for other servers.': 'Prohibido promocionar otros servidores o reclutar para ellos.',
+    'Rules are subject to change - check back regularly. Questions?': 'Las normas pueden cambiar: vuelve a consultarlas de vez en cuando. ¿Dudas?',
+    'Ask on Discord': 'Pregunta en Discord',
     'Choose your Linux package': 'Elige tu paquete para Linux',
     'SpringRO Linux Launcher': 'Launcher de SpringRO para Linux',
     'Portable launcher': 'Launcher portable',
@@ -1310,6 +1359,14 @@
       return `hace ${n} ${unit}`;
     }],
     [/^([\d.,]+) min read$/i, '$1 min de lectura'],
+
+    // Rules page: numbered sections and the @noks rule
+    [/^(\d+)\. (.+)$/, (_, n, title) => {
+      const t = translateCore(title);
+      return t == null ? null : `${n}. ${t}`;
+    }],
+    [/^locks a mob to you for ([\d.,]+ ?s) per hit\. Don't attack mobs others are training or chasing\.$/i,
+      'te reserva el monstruo durante $1 por golpe. No ataques a monstruos que otros estén entrenando o persiguiendo.'],
     [/^(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4})$/,
       (_, month, day, year) => {
         const mm = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
