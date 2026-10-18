@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.14.1
+// @version      1.15.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
 // @match        https://springro.com/account*
+// @match        https://springro.com/download*
 // @homepageURL  https://github.com/gboquizosanchez/poring-clicker-es
 // @updateURL    https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js
 // @downloadURL  https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js
@@ -850,6 +851,43 @@
     'No items found.': 'No se han encontrado objetos.',
     'Clear (': 'Limpiar (',
     'Gift Box': 'Caja de regalo',
+
+    // Download page
+    'Downloads': 'Descargas',
+    'Download for Windows': 'Descargar para Windows',
+    'SpringRO Full Client': 'Cliente completo de SpringRO',
+    'Full client': 'Cliente completo',
+    'Your launcher, game files, and updates. All in one place.':
+      'Tu launcher, los archivos del juego y las actualizaciones. Todo en un mismo sitio.',
+    'Quick Start': 'Inicio rápido',
+    'From download to your first login.': 'De la descarga a tu primer inicio de sesión.',
+    'Create an account': 'Crea una cuenta',
+    'Register for free and verify your email.': 'Regístrate gratis y verifica tu correo.',
+    'Install the client': 'Instala el cliente',
+    'Run the installer. Choose a folder outside': 'Ejecuta el instalador. Elige una carpeta fuera de',
+    'Launch & log in': 'Abre el juego e inicia sesión',
+    'Open the launcher, let it finish patching, then log in and play.':
+      'Abre el launcher, deja que termine de actualizarse, inicia sesión y a jugar.',
+    'Link to RA': 'Vincular con RA',
+    'Connect your RetroAchievements profile to sync achievements.':
+      'Conecta tu perfil de RetroAchievements para sincronizar los logros.',
+    'Optional': 'Opcional',
+    'Need a hand?': '¿Necesitas ayuda?',
+    'Ask us on Discord': 'Pregúntanos en Discord',
+    'Windows system requirements': 'Requisitos del sistema para Windows',
+    'Minimum': 'Mínimo',
+    'Recommended': 'Recomendado',
+    'Operating system': 'Sistema operativo',
+    'OS:': 'SO:',
+    'CPU:': 'CPU:',
+    'GPU:': 'GPU:',
+    'RAM:': 'RAM:',
+    'Storage:': 'Almacenamiento:',
+    'Network:': 'Red:',
+    'Any dedicated GPU': 'Cualquier GPU dedicada',
+    'Broadband connection': 'Conexión de banda ancha',
+    'Windows': 'Windows',
+    'Linux': 'Linux',
     // Pieces of "+1 DPS (60s)" when the game splits it oddly: nothing to translate
     'DPS (': 'DPS (',
     's)': 's)',
@@ -1232,6 +1270,13 @@
     [/^Members \((.+)\)$/i, 'Miembros ($1)'],
     [/^Characters \((.+)\)$/i, 'Personajes ($1)'],
     [/^Clear \((.+)\)$/i, 'Limpiar ($1)'],
+
+    // Download page: sizes, versions and hardware
+    [/^~?[\d.,]+ ?[GM]B$|^v[\d.]+$|^Windows [\d.]+(?: \/ [\d.]+)*$/, (m) => m],
+    [/^([\d.,]+ ?[GM]B) free space( \(SSD\))?$/i, (_, size, ssd = '') => `${size} libres${ssd}`],
+    [/^Any DirectX ([\d.]+) capable$/i, 'Cualquiera compatible con DirectX $1'],
+    [/^(.+) or better$/i, '$1 o superior'],
+    [/^(.+) or equivalent$/i, '$1 o equivalente'],
     [/^([\d.,]+) items?$/i, (_, n) => `${n} ${n === '1' ? 'objeto' : 'objetos'}`],
     [/^([\d.,]+)[–-]([\d.,]+) characters: English letters, numbers or symbols\. No spaces, other whitespace or double quotes\.$/i,
       '$1–$2 caracteres: letras del alfabeto inglés, números o símbolos. Sin espacios de ningún tipo ni comillas dobles.'],
