@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.11.3
+// @version      1.12.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -825,7 +825,6 @@
     'Goblin': 'Goblin',
     'Nightmare': 'Nightmare',
     'Marc': 'Marc',
-    'Abys': 'Abys', // seen on leaderboards; player, guild or monster, it stays the same
     'EXP': 'EXP',
     'Guild': 'Clan',
     'Members': 'Miembros',
@@ -1217,6 +1216,7 @@
     [/^Accessory ([\d.,]+) Detail$/i, 'Detalle del accesorio $1'],
     [/^This will cost (.+)$/i, 'Esto costará $1'],
     [/^P([\d.,]+) Lv\.\s*([\d.,]+)$/, 'P$1 Nv. $2'],
+    [/^P[\d.,]+$/, (m) => m], // prestige badge "P200"
     // Background video titles stay as they are
     [/^.+ \| Ragnarok Online .+ Tour$/, (m) => m],
     [/^This run: (.+)$/i, 'En esta partida: $1'],
@@ -1447,7 +1447,12 @@
     return !!next && next.tagName === 'BUTTON' && INVITE_TITLES.has(next.getAttribute('title'));
   };
 
-  const isPlayerText = (el) => isPlayerChatRow(el) || isPartyName(el);
+  // Player and guild names in the leaderboard: the name right after the rank badge
+  const isLeaderboardName = (el) =>
+    el.matches('.flex-1.truncate') &&
+    !!el.previousElementSibling && el.previousElementSibling.matches('.w-5.h-5');
+
+  const isPlayerText = (el) => isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el);
 
   function shouldSkip(node) {
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
