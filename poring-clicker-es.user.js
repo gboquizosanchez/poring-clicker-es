@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.12
+// @version      1.24.13
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -608,6 +608,9 @@
     'Back to Field': 'Volver al campo',
     'Venom Strike': 'Golpe venenoso',
     'Angelus': 'Angelus',
+    'Stun': 'Aturdir',
+    'Stunned': 'Aturdido',
+    'STN': 'ATD',
     '💡 Almost There': '💡 Ya casi',
     "Can't have an empty pet team - add another pet first": 'El equipo no puede quedar vacío: añade antes otra mascota',
     'Shadow Pair': 'Dúo de sombra',
@@ -2257,6 +2260,9 @@
     [/^Win ([\d.,]+) PvP fights in a row$/i, 'Gana $1 combates PvP seguidos'],
     [/^Win ([\d.,]+) PvP fights$/i, 'Gana $1 combates PvP'],
     [/^Rating: ([\d.,]+)$/i, 'Puntuación: $1'],
+    [/^\+([\d.,]+)% ATK to both$/i, '+$1% ATQ para ambas'],
+    [/^Two (\w+) pets boost each other$/i, (_, elem) => `Dos mascotas de ${tr(elem.toLowerCase())} se refuerzan entre sí`],
+    [/^(.+?) is stunned and skips their turn$/, (_, unit) => `${arenaUnits(unit)} está aturdido y pierde el turno`],
     [/^Add an? (\w+) pet$/i, (_, elem) => `Añade una mascota de ${tr(elem.toLowerCase())}`],
     [/^(\w+) Pair$/, (_, elem) => {
       const t = translateCore(elem.toLowerCase());
@@ -2515,10 +2521,10 @@
     return /(^|\s)vs$/.test(text) ||
       (!!el.previousElementSibling && el.previousElementSibling.textContent.trim() === 'vs');
   };
-  // PvP match screen: the opponent's name, followed by "Rating: 1098"
+  // PvP screens: the opponent's name, followed by "Rating: 1098" or "(Opponent)"
   const isRatedName = (el) =>
     el.tagName === 'SPAN' && !!el.nextElementSibling &&
-    /^(Rating|Puntuación):/.test(el.nextElementSibling.textContent.trim());
+    /^((Rating|Puntuación):|\((Opponent|Rival)\)$)/.test(el.nextElementSibling.textContent.trim());
 
   // WoE: the guild holding each castle (right column of the castle button) and
   // the guild after "vs" in the battle log ("Geffen Tower vs Faenyx")
