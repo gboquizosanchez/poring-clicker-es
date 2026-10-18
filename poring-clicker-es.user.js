@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.23.4
+// @version      1.23.5
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -231,6 +231,12 @@
     'Success Rate:': 'Prob. de éxito:',
     'Cost:': 'Coste:',
     'Enhance +': 'Mejorar +',
+    'Enchant': 'Encantar',
+    'Current Enchantment': 'Encantamiento actual',
+    'Current:': 'Actual:',
+    'Enchantment Result': 'Resultado del encantamiento',
+    'Keep': 'Conservar',
+    'Roll a random bonus. Keep or discard the result.': 'Obtén una bonificación al azar. Quédatela o descártala.',
     'Enchanting adds a random bonus stat to your equipment':
       'Encantar añade una bonificación aleatoria a tu equipo',
     'Farm boss shards to enhance!': '¡Consigue fragmentos de jefe para mejorar!',
@@ -326,6 +332,102 @@
     'Lucky Charm': 'Amuleto de la suerte',
     'Kafra Lucky Charm': 'Amuleto de la suerte Kafra',
     'Guilds & MVP Raids': 'Clanes e incursiones MVP',
+
+    // Guilds, War of Emperium & Pet Arena shop
+    '↻ Refresh': '↻ Actualizar',
+    'Back': 'Volver',
+    'Browse': 'Explorar',
+    'Page': 'Página',
+    'Notice': 'Aviso',
+    'No notice set.': 'No hay ningún aviso.',
+    'Leave Guild': 'Abandonar clan',
+    'Guild only': 'Solo clan',
+    'Guildmate': 'Compañero de clan',
+    'leader': 'líder',
+    'member': 'miembro',
+    'Guild Bonuses': 'Bonificaciones de clan',
+    'guild bonuses': 'bonificaciones de clan',
+    'Guild chat & MVP raid access': 'Chat de clan y acceso a incursiones MVP',
+    'Guild name — press Enter to search': 'Nombre del clan; pulsa Intro para buscar',
+    'Search guilds by name': 'Buscar clanes por nombre',
+    'Message your guild...': 'Escribe a tu clan...',
+    'No guilds found.': 'No se han encontrado clanes.',
+    'No guilds match that name. Try another search.': 'Ningún clan coincide con ese nombre. Prueba otra búsqueda.',
+    'Create or join a guild': 'Crea un clan o únete a uno',
+    'Create or join a guild with other players!': '¡Crea un clan o únete a uno con otros jugadores!',
+    'Join a guild to compete in': 'Únete a un clan para competir en las',
+    'MVP Raids': 'Incursiones MVP',
+    'War of Emperium': 'Guerra del Emperium',
+    'WoE OPEN': 'WoE ABIERTA',
+    'WoE CLOSED': 'WoE CERRADA',
+    'Castles': 'Castillos',
+    'Battle Log': 'Registro de combates',
+    'No battle history yet.': 'Aún no hay historial de combates.',
+    'Loading castles...': 'Cargando castillos...',
+    'How sieges work': 'Cómo funcionan los asedios',
+    'Siege': 'Asedio',
+    'Join Attack': 'Unirse al ataque',
+    'vs': 'vs',
+    'Castle breather': 'Descanso del castillo',
+    'defender row': 'fila de defensores',
+    'defender rows': 'filas de defensores',
+    "Castle bonuses of the same type don't stack.": 'Las bonificaciones de castillos del mismo tipo no se acumulan.',
+    'Every teammate earns attack credit and rewards. Capture credit and win tokens need at least one defender row beaten, so taking an empty castle pays like a loss.':
+      'Cada compañero recibe crédito de ataque y recompensas. El crédito de captura y las fichas de victoria exigen vencer al menos una fila de defensores, así que tomar un castillo vacío se paga como una derrota.',
+    "Joining queues you for one attack, even while you're offline. Your signup stays until you fight or withdraw; prestiging withdraws pets you pledged. Extra members wait for the next teams automatically.":
+      'Unirte te pone en cola para un ataque, aunque estés desconectado. Tu inscripción se mantiene hasta que luches o te retires; hacer prestigio retira las mascotas que comprometiste. Los miembros de sobra esperan automáticamente a los siguientes equipos.',
+    'Prontera Castle': 'Castillo de Prontera',
+    'Geffen Tower': 'Torre de Geffen',
+    'Payon Fortress': 'Fuerte de Payon',
+    'Morroc Bastion': 'Bastión de Morroc',
+    'Aldebaran Citadel': 'Ciudadela de Aldebaran',
+    'Izlude Stronghold': 'Fortaleza de Izlude',
+    'The jewel of the kingdom. High walls bolster defenders.': 'La joya del reino. Sus altas murallas refuerzan a los defensores.',
+    'An arcane stronghold crackling with magical energy.': 'Una fortaleza arcana que crepita de energía mágica.',
+    'Hidden in the forest, nature shields its garrison.': 'Oculta en el bosque, la naturaleza protege a su guarnición.',
+    "A desert bastion guarding the kingdom's merchant routes.": 'Un bastión en el desierto que protege las rutas comerciales del reino.',
+    'A merchant hub. Controlling it yields rich trade rewards.': 'Un centro comercial. Controlarlo da ricas recompensas comerciales.',
+    'An island stronghold where guilds compete for arena supplies.': 'Una fortaleza en una isla donde los clanes compiten por suministros de la arena.',
+    'Pet Arena Shop': 'Tienda de la Arena de mascotas',
+    'Battle your pets through Pet Arena stages!': '¡Haz combatir a tus mascotas en las fases de la Arena de mascotas!',
+    'Energy': 'Energía',
+    'Coins': 'Monedas',
+    'coins': 'monedas',
+    'Bronze': 'Bronce',
+    'Silver': 'Plata',
+    'Gold': 'Oro',
+    'Platinum': 'Platino',
+    'Diamond': 'Diamante',
+    "Champion's Crown": 'Corona de campeón',
+    'Consumable Pack': 'Lote de consumibles',
+    'Pet EXP Crystal': 'Cristal de EXP de mascota',
+    'Rune Piece': 'Fragmento de runa',
+    'Kafra Storage upgrade material': 'Material de mejora del Almacén Kafra',
+    'Token Exchange': 'Intercambio de fichas',
+    'Firecracker': 'Petardo',
+    'Speed Potion': 'Poción de velocidad',
+    'Slow Potion': 'Poción de lentitud',
+    'Skill Reset Scroll': 'Pergamino de reinicio de habilidades',
+    'Stat Reset Scroll': 'Pergamino de reinicio de atributos',
+    'Reset all skill points': 'Reinicia todos los puntos de habilidad',
+    'Reset all stat points': 'Reinicia todos los puntos de atributo',
+    'Open for a random card': 'Ábrelo para obtener una carta al azar',
+    'Pet evolution material': 'Material de evolución de mascotas',
+
+    // Guild & WoE achievements
+    'Growing Guild': 'Clan en crecimiento',
+    'Established Guild': 'Clan consolidado',
+    'Guild Master': 'Maestro del clan',
+    'Castle Conqueror': 'Conquistador de castillos',
+    'Capture your first WoE castle': 'Captura tu primer castillo de WoE',
+    'Warlord': 'Señor de la guerra',
+    'Emperium Breaker': 'Destructor del Emperium',
+    'Castle Defender': 'Defensor del castillo',
+    'Set your first WoE defense row': 'Coloca tu primera fila de defensa de WoE',
+    'First Siege': 'Primer asedio',
+    'Participate in your first WoE castle attack': 'Participa en tu primer ataque a un castillo de WoE',
+    'Siege Veteran': 'Veterano de asedios',
+    'Siege Commander': 'Comandante de asedios',
     'PvP Auto Arena': 'Arena PvP automática',
     'Pet Arena': 'Arena de mascotas',
     'Dungeon Expeditions': 'Expediciones a mazmorras',
@@ -340,6 +442,9 @@
     'Endless Tower': 'Torre sin fin',
     'Sewer Survivor': 'Superviviente de las cloacas',
     'Active Expeditions': 'Expediciones activas',
+    'Recent Expeditions': 'Expediciones recientes',
+    'Tokens': 'Fichas',
+    'Collect': 'Recoger',
     'Depart': 'Partir',
     'Rewards:': 'Recompensas:',
     'Power:': 'Poder:',
@@ -1409,8 +1514,13 @@
     'exp/zeny': 'EXP/Zeny',
     'drop': 'botín',
     'drop rate': 'prob. de botín',
+    'exp': 'EXP',
+    'refine success': 'éxito de refinado',
     'drops': 'botín',
     'pet dps': 'DPS de mascotas',
+    'pet arena coins': 'monedas de la Arena de mascotas',
+    'guild exp': 'EXP de clan',
+    'zeny drop': 'zeny obtenido',
     'pet': 'mascotas',
     'poison': 'veneno',
     'purchase costs': 'coste de las compras',
@@ -1427,6 +1537,11 @@
     'poison dot': 'daño de veneno continuo',
   };
 
+  const ENCHANT_STATS = {
+    'ATK%': 'ATQ',
+    'Boss Dmg%': 'daño a jefes',
+    'Dbl Click%': 'doble clic',
+  };
   const ARENA_TIERS = { Bronze: 'Bronce', Silver: 'Plata', Gold: 'Oro', Platinum: 'Platino', Diamond: 'Diamante' };
 
   const BANNER = { HP: 'PV', Drops: 'Botín', 'Guaranteed Drop': 'Botín garantizado' };
@@ -1758,6 +1873,11 @@
     [/^Use: (.+?) \((.+)\)$/i, (_, x, d) => `Uso: ${tr(x)} (${d})`],
     [/^Pet Food: (.+?) \((.+)\)$/i, (_, x, d) => `Comida de mascota: ${tr(x)} (${d})`],
     [/^Active: (.+)$/i, (_, x) => 'Activo: ' + tr(x)],
+    // Enchantment stats: "+Boss Dmg% 2%" → "+2% daño a jefes"
+    [/^\+(.+?) ([\d.,]+%?)$/, (_, stat, n) => {
+      const t = ENCHANT_STATS[stat];
+      return t ? `+${n} ${t}` : null;
+    }],
     [/^Enchant: (.+)$/i, (_, item) => `Encantar: ${tr(item)}`],
     [/^Enhance: (.+)$/i, (_, item) => `Mejorar: ${tr(item)}`],
     [/^(.+) Shard$/, 'Fragmento de $1'],
@@ -1810,7 +1930,46 @@
       const b = translateCore(bonus);
       return n == null || b == null ? null : `${n}: ${b}`;
     }],
-    // Expeditions: "10m | Power: 100", "Select party (1-3 pets):"
+    // Expedition loot: "Red Potionx7, Dungeon Tokenx1"
+    [/^[^,]+x[\d.,]+(?:, [^,]+x[\d.,]+)*$/, (text) => {
+      const parts = text.split(', ').map((part) => {
+        const [, item, n] = part.match(/^(.+)x([\d.,]+)$/);
+        const t = translateCore(item);
+        return t == null ? null : `${t} x${n}`;
+      });
+      return parts.includes(null) ? null : parts.join(', ');
+    }],
+    // Guilds & War of Emperium
+    [/^! ([\d.,]+) MVPs spawn every ([\d.,]+) hours - guilds race for top damage\. Earn boss cards, zeny, and guild EXP!$/i,
+      '. Cada $2 horas aparecen $1 MVP y los clanes compiten por hacer más daño. ¡Consigue cartas de jefe, zeny y EXP de clan!'],
+    [/^Join ([\d.,]+) guildmates to siege castles for$/i, 'Únete a $1 compañeros de clan para asediar castillos y conseguir'],
+    [/^\+([\d.,]+)% damage for all members$/i, '+$1% de daño para todos los miembros'],
+    [/^(.+) \(shared cap with (.+)\)$/i, (_, bonus, castle) => {
+      const t = translateCore(bonus);
+      return t == null ? null : `${t} (límite compartido con ${tr(castle)})`;
+    }],
+    [/^Pets that die attacking revive after ([\d.,]+) (hour|minute)s?\.$/i, (_, n, unit) =>
+      `Las mascotas que mueren atacando reviven tras ${n} ${unit.toLowerCase() === 'hour' ? 'hora' : 'minuto'}${n === '1' ? '' : 's'}.`],
+    [/^Pick ([\d.,]+) pets? and press Join Attack\. A siege needs ([\d.,]+) pets from ([\d.,]+) different guildmates; it never starts with fewer\.$/i,
+      (_, n, pets, mates) => `Elige ${n} ${n === '1' ? 'mascota' : 'mascotas'} y pulsa Unirse al ataque. Un asedio necesita ${pets} mascotas de ${mates} compañeros de clan distintos; nunca empieza con menos.`],
+    [/^Teams enter the attack queue when their third guildmate joins, in that order\. If a team drops below ([\d.,]+), it rejoins at the back when full again\. Your guild and each teammate can attack a castle once every ([\d.,]+) minutes; castles rest ([\d.,]+) minutes after each siege\.$/i,
+      'Los equipos entran en la cola de ataque cuando se une su tercer compañero de clan, por orden. Si un equipo baja de $1, vuelve al final de la cola cuando vuelve a estar completo. Tu clan y cada compañero pueden atacar un castillo una vez cada $2 minutos; los castillos descansan $3 minutos tras cada asedio.'],
+    [/^Be in a level ([\d.,]+)\+ guild$/i, 'Pertenece a un clan de nivel $1+'],
+    [/^Be in a max level guild \(Lv ([\d.,]+)\)$/i, 'Pertenece a un clan de nivel máximo (Nv. $1)'],
+    [/^Capture ([\d.,]+) WoE castles$/i, 'Captura $1 castillos de WoE'],
+    [/^Participate in ([\d.,]+) WoE castle attacks$/i, 'Participa en $1 ataques a castillos de WoE'],
+    // Token Exchange: "+20% EXP for 120s"
+    [/^([+\-][\d.,]+%?) (.+) for ([\d.,]+) ?s$/i, (_, n, term, secs) => {
+      const t = BONUS[term.toLowerCase()];
+      return t ? `${n} ${t} durante ${secs} s` : null;
+    }],
+    // Pet Arena shop
+    [/^\+([\d.,]+)% Dmg, Crit, Zeny, Wpn ATK, PvP\/WoE HP & \+([\d.,]+) PvP\/WoE Speed$/i,
+      '+$1% daño, crítico, zeny, ATQ de arma y PV en PvP/WoE, y +$2 de velocidad en PvP/WoE'],
+    [/^([\d.,]+) random consumables$/i, '$1 consumibles al azar'],
+    [/^Grant ([\d.,]+) feeds of EXP to a pet$/i, 'Da a una mascota la EXP de $1 comidas'],
+    [/^Permanent \+([\d.,]+)% damage \(survives prestige\)$/i, '+$1% de daño permanente (se conserva al hacer prestigio)'],
+    // Expeditions: "10m | Power: 100\", "Select party (1-3 pets):"
     [/^Select party \(([\d.,]+)-([\d.,]+) pets\):$/i, 'Elige el grupo ($1-$2 mascotas):'],
     [/^(\S+) \| Power: ([\d.,]+)$/i, '$1 | Poder: $2'],
     // Zone events: "2x zeny from all kills", "+50% damage to all mobs"
@@ -1842,6 +2001,8 @@
   const NUMERIC = /^\(?[+\-]?[\d.,]+[kKMBT]?(?:\/[\d.,]+[kKMBT]?)?\s*(?:x|z|%|\/s|s)?\)?$/;
   // Countdowns and durations: "9m 57s", "1h 30m", "10m" (the same in Spanish)
   const DURATION = /^\(?(?:\d+\s*[dhms]\s*)+\)?$/;
+  // Enchantment grade tags: "[C]", "[R]"…
+  const GRADE_TAG = /^\[[A-Z]\]$/;
   const MAX_TRACKED = 5000;
   const DICTIONARY_VALUES = new Set(Object.values(DICTIONARY));
   const known = new Set(DICTIONARY_VALUES); // Spanish output, never re-translated
@@ -1968,7 +2129,7 @@
     if (ignoredNames.has(trimmed)) return null;
     // Damage pop-ups ("1230!") get the Spanish opening mark
     if (/^[\d.,]+[kKMB]?!$/.test(trimmed)) return original.replace(trimmed, () => '¡' + trimmed);
-    if (!trimmed || !/[A-Za-z]/.test(trimmed) || NUMERIC.test(trimmed) || DURATION.test(trimmed) || known.has(trimmed)) {
+    if (!trimmed || !/[A-Za-z]/.test(trimmed) || NUMERIC.test(trimmed) || DURATION.test(trimmed) || GRADE_TAG.test(trimmed) || known.has(trimmed)) {
       return null;
     }
     const out = translateCore(trimmed);
