@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.9.7
+// @version      1.9.8
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -714,7 +714,7 @@
     'Faster again! Roll the A-S-D stairs': '¡Aún más rápido! Haz la escalera A-S-D',
     'A S D or ← ↓ →': 'A S D o ← ↓ →',
     'hold long notes': 'mantén las notas largas',
-    'HOLD': 'MANTÉN',
+    'HOLD': 'FIJA', // only 4 letters fit
     'Keep holding for bonus…': 'Mantén pulsado para el extra…',
     'Perfect': 'Perfecto',
     'Good': 'Bien',
@@ -762,6 +762,22 @@
     'Hydra': 'Hydra',
     'Obeaune': 'Obeaune',
     'Vadon': 'Vadon',
+    'Eddga': 'Eddga',
+    'Orc Hero': 'Orc Hero',
+    'Shiny': 'Shiny',
+
+    // MVP encounter: start, banners and boss lines
+    'Start Encounter': 'Empezar combate',
+    'Starting...': 'Empezando...',
+    'Go!': '¡Ya!',
+    'Full Combo!': '¡Combo completo!',
+    'Copy invite link': 'Copiar enlace de invitación',
+    'Orc Village': 'Aldea Orca',
+    'Orc Hero Bellows A War Cry': 'Orc Hero lanza un grito de guerra',
+    'The Tyrant Is Felled': 'El tirano ha caído',
+    'The Tiger Falls Silent': 'El tigre enmudece',
+    'Flawless Victory': 'Victoria impecable',
+    'The boss never stood a chance against your rhythm.': 'El jefe no tenía nada que hacer contra tu ritmo.',
     'Collect Rewards': 'Recoger recompensas',
     'Defeated': 'Derrotado',
     'Ready:': 'Listos:',
@@ -1069,6 +1085,13 @@
     [/^ATK: ([\d.,]+) base \+ ([\d.,]+) refine\s*= ?([\d.,]+)$/i, 'ATQ: $1 base + $2 refinado = $3'],
     [/^Equipment Drops \((.+)\)$/i, 'Botín de equipo ($1)'],
     [/^Members \((.+)\)$/i, 'Miembros ($1)'],
+    [/^(.+): waiting$/, '$1: esperando'],
+    [/^Starts in (.+)$/i, 'Empieza en $1'],
+    [/^(.+) bonus active$/i, (_, cls) => {
+      const t = translateCore(cls);
+      return t == null ? null : `Bonificación de ${t.toLowerCase()} activa`;
+    }],
+    [/^(━\s*)MVP RAID(\s*━)$/, '$1INCURSIÓN MVP$2'],
     // Completed achievement: "Evolve any pet to Tier 2 - Claim 3000z reward!"
     [/^(.+) - Claim (.+?) reward!$/i, (_, goal, amount) => `${tr(goal)} - ¡Reclama ${amount} de recompensa!`],
     [/^([\d.,]+\/[\d.,]+) kills to discover$/i, '$1 bajas para descubrirlo'],
@@ -1192,21 +1215,29 @@
   // ---------------------------------------------------------------------------
   // 3. TRANSLATION ENGINE
   // ---------------------------------------------------------------------------
+  const INLINE_TAGS = new Set(['SPAN', 'B', 'STRONG', 'I', 'EM', 'SMALL', 'KBD', 'MARK', 'U', 'SUB', 'SUP', 'A', 'LABEL']);
   const SKIP_TAGS = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEXTAREA', 'INPUT', 'CODE', 'PRE']);
   const ATTRIBUTES = ['title', 'placeholder', 'aria-label', 'alt'];
   const NUMERIC = /^[+\-]?[\d.,]+[kKMB]?(?:\/[\d.,]+[kKMB]?)?\s*(?:x|z|%|\/s|s)?\)?$/;
   const MAX_TRACKED = 5000;
-  const known = new Set(Object.values(DICTIONARY)); // Spanish output, never re-translated
+  const DICTIONARY_VALUES = new Set(Object.values(DICTIONARY));
+  const known = new Set(DICTIONARY_VALUES); // Spanish output, never re-translated
   const missing = new Set();
 
   function remember(set, value) {
     if (set.size >= MAX_TRACKED) {
       if (set !== known) return;
-      // Live counters keep producing new Spanish text: start over instead of
-      // silently forgetting it (which made it show up in untranslated())
-      known.clear();
-      Object.values(DICTIONARY).forEach((v) => known.add(v));
+      // Live counters keep producing new Spanish text: drop the oldest outputs
+      // (keeping the dictionary) instead of forgetting the newest ones
+      let drop = MAX_TRACKED / 4;
+      for (const v of known) {
+        if (drop <= 0) break;
+        if (DICTIONARY_VALUES.has(v)) continue;
+        known.delete(v);
+        drop--;
+      }
     }
+    set.delete(value); // re-insert so recently seen text counts as newest
     set.add(value);
   }
 
@@ -1312,16 +1343,19 @@
       } else if (kid.nodeType === Node.ELEMENT_NODE && !kid.textContent.trim()) {
         continue; // icons, images, <br>...
       } else if (kid.nodeType === Node.ELEMENT_NODE && kid.childElementCount === 0) {
-        // Simple tag around a label or number: <b>Sell:</b>, <span>2</span>
+        // Simple inline tag around a label or number: <b>Sell:</b>, <span>2</span>.
+        // Block elements (divs, buttons…) are separate texts, never one sentence.
         if (kid.childNodes.length === 0) continue;
-        if (kid.childNodes.length > 1 || SKIP_TAGS.has(kid.tagName)) return;
+        if (kid.childNodes.length > 1 || !INLINE_TAGS.has(kid.tagName)) return;
         const text = englishOf(kid.firstChild);
-        units.push({ node: kid.firstChild, text, dynamic: isDynamic(text) });
+        units.push({ node: kid.firstChild, text, dynamic: isDynamic(text), inTag: true });
       } else if (kid.nodeType !== Node.COMMENT_NODE) {
         return; // nested markup with words: leave it to the per-node pass
       }
     }
-    if (units.filter((u) => u.node && !u.dynamic).length === 0) return;
+    if (units.filter((u) => !u.dynamic).length === 0) return;
+    // A sentence needs some loose text of its own; only tags means separate labels
+    if (!units.some((u) => !u.inTag && u.text.trim())) return;
 
     const joined = units.map((u) => u.text).join('');
     const trimmed = joined.trim();
@@ -1375,12 +1409,21 @@
     if (translated !== null && translated !== node.nodeValue) setText(node, translated);
   }
 
+  // Attribute values we wrote, so they aren't translated (or listed) again
+  const attrsSet = new WeakMap(); // element -> { attr: value }
+
   function translateAttributes(el) {
+    if (!el.getAttribute) return;
     for (const attr of ATTRIBUTES) {
-      const value = el.getAttribute && el.getAttribute(attr);
+      const value = el.getAttribute(attr);
       if (!value) continue;
+      const done = attrsSet.get(el);
+      if (done && done[attr] === value) continue;
       const translated = translateText(value);
-      if (translated !== null && translated !== value) el.setAttribute(attr, translated);
+      if (translated !== null && translated !== value) {
+        el.setAttribute(attr, translated);
+        attrsSet.set(el, { ...done, [attr]: translated });
+      }
     }
   }
 
@@ -1465,17 +1508,61 @@
   translateTree(document.body);
   observe();
 
-  // Run untranslated() in the DevTools console (F12) to list missing strings.
-  // unsafeWindow exposes it to the page console when the script runs sandboxed.
-  const pageWindow = typeof unsafeWindow !== 'undefined' ? unsafeWindow : window;
-  pageWindow.untranslated = function () {
-    const list = [...missing].sort();
+  const untranslatedList = () => [...missing].sort();
+
+  function untranslated() {
+    const list = untranslatedList();
     console.log(
       'Untranslated strings (' + list.length + '). Copy the ones you want into DICTIONARY:\n\n' +
         list.map((t) => `    ${JSON.stringify(t)}: '',`).join('\n')
     );
     return list;
-  };
+  }
 
-  console.log('[Poring Clicker ES] Translator active. Run untranslated() to list missing strings.');
+  // untranslated() in the DevTools console (F12). Script managers run userscripts
+  // in their own sandbox, which the page console can't see, so:
+  // 1. unsafeWindow, where the manager supports it.
+  const pageWindow = typeof unsafeWindow !== 'undefined' ? unsafeWindow : window;
+  pageWindow.untranslated = untranslated;
+
+  // 2. A tiny page-side function that asks the sandbox for the list through a
+  //    DOM event (both worlds share the DOM, and events are synchronous).
+  document.addEventListener('poring-es:request', () => {
+    document.documentElement.dataset.poringEsUntranslated = JSON.stringify(untranslatedList());
+  });
+  try {
+    const bridge = document.createElement('script');
+    bridge.textContent = `window.untranslated = function () {
+      document.dispatchEvent(new CustomEvent('poring-es:request'));
+      const root = document.documentElement;
+      const list = JSON.parse(root.dataset.poringEsUntranslated || '[]');
+      delete root.dataset.poringEsUntranslated;
+      console.log('Untranslated strings (' + list.length + '):\\n\\n' + list.join('\\n'));
+      return list;
+    };`;
+    (document.head || document.documentElement).appendChild(bridge);
+    bridge.remove();
+  } catch (e) { /* the page's security policy may block it: use the shortcut */ }
+
+  // 3. Shortcut that needs no console at all: Alt+Shift+U copies the list.
+  function toast(message) {
+    const box = document.createElement('div');
+    box.textContent = message;
+    box.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:2147483647;padding:8px 12px;' +
+      'border-radius:6px;background:#222;color:#fff;font:13px sans-serif;box-shadow:0 2px 8px #0006';
+    document.documentElement.appendChild(box);
+    setTimeout(() => box.remove(), 2500);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!(e.altKey && e.shiftKey && e.code === 'KeyU')) return;
+    e.preventDefault();
+    const list = untranslatedList();
+    navigator.clipboard.writeText(list.join('\n')).then(
+      () => toast(`Poring Clicker ES: ${list.length} textos sin traducir copiados al portapapeles`),
+      () => { untranslated(); toast('Poring Clicker ES: no se pudo copiar; la lista está en la consola (F12)'); }
+    );
+  });
+
+  console.log('[Poring Clicker ES] Translator active. Alt+Shift+U copies untranslated text, or run untranslated() in the console.');
 })();

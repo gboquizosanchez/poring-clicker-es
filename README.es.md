@@ -49,13 +49,13 @@ Userscript de [Tampermonkey](https://www.tampermonkey.net/) que traduce al espa�
 El script apunta todos los textos en inglés que no ha sabido traducir.
 
 1. Juega un rato y pasa por todas las pestañas.
-2. Abre la consola de DevTools (<kbd>F12</kbd>) y ejecuta:
+2. Pulsa <kbd>Alt</kbd>+<kbd>Mayús</kbd>+<kbd>U</kbd>: la lista se copia al portapapeles y un aviso te dice cuántos textos tiene.
+
+También puedes ejecutar en la consola de DevTools (<kbd>F12</kbd>):
 
 ```js
 copy(untranslated().join('\n'))
 ```
-
-3. La lista queda copiada en el portapapeles, lista para añadirla al diccionario.
 
 ---
 

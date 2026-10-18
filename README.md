@@ -49,13 +49,13 @@ A [Tampermonkey](https://www.tampermonkey.net/) userscript that translates the P
 The script keeps track of every English text it could not translate.
 
 1. Play for a while and visit every tab.
-2. Open the DevTools console (<kbd>F12</kbd>) and run:
+2. Press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd>: the list is copied to the clipboard and a notice confirms how many texts it has.
+
+From the DevTools console (<kbd>F12</kbd>) you can also run:
 
 ```js
 copy(untranslated().join('\n'))
 ```
-
-3. The list is now in the clipboard, ready to be added to the dictionary.
 
 ---
 
