@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.23.8
+// @version      1.23.9
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -403,6 +403,35 @@
     'Pet EXP Crystal': 'Cristal de EXP de mascota',
     'Rune Piece': 'Fragmento de runa',
     'Kafra Storage upgrade material': 'Material de mejora del Almacén Kafra',
+
+    // Pet Arena battle
+    'Arena': 'Arena',
+    '(Opponent)': '(Rival)',
+    '(You)': '(Tú)',
+    '(no fighter)': '(sin luchador)',
+    'Pet Team': 'Equipo de mascotas',
+    'Battle begins!': '¡Empieza el combate!',
+    'Battle in Progress': 'Combate en curso',
+    'Waiting for action…': 'Esperando acción…',
+    'Watch the battle in the main area!': '¡Mira el combate en la zona principal!',
+    'Loading sprites…': 'Cargando sprites…',
+    'Skip to Results': 'Saltar a los resultados',
+    'cleared': 'superadas',
+    'Unit': 'Unidad',
+    'Dealt': 'Infligido',
+    'Taken': 'Recibido',
+    'Healed': 'Curado',
+    'KO': 'KO',
+    'Mute': 'Silenciar',
+    'Unmute': 'Activar sonido',
+    'Pet Arena Challenger': 'Aspirante de la Arena de mascotas',
+    'Pet Arena Regular': 'Habitual de la Arena de mascotas',
+    'Pet Arena Veteran': 'Veterano de la Arena de mascotas',
+    'Clear your first Pet Arena stage': 'Supera tu primera fase de la Arena de mascotas',
+    'Crown Collector': 'Coleccionista de coronas',
+    'Crowned King': 'Rey coronado',
+    'Grand Champion': 'Gran campeón',
+    "Earn your first Champion's Crown": 'Consigue tu primera Corona de campeón',
 
     // WoE battle pets: names stay (like monster names), skills are translated
     'Ancient Worm': 'Ancient Worm',
@@ -1616,6 +1645,11 @@
     'Boss Dmg%': 'daño a jefes',
     'Dbl Click%': 'doble clic',
   };
+  // "Poring (enemy)", "p2_pet0, Lunatic (ally)": monster names stay, sides are translated
+  const arenaUnits = (text) => text.split(', ').map((unit) => {
+    const m = unit.match(/^(.+) \((ally|enemy)\)$/);
+    return m ? `${tr(m[1])} (${m[2] === 'ally' ? 'aliado' : 'enemigo'})` : tr(unit);
+  }).join(', ');
   const ARENA_TIERS = { Bronze: 'Bronce', Silver: 'Plata', Gold: 'Oro', Platinum: 'Platino', Diamond: 'Diamante' };
 
   const BANNER = { HP: 'PV', Drops: 'Botín', 'Guaranteed Drop': 'Botín garantizado' };
@@ -2061,6 +2095,23 @@
     [/^([\d.,]+) guilds? queued$/i, (_, n) => `${n} ${n === '1' ? 'clan' : 'clanes'} en cola`],
     [/^(.+) rests ([\d.,]+) minutes after every siege, for every guild\. It does not heal defenders\.$/i,
       (_, castle, n) => `${tr(castle)} descansa ${n} minutos tras cada asedio, para todos los clanes. No cura a los defensores.`],
+    // Pet Arena battle log: "Yoyo (ally) hits p2_pet1, Poring (enemy) for 494"
+    [/^Pet Arena - Stage ([\d.,]+)$/i, 'Arena de mascotas - Fase $1'],
+    [/^Select team \(([\d.,]+)-([\d.,]+)\), then click a stage:$/i, 'Elige el equipo ($1-$2) y haz clic en una fase:'],
+    [/^Collect \+([\d.,]+) Coins$/i, 'Recoger +$1 monedas'],
+    [/^Volume ([\d.,]+)%$/i, 'Volumen $1%'],
+    [/^VICTORY for (ally|enemy) side!$/i, (_, side) =>
+      `¡VICTORIA del bando ${side.toLowerCase() === 'ally' ? 'aliado' : 'enemigo'}!`],
+    [/^(.+?) casts (.+)$/, (_, unit, skill) => `${arenaUnits(unit)} usa ${tr(skill)}`],
+    [/^(.+?) hits (.+) for ([\d.,]+)( \(blocked\))?$/, (_, unit, targets, n, blocked) =>
+      `${arenaUnits(unit)} golpea a ${arenaUnits(targets)} por ${n}${blocked ? ' (bloqueado)' : ''}`],
+    [/^(.+?) is defeated!$/, (_, unit) => `¡${arenaUnits(unit)} cae derrotado!`],
+    [/^([\d.,]+) first \/ ([\d.,]+) repeat$/i, '$1 la 1.ª vez / $2 al repetir'],
+    [/^Clear (bronze|silver|gold|platinum|diamond)$/i, (_, tier) => `Superar ${tr(tier[0].toUpperCase() + tier.slice(1).toLowerCase())}`],
+    [/^Accumulate ([\d.,]+) Pet Arena coins$/i, 'Acumula $1 monedas de la Arena de mascotas'],
+    [/^Clear (Bronze|Silver|Gold|Platinum|Diamond) Stage ([\d.,]+)$/i, (_, tier, n) => `Supera la fase ${n} de ${tr(tier)}`],
+    [/^(Bronze|Silver|Gold|Platinum|Diamond) Champion$/i, (_, tier) => `Campeón de ${tr(tier)}`],
+    [/^Earn ([\d.,]+) Champion's Crowns$/i, 'Consigue $1 Coronas de campeón'],
     // Pet Arena shop
     [/^\+([\d.,]+)% Dmg, Crit, Zeny, Wpn ATK, PvP\/WoE HP & \+([\d.,]+) PvP\/WoE Speed$/i,
       '+$1% daño, crítico, zeny, ATQ de arma y PV en PvP/WoE, y +$2 de velocidad en PvP/WoE'],
