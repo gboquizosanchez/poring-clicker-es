@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.16.0
+// @version      1.17.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1299,6 +1299,7 @@
     [/^~?[\d.,]+ ?[GM]B$|^v[\d.]+$|^Windows [\d.]+(?: \/ [\d.]+)*$/, (m) => m],
     [/^([\d.,]+ ?[GM]B) free space( \(SSD\))?$/i, (_, size, ssd = '') => `${size} libres${ssd}`],
     [/^Any DirectX ([\d.]+) capable$/i, 'Cualquiera compatible con DirectX $1'],
+    [/^Every ([\d.,]+ ?s), next click deals ([\d.,]+)x damage$/i, 'Cada $1, el siguiente clic hace $2x de daño'],
     [/^\.[A-Za-z]+$/, (m) => m], // file extensions: .deb, .AppImage, .bin
 
     // News page: relative times, reading time and dates (dd/mm/aaaa)
@@ -1507,7 +1508,7 @@
   const MAX_TRACKED = 5000;
   const DICTIONARY_VALUES = new Set(Object.values(DICTIONARY));
   const known = new Set(DICTIONARY_VALUES); // Spanish output, never re-translated
-  const missing = new Set();
+  const missing = new Map(); // untranslated text -> where it was seen
 
   function remember(set, value) {
     if (set.size >= MAX_TRACKED) {
@@ -1576,7 +1577,21 @@
   };
   let ignoredNames = loadIgnored();
 
-  function translateText(original) {
+  // Where an untranslated text was seen: page, plus the whole sentence it
+  // belongs to when the text is only a piece of it ("in" → "…saved the file in ~/Downloads…")
+  function describe(where) {
+    if (!where) return location.pathname;
+    if (typeof where === 'string') return `${location.pathname} ${where}`;
+    const block = where.parentElement &&
+      (where.parentElement.closest('p, li, h1, h2, h3, h4, label, button, td, th') || where.parentElement);
+    const full = block ? block.textContent.replace(/\s+/g, ' ').trim() : '';
+    const text = where.nodeValue.trim();
+    return full && full !== text
+      ? `${location.pathname} «${full.length > 140 ? full.slice(0, 140) + '…' : full}»`
+      : location.pathname;
+  }
+
+  function translateText(original, where) {
     const trimmed = original.trim();
     if (ignoredNames.has(trimmed)) return null;
     // Damage pop-ups ("1230!") get the Spanish opening mark
@@ -1587,7 +1602,10 @@
     const out = translateCore(trimmed);
     if (out == null) {
       // Single letters (grades, keys) and text already in Spanish aren't worth listing
-      if (!/^[A-Za-z]$/.test(trimmed) && !/[áéíóúüñÁÉÍÓÚÜÑ¡¿]/.test(trimmed)) remember(missing, trimmed);
+      if (!/^[A-Za-z]$/.test(trimmed) && !/[áéíóúüñÁÉÍÓÚÜÑ¡¿]/.test(trimmed) &&
+          !missing.has(trimmed) && missing.size < MAX_TRACKED) {
+        missing.set(trimmed, describe(where));
+      }
       return null;
     }
     remember(known, out);
@@ -1763,7 +1781,7 @@
     // Already translated by us and untouched since
     const o = originals.get(node);
     if (o && node.nodeValue === o.set) return;
-    const translated = translateText(node.nodeValue);
+    const translated = translateText(node.nodeValue, node);
     if (translated !== null && translated !== node.nodeValue) setText(node, translated);
   }
 
@@ -1777,7 +1795,7 @@
       if (!value) continue;
       const done = attrsSet.get(el);
       if (done && done[attr] === value) continue;
-      const translated = translateText(value);
+      const translated = translateText(value, `[${attr}]`);
       if (translated !== null && translated !== value) {
         el.setAttribute(attr, translated);
         attrsSet.set(el, { ...done, [attr]: translated });
@@ -1869,7 +1887,9 @@
   translateTree(document.body);
   observe();
 
-  const untranslatedList = () => [...missing].sort();
+  // "text   ← /page «whole sentence»", sorted
+  const untranslatedList = () =>
+    [...missing].sort(([a], [b]) => a.localeCompare(b)).map(([t, where]) => `${t}   ← ${where}`);
 
   function untranslated() {
     const list = untranslatedList();
