@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.21.5
+// @version      1.22.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1972,6 +1972,7 @@
       /^GM$/.test(el.previousElementSibling.textContent.trim()));
 
   const isPlayerText = (el) =>
+    el.hasAttribute('data-poring-es-totals') || // our own totals box, already in Spanish
     isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isNewsPost(el) ||
     isProfileLink(el) || isLogName(el);
 
@@ -2168,6 +2169,48 @@
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // EXTRA: totals under the zone list (bestiary): "Total: 26 monst. | 23.828 bajas"
+  // Each zone row reads "4 monst. | 10.042 bajas" (or "4 mobs | 10,042 kills").
+  // ---------------------------------------------------------------------------
+  const ZONE_STATS = /^([\d.,]+)\s*(?:monst\.|mobs?)\s*\|\s*([\d.,]+)\s*(?:bajas?|kills?)$/i;
+  const toInt = (s) => parseInt(s.replace(/[.,]/g, ''), 10) || 0;
+  const thousands = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+  // On by default; Alt+Shift+T turns it on/off (remembered in the browser)
+  const TOTALS_KEY = 'poring-es:zone-totals';
+  let showZoneTotals = localStorage.getItem(TOTALS_KEY) !== 'off';
+
+  function updateZoneTotals() {
+    if (!showZoneTotals) {
+      document.querySelectorAll('[data-poring-es-totals]').forEach((b) => b.remove());
+      return;
+    }
+    const lists = new Map(); // zone list container -> [mobs, kills]
+    for (const span of document.querySelectorAll('button > span')) {
+      const m = span.textContent.trim().match(ZONE_STATS);
+      if (!m) continue;
+      const list = span.parentElement.parentElement && span.parentElement.parentElement.parentElement;
+      if (!list) continue;
+      const sum = lists.get(list) || [0, 0];
+      sum[0] += toInt(m[1]);
+      sum[1] += toInt(m[2]);
+      lists.set(list, sum);
+    }
+    for (const [list, [mobs, kills]] of lists) {
+      let box = list.nextElementSibling;
+      if (!box || !box.hasAttribute('data-poring-es-totals')) {
+        box = document.createElement('div');
+        box.setAttribute('data-poring-es-totals', '');
+        box.style.cssText = 'display:flex;justify-content:flex-end;gap:8px;margin-top:6px;padding:4px 8px;' +
+          'border-top:1px solid currentColor;opacity:.75;font-size:10px;';
+        list.after(box);
+      }
+      const text = `Total: ${thousands(mobs)} monst. | ${thousands(kills)} bajas`;
+      if (box.textContent !== text) box.textContent = text;
+    }
+  }
+
   // Batch DOM changes once per animation frame so the game doesn't slow down
   const pending = new Set();
   let scheduled = false;
@@ -2180,6 +2223,7 @@
     }
     pending.clear();
     translateTitle();
+    updateZoneTotals();
     observe();
   }
 
@@ -2221,6 +2265,7 @@
   function start() {
     translateTitle();
     translateTree(document.body);
+    updateZoneTotals();
     observe();
   }
   const startLater = () => setTimeout(start, 800);
@@ -2292,6 +2337,18 @@
       () => toast(`Poring Clicker ES: ${list.length - 1} textos sin traducir copiados al portapapeles`),
       () => { untranslated(); toast('Poring Clicker ES: no se pudo copiar; la lista está en la consola (F12)'); }
     );
+  });
+
+  // 5. Alt+Shift+T: show/hide the totals under the zone list
+  document.addEventListener('keydown', (e) => {
+    if (!(e.altKey && e.shiftKey && e.code === 'KeyT')) return;
+    e.preventDefault();
+    showZoneTotals = !showZoneTotals;
+    localStorage.setItem(TOTALS_KEY, showZoneTotals ? 'on' : 'off');
+    observer.disconnect();
+    updateZoneTotals();
+    observe();
+    toast(`Poring Clicker ES: totales de zonas ${showZoneTotals ? 'activados' : 'desactivados'}`);
   });
 
   // 4. Alt+Shift+N: names to leave alone (your nick, friends…), comma-separated

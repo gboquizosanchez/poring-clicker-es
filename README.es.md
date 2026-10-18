@@ -23,7 +23,7 @@
 
 ## Descripción
 
-Userscript de [Tampermonkey](https://www.tampermonkey.net/) que traduce al español la interfaz del Poring Clicker a medida que el juego la dibuja: menús, pestañas, logros, cartas, mascotas, equipo y avisos de la partida. No cambia nada del funcionamiento del juego, solo el texto que ves.
+Userscript de [Tampermonkey](https://www.tampermonkey.net/) que traduce al español la interfaz del Poring Clicker a medida que el juego la dibuja: menús, pestañas, logros, cartas, mascotas, equipo y avisos de la partida. No cambia nada del funcionamiento del juego, solo el texto que ves, y añade un pequeño extra: el total de monstruos y bajas debajo de la lista de zonas (se activa o desactiva con <kbd>Alt</kbd>+<kbd>Mayús</kbd>+<kbd>T</kbd>).
 
 > [!NOTE]
 > Los nombres que la comunidad de Ragnarok Online ya conoce (Poring, Jellopy, Prontera…) se mantienen. Los nombres de jugadores y clanes y los mensajes del chat no se traducen nunca.
