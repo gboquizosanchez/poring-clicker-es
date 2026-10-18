@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.5
+// @version      1.24.6
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -607,6 +607,9 @@
     'Playback opens in the main view, not inside this panel.': 'La reproducción se abre en la vista principal, no en este panel.',
     'Back to Field': 'Volver al campo',
     'Venom Strike': 'Golpe venenoso',
+    'Angelus': 'Angelus',
+    '💡 Almost There': '💡 Ya casi',
+    "Can't have an empty pet team - add another pet first": 'El equipo no puede quedar vacío: añade antes otra mascota',
     'Shadow Pair': 'Dúo de sombra',
     'Thief Bug Female': 'Thief Bug Female',
     'Shield Broken': 'Escudo roto',
@@ -618,7 +621,7 @@
     'Prev': 'Anterior',
     'ranked': 'clasificados',
     'Scout Opponents': 'Explorar rivales',
-    'unsaved - re-sync to apply': 'sin guardar: resincroniza para aplicar',
+    'unsaved - re-sync to apply': 'sin guardar: resincroniza',
     'No fight history yet.': 'Aún no hay historial de combates.',
     'No fighters ranked yet.': 'Aún no hay luchadores clasificados.',
     'No replay loaded. Start a fight or select one from history.': 'No hay ninguna repetición cargada. Empieza un combate o elige uno del historial.',
@@ -1727,6 +1730,7 @@
     'refine success': 'éxito de refinado',
     'drops': 'botín',
     'pet dps': 'DPS de mascotas',
+    'atk': 'ATQ',
     'mvp raid damage': 'daño en incursiones MVP',
     'pet arena coins': 'monedas de la Arena de mascotas',
     'guild exp': 'EXP de clan',
@@ -2251,6 +2255,14 @@
     [/^Fight! \((.+)\)$/i, '¡Luchar! ($1)'],
     [/^Win ([\d.,]+) PvP fights in a row$/i, 'Gana $1 combates PvP seguidos'],
     [/^Win ([\d.,]+) PvP fights$/i, 'Gana $1 combates PvP'],
+    [/^Rating: ([\d.,]+)$/i, 'Puntuación: $1'],
+    [/^Add an? (\w+) pet$/i, (_, elem) => `Añade una mascota de ${tr(elem.toLowerCase())}`],
+    [/^(\w+) Pair$/, (_, elem) => {
+      const t = translateCore(elem.toLowerCase());
+      return t == null ? null : `Dúo de ${t}`;
+    }],
+    [/^No synergies firing\. Try same-element pets or ([\d.,]+) holy \+ ([\d.,]+) shadow\.$/i,
+      'No hay sinergias activas. Prueba con mascotas del mismo elemento o $1 sagrado + $2 sombra.'],
     [/^Lv(\s*)([\d.,]+)$/, 'Nv$1$2'],
     [/^Shiny chance: ([\d.,]+%)$/i, 'Prob. de shiny: $1'],
     [/^DEFEAT - (ally|enemy) side wins$/i, (_, side) =>
@@ -2494,12 +2506,25 @@
     const panel = el.closest('.bg-ro-panel');
     return !!panel && !!panel.querySelector(ROLE_BADGE);
   };
+  // "Geffen Tower vs Faenyx", "L vs MonkeyBoy34": the name right after "vs",
+  // whether "vs" is its own element or loose text before the name
+  const afterVs = (el) => {
+    const prev = el.previousSibling;
+    const text = prev ? prev.textContent.trim() : '';
+    return /(^|\s)vs$/.test(text) ||
+      (!!el.previousElementSibling && el.previousElementSibling.textContent.trim() === 'vs');
+  };
+  // PvP match screen: the opponent's name, followed by "Rating: 1098"
+  const isRatedName = (el) =>
+    el.tagName === 'SPAN' && !!el.nextElementSibling &&
+    /^(Rating|Puntuación):/.test(el.nextElementSibling.textContent.trim());
+
   // WoE: the guild holding each castle (right column of the castle button) and
   // the guild after "vs" in the battle log ("Geffen Tower vs Faenyx")
   const isWoeGuildName = (el) =>
     (el.matches('.truncate') && !!el.parentElement && el.parentElement.matches('.text-right') &&
       !!el.closest('button[aria-expanded]')) ||
-    (!!el.previousElementSibling && el.previousElementSibling.textContent.trim() === 'vs');
+    afterVs(el);
   // PvP Auto Arena ranking: the fighter's name is the span right before "Lv" / "Lv99"
   const isArenaFighterName = (el) =>
     el.tagName === 'SPAN' && !!el.nextElementSibling &&
@@ -2550,8 +2575,8 @@
   const isPlayerText = (el) =>
     el.hasAttribute('data-poring-es-totals') || // our own totals box, already in Spanish
     isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isGuildName(el) ||
-    isGuildMemberName(el) || isWoeGuildName(el) || isArenaFighterName(el) || isOpponentName(el) || isNewsPost(el) ||
-    isProfileLink(el) || isLogName(el);
+    isGuildMemberName(el) || isWoeGuildName(el) || isArenaFighterName(el) || isOpponentName(el) ||
+    isRatedName(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
 
   function shouldSkip(node) {
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
