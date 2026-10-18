@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.9.8
+// @version      1.10.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -777,6 +777,11 @@
     'The Tyrant Is Felled': 'El tirano ha caído',
     'The Tiger Falls Silent': 'El tigre enmudece',
     'Flawless Victory': 'Victoria impecable',
+    'The Pharaoh Returns To Rest': 'El faraón vuelve a descansar',
+    'Osiris': 'Osiris',
+    'New party or guild messages': 'Mensajes nuevos del grupo o del clan',
+    'Party only': 'Solo grupo',
+    'Message your party...': 'Escribe a tu grupo...',
     'The boss never stood a chance against your rhythm.': 'El jefe no tenía nada que hacer contra tu ritmo.',
     'Collect Rewards': 'Recoger recompensas',
     'Defeated': 'Derrotado',
@@ -1086,6 +1091,9 @@
     [/^Equipment Drops \((.+)\)$/i, 'Botín de equipo ($1)'],
     [/^Members \((.+)\)$/i, 'Miembros ($1)'],
     [/^(.+): waiting$/, '$1: esperando'],
+    [/^(.+) joined the party\.$/, '$1 se ha unido al grupo.'],
+    [/^([\d.,]+) active$/i, (_, n) => `${n} ${n === '1' ? 'activo' : 'activos'}`],
+    [/^(.+) left the party\.$/, '$1 ha salido del grupo.'],
     [/^Starts in (.+)$/i, 'Empieza en $1'],
     [/^(.+) bonus active$/i, (_, cls) => {
       const t = translateCore(cls);
@@ -1093,7 +1101,10 @@
     }],
     [/^(━\s*)MVP RAID(\s*━)$/, '$1INCURSIÓN MVP$2'],
     // Completed achievement: "Evolve any pet to Tier 2 - Claim 3000z reward!"
-    [/^(.+) - Claim (.+?) reward!$/i, (_, goal, amount) => `${tr(goal)} - ¡Reclama ${amount} de recompensa!`],
+    [/^(.+) - Claim (.+?) reward!$/i, (_, goal, amount) => {
+      const t = translateCore(goal);
+      return t == null ? null : `${t} - ¡Reclama ${amount} de recompensa!`;
+    }],
     [/^([\d.,]+\/[\d.,]+) kills to discover$/i, '$1 bajas para descubrirlo'],
     [/^MVP RAID - (.+) appears!$/, (_, boss) => `INCURSIÓN MVP - ¡Aparece ${tr(boss)}!`],
     [/^Ready: (.+?) \(need ([\d.,]+)\+\)$/i, 'Listos: $1 (mín. $2)'],
@@ -1113,6 +1124,7 @@
     [/^([\d.,]+) taps?(\.?)$/i, (_, n, dot) => `${n} ${n === '1' ? 'pulsación' : 'pulsaciones'}${dot}`],
     [/^(.+?)\s*\(Leader\)$/, (m, name) => m.replace('(Leader)', '(Líder)')],
     [/^([\d.,]+%) to clear$/i, '$1 para superarlo'],
+    [/^cycle ([\d.,]+)$/i, (m, n) => `${m[0] === 'C' ? 'Ciclo' : 'ciclo'} ${n}`],
     [/^(Timing) ([+\-]?[\d.,]+ ?ms)$/i, (_, word, ms) =>
       `${word === word.toUpperCase() ? 'DESFASE' : 'Desfase'} ${ms}`],
     [/^MVP Stamina ([\d.,]+) of ([\d.,]+)(?:\. (.+))?$/i, (_, n, max, rest) =>
@@ -1299,14 +1311,27 @@
     return original.replace(trimmed, () => out);
   }
 
+  // Chat lines written by players (they carry the player's name button) are
+  // left alone: no translation and not listed in untranslated(). System lines
+  // such as "X joined the party." have no name button and are still translated.
+  const CHAT_ROW = '.items-baseline.leading-normal';
+  const isPlayerChatRow = (el) => el.matches(CHAT_ROW) && el.querySelector('button') !== null;
+
   function shouldSkip(node) {
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
     while (el) {
-      if (SKIP_TAGS.has(el.tagName) || el.isContentEditable) return true;
+      if (SKIP_TAGS.has(el.tagName) || el.isContentEditable || isPlayerChatRow(el)) return true;
       el = el.parentElement;
     }
     return false;
   }
+
+  const skipFilter = {
+    acceptNode: (n) =>
+      n.nodeType === Node.ELEMENT_NODE && (SKIP_TAGS.has(n.tagName) || isPlayerChatRow(n))
+        ? NodeFilter.FILTER_REJECT
+        : NodeFilter.FILTER_ACCEPT,
+  };
 
   // English text of every node we changed, so it can be re-translated
   // when the game updates a neighbouring node.
@@ -1353,15 +1378,26 @@
         return; // nested markup with words: leave it to the per-node pass
       }
     }
-    if (units.filter((u) => !u.dynamic).length === 0) return;
+
+    // A leading tag may be a title glued to its description
+    // (<span>Untouchable</span>Reach a 150 combo…): if the whole thing doesn't
+    // translate, drop it and try again with the rest.
+    while (units.length >= 2 && !joinUnits(units)) {
+      if (!units[0].inTag || units[0].dynamic) return;
+      units.shift();
+    }
+  }
+
+  function joinUnits(units) {
+    if (units.filter((u) => !u.dynamic).length === 0) return false;
     // A sentence needs some loose text of its own; only tags means separate labels
-    if (!units.some((u) => !u.inTag && u.text.trim())) return;
+    if (!units.some((u) => !u.inTag && u.text.trim())) return false;
 
     const joined = units.map((u) => u.text).join('');
     const trimmed = joined.trim();
-    if (!trimmed || !/[A-Za-z]/.test(trimmed)) return;
+    if (!trimmed || !/[A-Za-z]/.test(trimmed)) return false;
     const out = translateCore(trimmed, true);
-    if (out == null || out === trimmed) return;
+    if (out == null || out === trimmed) return false;
     const full = joined.replace(trimmed, () => out);
 
     // Work out the new text of every node before touching the DOM.
@@ -1377,7 +1413,7 @@
         continue;
       }
       const idx = full.indexOf(u.text, pos);
-      if (idx < 0) return;
+      if (idx < 0) return false;
       const segment = full.slice(pos, idx);
       if (group.length) group.forEach((g, i) => updates.set(g.node, i === 0 ? segment : ''));
       else if (segment.trim()) updates.set(u.node, segment + u.text);
@@ -1390,6 +1426,7 @@
     else if (tail.trim()) updates.set(lastDynamic.node, (updates.get(lastDynamic.node) ?? lastDynamic.text) + tail);
 
     for (const [node, value] of updates) setText(node, value);
+    return true;
   }
 
   // "Drops" is both a monster and the loot header. The header is shown in
@@ -1439,7 +1476,8 @@
     translateSplitText(root);
     const walker = document.createTreeWalker(
       root,
-      NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT
+      NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
+      skipFilter
     );
     let node;
     while ((node = walker.nextNode())) {
