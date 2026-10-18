@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.2
+// @version      1.24.3
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -402,6 +402,8 @@
     'Consumable Pack': 'Lote de consumibles',
     'Pet EXP Crystal': 'Cristal de EXP de mascota',
     'Rune Piece': 'Fragmento de runa',
+    'Rune': 'Runa',
+    'Runes': 'Runas',
     'Kafra Storage upgrade material': 'Material de mejora del Almacén Kafra',
 
     // Pet Arena battle
@@ -2117,8 +2119,9 @@
     [/^VICTORY for (ally|enemy) side!$/i, (_, side) =>
       `¡VICTORIA del bando ${side.toLowerCase() === 'ally' ? 'aliado' : 'enemigo'}!`],
     [/^(.+?) casts (.+)$/, (_, unit, skill) => `${arenaUnits(unit)} usa ${tr(skill)}`],
-    [/^(.+?) hits (.+) for ([\d.,]+)( \(blocked\))?( CRITICAL)?$/, (_, unit, targets, n, blocked, crit) =>
-      `${arenaUnits(unit)} golpea a ${arenaUnits(targets)} por ${n}${blocked ? ' (bloqueado)' : ''}${crit ? ' CRÍTICO' : ''}`],
+    [/^(.+?) hits (.+) for ([\d.,]+)( \(blocked\))?( CRITICAL)?( - MISS)?$/, (_, unit, targets, n, blocked, crit, miss) =>
+      `${arenaUnits(unit)} golpea a ${arenaUnits(targets)} por ${n}` +
+      `${blocked ? ' (bloqueado)' : ''}${crit ? ' CRÍTICO' : ''}${miss ? ' - FALLO' : ''}`],
     [/^(.+?) shields (.+) \(([\d.,]+)\)$/, (_, unit, target, n) => `${arenaUnits(unit)} protege a ${arenaUnits(target)} (${n})`],
     [/^(.+?) gets ([A-Z_]+) \(([\d.,]+)t\)$/, (_, unit, status, turns) =>
       `${arenaUnits(unit)} recibe ${ARENA_STATUS[status] ?? status} (${turns} t)`],
@@ -2157,6 +2160,11 @@
     [/^([+\-][\d.,]+%?) (.+?)( \([\d.,]+x\))?$/, (_, n, term, times = '') => {
       const t = BONUS[term.toLowerCase()];
       return t ? `${n} ${t}${times}` : null;
+    }],
+    // Costs: "12.000z + 1 Rune" (only when the item is known)
+    [/^([\d.,]+) (.+)$/, (_, n, item) => {
+      const t = translateCore(item);
+      return t == null ? null : `${n} ${t}`;
     }],
     // Rewards: "+5 White Herb"
     [/^\+([\d.,]+) (.+)$/, (_, n, item) => `+${n} ${tr(item)}`],
