@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.15.1
+// @version      1.16.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
 // @match        https://springro.com/account*
 // @match        https://springro.com/download*
+// @match        https://springro.com/news*
 // @homepageURL  https://github.com/gboquizosanchez/poring-clicker-es
 // @updateURL    https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js
 // @downloadURL  https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js
@@ -889,6 +890,15 @@
     'Windows': 'Windows',
     'Linux': 'Linux',
     'Linux setup ·': 'Instalación en Linux ·',
+
+    // News page
+    'News & Updates': 'Noticias y actualizaciones',
+    'Patch notes, events, and announcements from the realm': 'Notas de parche, eventos y anuncios del reino',
+    'Patch': 'Parche',
+    'Update': 'Actualización',
+    'Event': 'Evento',
+    'Announcement': 'Anuncio',
+    'Read full post': 'Leer la entrada completa',
     'Choose your Linux package': 'Elige tu paquete para Linux',
     'SpringRO Linux Launcher': 'Launcher de SpringRO para Linux',
     'Portable launcher': 'Launcher portable',
@@ -1290,6 +1300,21 @@
     [/^([\d.,]+ ?[GM]B) free space( \(SSD\))?$/i, (_, size, ssd = '') => `${size} libres${ssd}`],
     [/^Any DirectX ([\d.]+) capable$/i, 'Cualquiera compatible con DirectX $1'],
     [/^\.[A-Za-z]+$/, (m) => m], // file extensions: .deb, .AppImage, .bin
+
+    // News page: relative times, reading time and dates (dd/mm/aaaa)
+    [/^([\d.,]+) ?(m|min|h|d|w|mo|y) ago$/i, (_, n, u) => {
+      const one = n === '1';
+      const unit = { m: 'min', min: 'min', h: 'h', d: 'd', w: one ? 'semana' : 'semanas',
+        mo: one ? 'mes' : 'meses', y: one ? 'año' : 'años' }[u.toLowerCase()];
+      return `hace ${n} ${unit}`;
+    }],
+    [/^([\d.,]+) min read$/i, '$1 min de lectura'],
+    [/^(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4})$/,
+      (_, month, day, year) => {
+        const mm = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+          'September', 'October', 'November', 'December'].indexOf(month) + 1;
+        return `${day.padStart(2, '0')}/${String(mm).padStart(2, '0')}/${year}`;
+      }],
     [/^Download (\.[A-Za-z]+)$/i, 'Descargar $1'],
     [/^(.+) or better$/i, '$1 o superior'],
     [/^(.+) or equivalent$/i, '$1 o equivalente'],
@@ -1593,7 +1618,13 @@
     el.tagName === 'BUTTON' && el.matches('.truncate') &&
     !!el.nextElementSibling && /^(Lv|Nv)\.\s*\d/.test(el.nextElementSibling.textContent.trim());
 
-  const isPlayerText = (el) => isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el);
+  // News: the posts themselves (title and excerpt) stay in English; only the
+  // page around them (badges, dates, buttons) is translated
+  const isNewsPost = (el) =>
+    /^(H1|H2|H3|H4|P|LI|ARTICLE)$/.test(el.tagName) && !!el.closest('a[href^="/news/"], article');
+
+  const isPlayerText = (el) =>
+    isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isNewsPost(el);
 
   function shouldSkip(node) {
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
