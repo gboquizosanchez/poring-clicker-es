@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.17.0
+// @version      1.17.1
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1883,9 +1883,18 @@
   // ---------------------------------------------------------------------------
   // 4. BOOTSTRAP & CONSOLE HELPER
   // ---------------------------------------------------------------------------
-  translateTitle();
-  translateTree(document.body);
-  observe();
+  // Pages rendered on the server (news, downloads, account…) are "hydrated" by
+  // React once its code loads; changing their text before that makes React
+  // throw error #418 and redraw the page. So wait until the page has loaded
+  // and React has had a moment, then translate.
+  function start() {
+    translateTitle();
+    translateTree(document.body);
+    observe();
+  }
+  const startLater = () => setTimeout(start, 800);
+  if (document.readyState === 'complete') startLater();
+  else window.addEventListener('load', startLater, { once: true });
 
   // "text   ← /page «whole sentence»", sorted
   const untranslatedList = () =>
