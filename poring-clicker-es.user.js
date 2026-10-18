@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.6
+// @version      1.24.7
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -86,7 +86,7 @@
 
     // Game: title & stats
     'Click monsters, collect loot, refine weapons, and climb the leaderboard!':
-      '¡Haz clic en los monstruos, recoge botín, refina armas y escala en la clasificación!',
+      '¡Haz clic en los monstruos, recoge botín, refina armas y escala en el ranking!',
     'Kills': 'Bajas',
     'kills': 'bajas',
     'kills remaining': 'por eliminar',
@@ -159,8 +159,8 @@
     'Achievements': 'Logros',
     'Cheevos': 'Logros',
     'Ranks': 'Ranking',
-    'Leaderboard': 'Clasificación',
-    'Refresh leaderboard': 'Actualizar clasificación',
+    'Leaderboard': 'Ranking',
+    'Refresh leaderboard': 'Actualizar ranking',
     'Inventory': 'Inventario',
     'Stats': 'Estad.',
     'Settings': 'Ajustes',
@@ -542,14 +542,14 @@
     'Battle': 'Lucha',
     'Fighter': 'Luchador',
     'History': 'Historial',
-    'Replay': 'Repetición',
+    'Replay': 'Replay',
     'Pupils': 'Alumnos',
     'Sync Fighter': 'Sincronizar luchador',
     'Re-sync Fighter': 'Resincronizar luchador',
     'Syncing...': 'Sincronizando...',
     'Sync your clicker build to derive your PvP fighter.': 'Sincroniza tu personaje del clicker para crear tu luchador de PvP.',
-    'Skill Priority': 'Prioridad de habilidades',
-    'Casts top to bottom, then loops': 'Se lanzan de arriba abajo y luego se repiten',
+    'Skill Priority': 'Orden de uso',
+    'Casts top to bottom, then loops': 'De arriba abajo, en bucle',
     'Loop': 'Repetir',
     'Move up': 'Subir',
     'Move down': 'Bajar',
@@ -568,7 +568,7 @@
     'Available pets - click to add': 'Mascotas disponibles: haz clic para añadir',
     'Remove from team': 'Quitar del equipo',
     'Remove a pet first to add this one': 'Quita antes una mascota para añadir esta',
-    'Climbing the Ladder': 'Escalando la clasificación',
+    'Climbing the Ladder': 'Escalando en el ranking',
     'First Duel': 'Primer duelo',
     'First Blood (PvP)': 'Primera sangre (PvP)',
     'Win your first PvP fight': 'Gana tu primer combate PvP',
