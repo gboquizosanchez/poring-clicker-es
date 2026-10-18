@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.3
+// @version      1.24.4
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -538,6 +538,53 @@
     'Siege Veteran': 'Veterano de asedios',
     'Siege Commander': 'Comandante de asedios',
     'PvP Auto Arena': 'Arena PvP automática',
+    'Enter PvP Auto Arena with your pet team!': '¡Entra en la Arena PvP automática con tu equipo de mascotas!',
+    'Battle': 'Combatir',
+    'Fighter': 'Luchador',
+    'History': 'Historial',
+    'Replay': 'Repetición',
+    'Pupils': 'Alumnos',
+    'Sync Fighter': 'Sincronizar luchador',
+    'Re-sync Fighter': 'Resincronizar luchador',
+    'Syncing...': 'Sincronizando...',
+    'Sync your clicker build to derive your PvP fighter.': 'Sincroniza tu personaje del clicker para crear tu luchador de PvP.',
+    'Skill Priority': 'Prioridad de habilidades',
+    'Casts top to bottom, then loops': 'Se lanzan de arriba abajo y luego se repiten',
+    'Loop': 'Repetir',
+    'Move up': 'Subir',
+    'Move down': 'Bajar',
+    '🔴 damage': '🔴 daño',
+    '🔵 buff': '🔵 mejora',
+    '🟣 debuff': '🟣 penalización',
+    'Rating': 'Puntuación',
+    'Rating:': 'Puntuación:',
+    'Energy:': 'Energía:',
+    'Streak': 'Racha',
+    'Evade': 'Evasión',
+    'DEF': 'DEF',
+    'Lineup:': 'Alineación:',
+    'picked': 'elegidas',
+    '⚡ Active Synergies': '⚡ Sinergias activas',
+    'Available pets - click to add': 'Mascotas disponibles: haz clic para añadir',
+    'Remove from team': 'Quitar del equipo',
+    'Remove a pet first to add this one': 'Quita antes una mascota para añadir esta',
+    'Climbing the Ladder': 'Escalando la clasificación',
+    'Lv': 'Nv',
+    'W/': 'V/',
+    'Prev': 'Anterior',
+    'ranked': 'clasificados',
+    'Scout Opponents': 'Explorar rivales',
+    'unsaved - re-sync to apply': 'sin guardar: resincroniza para aplicar',
+    'No fight history yet.': 'Aún no hay historial de combates.',
+    'No fighters ranked yet.': 'Aún no hay luchadores clasificados.',
+    'No replay loaded. Start a fight or select one from history.': 'No hay ninguna repetición cargada. Empieza un combate o elige uno del historial.',
+    'novice': 'aprendiz',
+    'swordsman': 'espadachín',
+    'mage': 'mago',
+    'archer': 'arquero',
+    'acolyte': 'acólito',
+    'merchant': 'mercader',
+    'thief': 'ladrón',
     'Pet Arena': 'Arena de mascotas',
     'Dungeon Expeditions': 'Expediciones a mazmorras',
     'Dungeon': 'Mazmorra',
@@ -550,6 +597,7 @@
     'Orc Dungeon': 'Mazmorra Orca',
     'Endless Tower': 'Torre sin fin',
     'Sewer Survivor': 'Superviviente de las cloacas',
+    'Orc Slayer': 'Verdugo de orcos',
     'Active Expeditions': 'Expediciones activas',
     'Recent Expeditions': 'Expediciones recientes',
     'Tokens': 'Fichas',
@@ -562,6 +610,8 @@
     'Dungeon Token': 'Ficha de mazmorra',
     'Red Potion': 'Poción roja',
     'Orange Potion': 'Poción naranja',
+    'White Potion': 'Poción blanca',
+    'Emperium': 'Emperium',
     'Zone Events': 'Eventos de zona',
     'Monster Invasion': 'Invasión de monstruos',
     'Treasure Hunter': 'Cazatesoros',
@@ -1774,6 +1824,7 @@
 
     // Refine, enchant & items
     [/^Success rate(?::\s*|\s+)(.+)$/i, 'Prob. de éxito: $1'],
+    [/^Cost: ([\d.,]+) per fight$/i, 'Coste: $1 por combate'],
     [/^Cost(?::\s*|\s+)(.+)$/i, 'Coste: $1'],
     [/^Reroll slots \((.+?)\)\. Cost: (.+)$/i, 'Relanzar ranuras ($1). Coste: $2'],
     [/^Reroll \((.+)\)$/i, 'Relanzar ($1)'],
@@ -2143,6 +2194,23 @@
     [/^Clear (Bronze|Silver|Gold|Platinum|Diamond) Stage ([\d.,]+)$/i, (_, tier, n) => `Supera la fase ${n} de ${tr(tier)}`],
     [/^(Bronze|Silver|Gold|Platinum|Diamond) Champion$/i, (_, tier) => `Campeón de ${tr(tier)}`],
     [/^Earn ([\d.,]+) Champion's Crowns$/i, 'Consigue $1 Coronas de campeón'],
+    // PvP Auto Arena
+    [/^\/([\d.,]+) picked$/i, '/$1 elegidas'],
+    [/^([\d.,]+)× (.+)$/, (_, n, x) => {
+      const t = translateCore(x);
+      return t == null ? null : `${n}× ${t}`;
+    }],
+    [/^\| Cost: ([\d.,]+) per fight$/i, '| Coste: $1 por combate'],
+    [/^Energy: ([\d.,]+)\/([\d.,]+)$/i, 'Energía: $1/$2'],
+    [/^Page ([\d.,]+)$/i, 'Página $1'],
+    [/^Page ([\d.,]+) \/ ([\d.,]+)( · [\d.,]+)?$/i, (_, a, b, rest = '') => `Página ${a} / ${b}${rest}`],
+    [/^\+([\d.,]+)% ATK to whole team$/i, '+$1% ATQ para todo el equipo'],
+    [/^(.+) - counter-element synergy$/i, (_, elements) =>
+      `${elements.split(' / ').map(tr).join(' / ')} - sinergia de contraelementos`],
+    [/^Empty selection sends your first ([\d.,]+) owned pets\. Re-sync your fighter after changing\.$/i,
+      'Si no eliges ninguna, se envían tus $1 primeras mascotas. Vuelve a sincronizar tu luchador después de cambiar.'],
+    [/^Move (.+) (up|down)$/i, (_, skill, dir) => `${dir.toLowerCase() === 'up' ? 'Subir' : 'Bajar'} ${tr(skill)}`],
+    [/^Reach ([\d.,]+) PvP rating$/i, 'Alcanza $1 de puntuación PvP'],
     // Pet Arena shop
     [/^\+([\d.,]+)% Dmg, Crit, Zeny, Wpn ATK, PvP\/WoE HP & \+([\d.,]+) PvP\/WoE Speed$/i,
       '+$1% daño, crítico, zeny, ATQ de arma y PV en PvP/WoE, y +$2 de velocidad en PvP/WoE'],
@@ -2372,6 +2440,9 @@
     (el.matches('.truncate') && !!el.parentElement && el.parentElement.matches('.text-right') &&
       !!el.closest('button[aria-expanded]')) ||
     (!!el.previousElementSibling && el.previousElementSibling.textContent.trim() === 'vs');
+  // PvP Auto Arena ranking: the fighter's name is the span right before "Lv"
+  const isArenaFighterName = (el) =>
+    el.tagName === 'SPAN' && !!el.nextElementSibling && /^(Lv|Nv)$/.test(el.nextElementSibling.textContent.trim());
   const isGuildMemberName = (el) => {
     const box = el.parentElement;
     return !!box && box.matches('.flex-1') && el === box.firstElementChild &&
@@ -2414,7 +2485,8 @@
   const isPlayerText = (el) =>
     el.hasAttribute('data-poring-es-totals') || // our own totals box, already in Spanish
     isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isGuildName(el) ||
-    isGuildMemberName(el) || isWoeGuildName(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
+    isGuildMemberName(el) || isWoeGuildName(el) || isArenaFighterName(el) || isNewsPost(el) ||
+    isProfileLink(el) || isLogName(el);
 
   function shouldSkip(node) {
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
