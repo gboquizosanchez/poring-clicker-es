@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.21.2
+// @version      1.21.3
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -373,6 +373,7 @@
     'Low damage + stun': 'Daño bajo + aturdimiento',
     'Damage + DEF down': 'Daño + reduce la DEF',
     'Burning - taking fire DoT': 'Quemado: recibe daño de fuego continuo',
+    'Poisoned - taking poison DoT': 'Envenenado: recibe daño de veneno continuo',
     'Stunned - all hits crit': 'Aturdido: todos los golpes son críticos',
 
     // Items (names with an established community name, like Jellopy, stay as-is)
@@ -783,6 +784,7 @@
     'Orc Hero Bellows A War Cry': 'Orc Hero lanza un grito de guerra',
     'The Tyrant Is Felled': 'El tirano ha caído',
     'The Tiger Falls Silent': 'El tigre enmudece',
+    'Eddga Stalks From The Tall Grass': 'Eddga acecha entre la hierba alta',
     'Flawless Victory': 'Victoria impecable',
     'The Pharaoh Returns To Rest': 'El faraón vuelve a descansar',
     'Osiris': 'Osiris',
@@ -1499,6 +1501,7 @@
     }],
     [/^(·\s*)?\d{1,2}:\d{2} UTC$/, (m) => m],
     [/^[a-z]+_[a-z0-9_-]+$|^[a-z]+\d+$/, (m) => m], // map codes: gef_fild01, c_tower3, anthell01
+    [/^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{6,12}$/, (m) => m], // party codes: ABCD1234
     [/^The last ([\d.,]+) cards found on the server, newest first\.$/i,
       'Las últimas $1 cartas encontradas en el servidor, de la más reciente a la más antigua.'],
     [/^Net zeny flow \((.+)\)$/i, 'Flujo neto de zeny ($1)'],
