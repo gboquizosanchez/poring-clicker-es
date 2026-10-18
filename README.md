@@ -49,7 +49,7 @@ A [Tampermonkey](https://www.tampermonkey.net/) userscript that translates the P
 The script keeps track of every English text it could not translate.
 
 1. Play for a while and visit every tab.
-2. Press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd>: the list is copied to the clipboard and a notice confirms how many texts it has.
+2. Press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd>: the list is copied to the clipboard in [TOON](https://github.com/toon-format/toon) format (text, page, element, section and full sentence for each entry) and a notice confirms how many texts it has.
 
 Your nick or any other name that shows up in the list can be excluded with <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>N</kbd> (comma-separated). The names are stored in your browser, so script updates keep them.
 

@@ -49,7 +49,7 @@ Userscript de [Tampermonkey](https://www.tampermonkey.net/) que traduce al espa�
 El script apunta todos los textos en inglés que no ha sabido traducir.
 
 1. Juega un rato y pasa por todas las pestañas.
-2. Pulsa <kbd>Alt</kbd>+<kbd>Mayús</kbd>+<kbd>U</kbd>: la lista se copia al portapapeles y un aviso te dice cuántos textos tiene.
+2. Pulsa <kbd>Alt</kbd>+<kbd>Mayús</kbd>+<kbd>U</kbd>: la lista se copia al portapapeles en formato [TOON](https://github.com/toon-format/toon) (texto, página, elemento, sección y frase completa de cada entrada) y un aviso te dice cuántos textos tiene.
 
 Tu nick o cualquier otro nombre que aparezca en la lista se puede excluir con <kbd>Alt</kbd>+<kbd>Mayús</kbd>+<kbd>N</kbd> (separados por comas). Los nombres se guardan en tu navegador, así que las actualizaciones del script los conservan.
 

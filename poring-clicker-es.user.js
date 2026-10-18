@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.19.0
+// @version      1.20.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1742,23 +1742,22 @@
     return '';
   }
 
+  // -> { page, element, section, sentence }
   function describe(where) {
-    const parts = [location.pathname];
+    const info = { page: location.pathname, element: '', section: '', sentence: '' };
     if (where && where.attr) { // attribute: placeholder, title, aria-label…
-      parts.push(`[${where.attr}] de ${elementInfo(where.el)}`);
-      const sec = sectionOf(where.el);
-      if (sec) parts.push(`sección «${sec}»`);
-      return parts.join(' · ');
+      info.element = `[${where.attr}] ${elementInfo(where.el)}`;
+      info.section = sectionOf(where.el);
+      return info;
     }
     const el = where && where.parentElement;
-    if (!el) return parts[0];
-    parts.push(elementInfo(el));
-    const section = sectionOf(el);
-    if (section) parts.push(`sección «${section}»`);
+    if (!el) return info;
+    info.element = elementInfo(el);
+    info.section = sectionOf(el);
     const block = el.closest('p, li, h1, h2, h3, h4, label, button, td, th, div') || el;
     const full = englishText(block);
-    if (full && full !== where.nodeValue.trim()) parts.push(`«${clip(full, 140)}»`);
-    return parts.join(' · ');
+    if (full && full !== where.nodeValue.trim()) info.sentence = clip(full, 140);
+    return info;
   }
 
   function translateText(original, where) {
@@ -2071,15 +2070,24 @@
   else window.addEventListener('load', startLater, { once: true });
 
   // "text   ← /page «whole sentence»", sorted
-  const untranslatedList = () =>
-    [...missing].sort(([a], [b]) => a.localeCompare(b)).map(([t, where]) => `${t}   ← ${where}`);
+  // TOON (Token-Oriented Object Notation): one header, then one row per text.
+  // Values with commas, quotes, colons or edge spaces go quoted.
+  const toonValue = (v) =>
+    v === '' ? '' : /[,:"\\\n]|^\s|\s$|^(true|false|null|-?[\d.]+)$/.test(v) ? JSON.stringify(v) : v;
+
+  // Lines of the TOON table (header first), so .join('\n') gives the full text
+  const untranslatedList = () => {
+    const rows = [...missing].sort(([a], [b]) => a.localeCompare(b));
+    return [
+      `pendientes[${rows.length}]{texto,pagina,elemento,seccion,frase}:`,
+      ...rows.map(([text, w]) =>
+        '  ' + [text, w.page, w.element, w.section, w.sentence].map(toonValue).join(',')),
+    ];
+  };
 
   function untranslated() {
     const list = untranslatedList();
-    console.log(
-      'Untranslated strings (' + list.length + '). Copy the ones you want into DICTIONARY:\n\n' +
-        list.map((t) => `    ${JSON.stringify(t)}: '',`).join('\n')
-    );
+    console.log(list.join('\n'));
     return list;
   }
 
@@ -2101,7 +2109,7 @@
       const root = document.documentElement;
       const list = JSON.parse(root.dataset.poringEsUntranslated || '[]');
       delete root.dataset.poringEsUntranslated;
-      console.log('Untranslated strings (' + list.length + '):\\n\\n' + list.join('\\n'));
+      console.log(list.join('\\n'));
       return list;
     };`;
     (document.head || document.documentElement).appendChild(bridge);
@@ -2123,7 +2131,7 @@
     e.preventDefault();
     const list = untranslatedList();
     navigator.clipboard.writeText(list.join('\n')).then(
-      () => toast(`Poring Clicker ES: ${list.length} textos sin traducir copiados al portapapeles`),
+      () => toast(`Poring Clicker ES: ${list.length - 1} textos sin traducir copiados al portapapeles`),
       () => { untranslated(); toast('Poring Clicker ES: no se pudo copiar; la lista está en la consola (F12)'); }
     );
   });
