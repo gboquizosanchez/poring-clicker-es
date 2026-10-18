@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.23.5
+// @version      1.23.6
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1940,6 +1940,7 @@
       return parts.includes(null) ? null : parts.join(', ');
     }],
     // Guilds & War of Emperium
+    [/^([\d.,]+) \/ ([\d.,]+) EXP$/i, '$1 / $2 EXP'],
     [/^! ([\d.,]+) MVPs spawn every ([\d.,]+) hours - guilds race for top damage\. Earn boss cards, zeny, and guild EXP!$/i,
       '. Cada $2 horas aparecen $1 MVP y los clanes compiten por hacer más daño. ¡Consigue cartas de jefe, zeny y EXP de clan!'],
     [/^Join ([\d.,]+) guildmates to siege castles for$/i, 'Únete a $1 compañeros de clan para asediar castillos y conseguir'],
@@ -2173,6 +2174,20 @@
     (!!el.parentElement && el.parentElement.matches('.flex-1') &&
       el === el.parentElement.firstElementChild && afterRankBadge(el.parentElement));
 
+  // Guild page: the guild name in the panel title, and each member's name
+  // (first line of the block after the "leader"/"member" role badge)
+  const ROLE_BADGE = 'span.w-12.uppercase';
+  const isGuildName = (el) => {
+    if (!/^H[1-3]$/.test(el.tagName)) return false;
+    const panel = el.closest('.bg-ro-panel');
+    return !!panel && !!panel.querySelector(ROLE_BADGE);
+  };
+  const isGuildMemberName = (el) => {
+    const box = el.parentElement;
+    return !!box && box.matches('.flex-1') && el === box.firstElementChild &&
+      !!box.previousElementSibling && box.previousElementSibling.matches(ROLE_BADGE);
+  };
+
   // Party member names: the button right above "Lv.31 Swordsman"
   const isPartyMemberName = (el) =>
     el.tagName === 'BUTTON' && el.matches('.truncate') &&
@@ -2208,8 +2223,8 @@
 
   const isPlayerText = (el) =>
     el.hasAttribute('data-poring-es-totals') || // our own totals box, already in Spanish
-    isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isNewsPost(el) ||
-    isProfileLink(el) || isLogName(el);
+    isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isGuildName(el) ||
+    isGuildMemberName(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
 
   function shouldSkip(node) {
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
