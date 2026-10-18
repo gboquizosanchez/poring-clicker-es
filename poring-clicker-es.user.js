@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.10.1
+// @version      1.11.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -325,6 +325,8 @@
     'Bonus Zeny': 'Zeny extra',
     'Bonus zeny!': '¡Zeny extra!',
     'Bonus item!': '¡Objeto extra!',
+    'Bonus card!': '¡Carta extra!',
+    'Diversity Bonus': 'Bonificación por variedad',
     'Broken!': '¡Roto!',
     'refine=': 'refinado =',
     'refine': 'refinado',
@@ -790,7 +792,23 @@
     'Glast Heim': 'Glast Heim',
     'Leaving...': 'Saliendo...',
     'Live': 'En directo',
-    'MVP Time': 'Hora MVP',
+    'Angeling': 'Angeling',
+    'Argos': 'Argos',
+    'Choco': 'Choco',
+    'Dark Blade': 'Dark Blade',
+    'Deviruchi': 'Deviruchi',
+    'Ghostring': 'Ghostring',
+    'Goblin Leader': 'Goblin Leader',
+    'Golden Bug': 'Golden Bug',
+    'Savage': 'Savage',
+    'Swordfish': 'Swordfish',
+    'Zealotus': 'Zealotus',
+    'ATK': 'ATQ',
+    'Champion Crowns': 'Coronas de campeón',
+    'Lifetime Damage': 'Daño acumulado',
+    'Lifetime Kills': 'Bajas acumuladas',
+    'Pets (': 'Mascotas (',
+    'Slotted Cards': 'Cartas insertadas',
     'This will cost': 'Esto costará',
     'auto clicker': 'autoclic',
     'vault': 'cámara acorazada',
@@ -802,6 +820,7 @@
     'Max (': 'Máx. (',
     'YouTube video player': 'Reproductor de vídeo de YouTube',
     'Checking stamina…': 'Comprobando energía…',
+    'Out of Stamina': 'Sin energía',
     'MVP Stamina loading. Checking stamina…': 'Cargando energía MVP. Comprobando energía…',
     'New party or guild messages': 'Mensajes nuevos del grupo o del clan',
     'Party only': 'Solo grupo',
@@ -1281,7 +1300,8 @@
   const INLINE_TAGS = new Set(['SPAN', 'B', 'STRONG', 'I', 'EM', 'SMALL', 'KBD', 'MARK', 'U', 'SUB', 'SUP', 'A', 'LABEL']);
   const SKIP_TAGS = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEXTAREA', 'INPUT', 'CODE', 'PRE']);
   const ATTRIBUTES = ['title', 'placeholder', 'aria-label', 'alt'];
-  const NUMERIC = /^[+\-]?[\d.,]+[kKMB]?(?:\/[\d.,]+[kKMB]?)?\s*(?:x|z|%|\/s|s)?\)?$/;
+  // Numbers with units or suffixes: "1.22T", "2.5x", "(2.5x)", "377K/1.0M", "3.0Kz"
+  const NUMERIC = /^\(?[+\-]?[\d.,]+[kKMBT]?(?:\/[\d.,]+[kKMBT]?)?\s*(?:x|z|%|\/s|s)?\)?$/;
   const MAX_TRACKED = 5000;
   const DICTIONARY_VALUES = new Set(Object.values(DICTIONARY));
   const known = new Set(DICTIONARY_VALUES); // Spanish output, never re-translated
@@ -1368,10 +1388,20 @@
   const CHAT_ROW = '.items-baseline.leading-normal';
   const isPlayerChatRow = (el) => el.matches(CHAT_ROW) && el.querySelector('button') !== null;
 
+  // The party name, chosen by its leader: the heading right before the
+  // "Copy invite link" button of the party panel.
+  const INVITE_TITLES = new Set(['Copy invite link', 'Copiar enlace de invitación']);
+  const isPartyName = (el) => {
+    const next = el.nextElementSibling;
+    return !!next && next.tagName === 'BUTTON' && INVITE_TITLES.has(next.getAttribute('title'));
+  };
+
+  const isPlayerText = (el) => isPlayerChatRow(el) || isPartyName(el);
+
   function shouldSkip(node) {
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
     while (el) {
-      if (SKIP_TAGS.has(el.tagName) || el.isContentEditable || isPlayerChatRow(el)) return true;
+      if (SKIP_TAGS.has(el.tagName) || el.isContentEditable || isPlayerText(el)) return true;
       el = el.parentElement;
     }
     return false;
@@ -1379,7 +1409,7 @@
 
   const skipFilter = {
     acceptNode: (n) =>
-      n.nodeType === Node.ELEMENT_NODE && (SKIP_TAGS.has(n.tagName) || isPlayerChatRow(n))
+      n.nodeType === Node.ELEMENT_NODE && (SKIP_TAGS.has(n.tagName) || isPlayerText(n))
         ? NodeFilter.FILTER_REJECT
         : NodeFilter.FILTER_ACCEPT,
   };
