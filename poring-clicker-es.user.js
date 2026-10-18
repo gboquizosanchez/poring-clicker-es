@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.21.4
+// @version      1.21.5
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -235,7 +235,7 @@
     'Need materials from monster drops!': '¡Necesitas materiales del botín de los monstruos!',
     'Materials': 'Materiales',
     'Card Slots (': 'Ranuras de carta (',
-    'Reroll (': 'Volver a tirar (',
+    'Reroll (': 'Relanzar (',
     'Reset (': 'Reiniciar (',
 
     // Bonuses & stat labels
@@ -355,6 +355,7 @@
     'Feed favorite food to level up. Max-level pets can evolve with materials + zeny for new forms and abilities.':
       'Dales su comida favorita para que suban de nivel. Las mascotas de nivel máximo pueden evolucionar con materiales + zeny para conseguir nuevas formas y habilidades.',
     'Aqua Shield': 'Escudo acuático',
+    'Water Veil': 'Velo de agua',
     'Banana Barrage': 'Lluvia de plátanos',
     'Battle Charge': 'Carga de batalla',
     'Blast from the Ass': 'Explosión trasera',
@@ -1489,7 +1490,8 @@
     // Refine, enchant & items
     [/^Success rate(?::\s*|\s+)(.+)$/i, 'Prob. de éxito: $1'],
     [/^Cost(?::\s*|\s+)(.+)$/i, 'Coste: $1'],
-    [/^Reroll slots \((.+?)\)\. Cost: (.+)$/i, 'Volver a tirar ranuras ($1). Coste: $2'],
+    [/^Reroll slots \((.+?)\)\. Cost: (.+)$/i, 'Relanzar ranuras ($1). Coste: $2'],
+    [/^Reroll \((.+)\)$/i, 'Relanzar ($1)'],
     [/^Quantity: (.+)$/i, 'Cantidad: $1'],
     // Zone banners: "5x EXP / Zeny / Drops!", "3x HP / EXP / Zeny - Guaranteed Drop!"
     [/^([\d.,]+x) (.+)!$/, (_, mult, rest) => '¡' + mult + ' ' + rest
