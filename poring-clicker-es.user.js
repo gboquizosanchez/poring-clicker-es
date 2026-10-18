@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.13.0
+// @version      1.13.1
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -302,7 +302,7 @@
     'Kafra': 'Kafra',
     'Kafra Auto-Attack': 'Autoataque Kafra',
     'Kafra Storage': 'Almacén Kafra',
-    'Kafra Vault': 'Cámara acorazada Kafra',
+    'Kafra Vault': 'Bóveda Kafra',
     'Card Binder': 'Carpeta de cartas',
     'Pet Kennel': 'Caseta de mascotas',
     'Weapon Rack': 'Armero',
@@ -580,7 +580,7 @@
     'Pack Rat': 'Urraca',
     'Hoarder': 'Acaparador',
     'Kafra VIP': 'VIP de Kafra',
-    'Vault Keeper': 'Guardián de la cámara',
+    'Vault Keeper': 'Guardián de la bóveda',
     'Card Binder Pro': 'Experto en carpetas',
     'Kafra Customer': 'Cliente de Kafra',
     'Fully Automated': 'Totalmente automatizado',
@@ -616,7 +616,7 @@
     'Upgrade any Kafra slot': 'Mejora cualquier ranura Kafra',
     'Max the Card Binder': 'Sube al máximo la carpeta de cartas',
     'Max the Auto-Clicker': 'Sube al máximo el autoclic',
-    'Unlock the Vault': 'Desbloquea la cámara acorazada',
+    'Unlock the Vault': 'Desbloquea la bóveda',
     'Allocate your first stat point': 'Reparte tu primer punto de atributo',
     'Unlock all name colors': 'Desbloquea todos los colores de nombre',
 
@@ -896,7 +896,7 @@
     'Slotted Cards': 'Cartas insertadas',
     'This will cost': 'Esto costará',
     'auto clicker': 'autoclic',
-    'vault': 'cámara acorazada',
+    'vault': 'bóveda',
 
     // Misc screens
     'Adventurer': 'Aventurero',
