@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.21.3
+// @version      1.21.4
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -696,6 +696,7 @@
     'Your progress was saved from another tab or device. Refresh to load the latest save.':
       'Tu progreso se ha guardado desde otra pestaña u otro dispositivo. Recarga para cargar la última partida.',
     'Refresh Now': 'Recargar ahora',
+    'A new update is available!': '¡Hay una actualización nueva!',
 
     // MVP results
     'Glorious Victory': 'Victoria gloriosa',
@@ -785,6 +786,40 @@
     'The Tyrant Is Felled': 'El tirano ha caído',
     'The Tiger Falls Silent': 'El tigre enmudece',
     'Eddga Stalks From The Tall Grass': 'Eddga acecha entre la hierba alta',
+    'Baphomet Descends With Scythe Raised': 'Baphomet desciende con la guadaña en alto',
+    'The Demon Is Banished': 'El demonio ha sido desterrado',
+    'Osiris Rises From His Tomb': 'Osiris se alza de su tumba',
+    'Drake Emerges From The Depths': 'Drake emerge de las profundidades',
+
+    // Pet details: combat stats and skills
+    'Combat stats': 'Estadísticas de combate',
+    'Combat skills': 'Habilidades de combate',
+    'Stat': 'Atributo',
+    'WoE / Pet Arena': 'WoE / Arena de mascotas',
+    'PvP / WoE': 'PvP / WoE',
+    'Attack': 'Ataque',
+    'Max HP': 'PV máx.',
+    'Defense': 'Defensa',
+    'Speed': 'Velocidad',
+    'Critical hit': 'Golpe crítico',
+    'Dodge': 'Esquiva',
+    'Block': 'Bloqueo',
+    'All allies': 'Todos los aliados',
+    'All enemies': 'Todos los enemigos',
+    'One enemy': 'Un enemigo',
+    'Lowest-HP ally': 'Aliado con menos PV',
+    '· Cooldown:': '· Reutilización:',
+    '· Level': '· Nivel',
+    'None': 'Ninguna',
+    'Attack up': 'Ataque aumentado',
+    'Defense down': 'Defensa reducida',
+    'Close pet details': 'Cerrar detalles de la mascota',
+    'Merge': 'Fusionar',
+    'No messages yet': 'Aún no hay mensajes',
+    'Be the first to say hello!': '¡Sé el primero en saludar!',
+    'Finishing party results. Please collect again in a moment.':
+      'Calculando los resultados del grupo. Vuelve a recoger la recompensa en un momento.',
+    'All Perfect!': '¡Todo perfecto!',
     'Flawless Victory': 'Victoria impecable',
     'The Pharaoh Returns To Rest': 'El faraón vuelve a descansar',
     'Osiris': 'Osiris',
@@ -1543,6 +1578,24 @@
     [/^(.+) joined the party\.$/, '$1 se ha unido al grupo.'],
     [/^([\d.,]+) active$/i, (_, n) => `${n} ${n === '1' ? 'activo' : 'activos'}`],
     [/^(.+) left the party\.$/, '$1 ha salido del grupo.'],
+    [/^(.+) was removed from the party\.$/, '$1 ha sido expulsado del grupo.'],
+
+    // Pet details: skill lines ("Attack up 12% · 2 target turns", "Damage: 1.04× Attack"…)
+    [/^· Tier ([\d.,]+)$/i, '· Rango $1'],
+    [/^([\d.,]+) turns?$/i, (_, n) => `${n} ${n === '1' ? 'turno' : 'turnos'}`],
+    [/^([\d.,]+) target turns?$/i, (_, n) => `${n} ${n === '1' ? 'turno' : 'turnos'} del objetivo`],
+    [/^Attack up ([\d.,]+%)$/i, 'Ataque +$1'],
+    [/^Defense down ([\d.,]+%)$/i, 'Defensa -$1'],
+    [/^Damage: ([\d.,]+×) Attack$/i, 'Daño: $1 ataque'],
+    [/^Shield: ([\d.,]+×) Attack$/i, 'Escudo: $1 ataque'],
+    [/^Heal: ([\d.,]+%) max HP$/i, 'Curación: $1 de los PV máx.'],
+    [/^Pet Arena cooldown: (.+)$/i, (_, cd) => `Reutilización en la Arena de mascotas: ${tr(cd).toLowerCase()}`],
+    [/^Pet details: (.+)$/i, (_, pet) => `Detalles de la mascota: ${tr(pet)}`],
+    [/^(.+) details$/, (_, pet) => {
+      const t = translateCore(pet);
+      return t == null ? null : `Detalles de ${t}`;
+    }],
+    [/^Upgrade to (.+)$/i, 'Mejorar a $1'],
     [/^Starts in (.+)$/i, 'Empieza en $1'],
     [/^(.+) bonus active$/i, (_, cls) => {
       const t = translateCore(cls);
