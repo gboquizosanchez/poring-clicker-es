@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.18.0
+// @version      1.19.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -9,6 +9,8 @@
 // @match        https://springro.com/download*
 // @match        https://springro.com/news*
 // @match        https://springro.com/rules*
+// @match        https://springro.com/transparency*
+// @match        https://springro.com/support*
 // @homepageURL  https://github.com/gboquizosanchez/poring-clicker-es
 // @updateURL    https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js
 // @downloadURL  https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js
@@ -948,6 +950,67 @@
     'No promoting or recruiting for other servers.': 'Prohibido promocionar otros servidores o reclutar para ellos.',
     'Rules are subject to change - check back regularly. Questions?': 'Las normas pueden cambiar: vuelve a consultarlas de vez en cuando. ¿Dudas?',
     'Ask on Discord': 'Pregunta en Discord',
+
+    // Transparency page
+    'Server Transparency': 'Transparencia del servidor',
+    'Card drops, GM commands and the server economy.': 'Cartas conseguidas, comandos de GM y economía del servidor.',
+    'Recent Card Drops': 'Cartas conseguidas recientemente',
+    'The latest cards found by players.': 'Las últimas cartas encontradas por los jugadores.',
+    'found': 'encontró',
+    'from': 'de',
+    'in': 'en',
+    'MVP Card Census': 'Censo de cartas MVP',
+    'MVP cards in existence': 'Cartas MVP existentes',
+    'No MVP cards exist yet': 'Todavía no hay cartas MVP',
+    'None have dropped on this server.': 'Aún no ha caído ninguna en este servidor.',
+    'GM commands & economy': 'Comandos de GM y economía',
+    'GM command log': 'Registro de comandos de GM',
+    'Browse the command log': 'Ver el registro de comandos',
+    'Open economy tracker': 'Abrir el seguimiento de la economía',
+    'Net zeny flow is zeny created minus zeny removed, server-wide.':
+      'El flujo neto de zeny es el zeny creado menos el eliminado en todo el servidor.',
+    'Item creation': 'Creación de objetos',
+    'Item removal': 'Eliminación de objetos',
+    'Zeny adjustment': 'Ajuste de zeny',
+    'Currency': 'Moneda',
+    'Box Contents': 'Contenido de las cajas',
+    'Old Blue Box': 'Caja azul antigua',
+    'Old Purple Box': 'Caja morada antigua',
+    'Old Card Album': 'Álbum de cartas antiguo',
+    'Damascus': 'Damascus',
+    'Mandragora': 'Mandragora',
+    'Martin': 'Martin',
+    'Thief Bug': 'Thief Bug',
+    'Thief Bug Larva': 'Thief Bug Larva',
+    "What's Public, What Isn't": 'Qué es público y qué no',
+    'Card drops, including who found them and where.': 'Cartas conseguidas, con quién las encontró y dónde.',
+    'Box contents and drop chances.': 'Contenido de las cajas y probabilidades de botín.',
+    'Full loot tables with the exact chance of each item.': 'Tablas de botín completas con la probabilidad exacta de cada objeto.',
+    'Server-wide zeny flow, trade totals and vending sales.':
+      'Flujo de zeny de todo el servidor, totales de intercambios y ventas en puestos.',
+    'Item and currency changes, player adjustments, bans and jails.':
+      'Cambios de objetos y moneda, ajustes a jugadores, baneos y encarcelamientos.',
+    'GM item and currency changes, and adjustments to other characters\' progression.':
+      'Cambios de objetos y moneda hechos por GM, y ajustes en la progresión de otros personajes.',
+    'GM characters\' own progression changes.': 'Cambios en la progresión de los propios personajes de los GM.',
+    'GM movement, inspections and investigations.': 'Movimientos, inspecciones e investigaciones de los GM.',
+    'Bans, jails and their reversals.': 'Baneos, encarcelamientos y su revocación.',
+    'Live player locations. Map activity is delayed.':
+      'Ubicación de los jugadores en directo. La actividad de los mapas va con retraso.',
+    'Individual trade histories and zeny logs.': 'Historiales de intercambio individuales y registros de zeny.',
+    'Players\' equipped gear, inventories, carts and storage.':
+      'El equipo, los inventarios, los carros y los almacenes de los jugadores.',
+    'Loose cards and cards slotted into equipment, across characters, carts, storage and market stalls.':
+      'Cartas sueltas e insertadas en equipo, en personajes, carros, almacenes y puestos del mercado.',
+    'Item totals and refine counts on each': 'Totales de objetos y número de refinados en la',
+    'item page': 'página de cada objeto',
+    'Questions about any of this?': '¿Dudas sobre todo esto?',
+
+    // Support page
+    'Support Tickets': 'Tickets de soporte',
+    'Need help? Open a ticket and we\'ll get back to you.': '¿Necesitas ayuda? Abre un ticket y te responderemos.',
+    'New Ticket': 'Nuevo ticket',
+    'No tickets yet.': 'Aún no tienes tickets.',
     'Choose your Linux package': 'Elige tu paquete para Linux',
     'SpringRO Linux Launcher': 'Launcher de SpringRO para Linux',
     'Portable launcher': 'Launcher portable',
@@ -1367,6 +1430,20 @@
     }],
     [/^locks a mob to you for ([\d.,]+ ?s) per hit\. Don't attack mobs others are training or chasing\.$/i,
       'te reserva el monstruo durante $1 por golpe. No ataques a monstruos que otros estén entrenando o persiguiendo.'],
+
+    // Transparency page
+    [/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2}), (\d{4})$/, (_, mon, day, year) => {
+      const mm = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].indexOf(mon) + 1;
+      return `${day.padStart(2, '0')}/${String(mm).padStart(2, '0')}/${year}`;
+    }],
+    [/^(·\s*)?\d{1,2}:\d{2} UTC$/, (m) => m],
+    [/^[a-z]{2,}_[a-z0-9_-]+$/, (m) => m], // map codes: gef_fild01, new_1-3
+    [/^Net zeny flow \((.+)\)$/i, 'Flujo neto de zeny ($1)'],
+    [/^Player trades \((.+)\)$/i, 'Intercambios entre jugadores ($1)'],
+    [/^Vending sales \((.+)\)$/i, 'Ventas en puestos ($1)'],
+    [/^See the last ([\d.,]+) drops$/i, 'Ver las últimas $1 cartas'],
+    [/^Quantity requested: (.+)$/i, 'Cantidad solicitada: $1'],
+    [/^Requested: (.+?) zeny$/i, 'Solicitado: $1 zeny'],
     [/^(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4})$/,
       (_, month, day, year) => {
         const mm = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
@@ -1634,18 +1711,54 @@
   };
   let ignoredNames = loadIgnored();
 
-  // Where an untranslated text was seen: page, plus the whole sentence it
-  // belongs to when the text is only a piece of it ("in" → "…saved the file in ~/Downloads…")
+  // Where an untranslated text was seen, so it can be translated in context:
+  //   /page · <a href="/players/x"> · sección «Recent Card Drops» · «whole sentence»
+  const clip = (text, max) => (text.length > max ? text.slice(0, max) + '…' : text);
+  const oneLine = (text) => text.replace(/\s+/g, ' ').trim();
+
+  // An element's text as the game wrote it (in English, before our changes)
+  function englishText(el) {
+    let out = '';
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    let n;
+    while ((n = walker.nextNode())) out += englishOf(n);
+    return oneLine(out);
+  }
+
+  // What kind of element holds the text: tag, plus link target / tooltip / role
+  function elementInfo(el) {
+    const attrs = ['href', 'title', 'role', 'type']
+      .map((a) => (el.getAttribute(a) ? ` ${a}="${clip(el.getAttribute(a), 40)}"` : ''))
+      .join('');
+    return `<${el.tagName.toLowerCase()}${attrs}>`;
+  }
+
+  // Nearest heading above the text: tells which panel or section it belongs to
+  function sectionOf(el) {
+    for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+      const h = a.querySelector('h1, h2, h3, h4');
+      if (h && !h.contains(el)) return clip(englishText(h), 60);
+    }
+    return '';
+  }
+
   function describe(where) {
-    if (!where) return location.pathname;
-    if (typeof where === 'string') return `${location.pathname} ${where}`;
-    const block = where.parentElement &&
-      (where.parentElement.closest('p, li, h1, h2, h3, h4, label, button, td, th') || where.parentElement);
-    const full = block ? block.textContent.replace(/\s+/g, ' ').trim() : '';
-    const text = where.nodeValue.trim();
-    return full && full !== text
-      ? `${location.pathname} «${full.length > 140 ? full.slice(0, 140) + '…' : full}»`
-      : location.pathname;
+    const parts = [location.pathname];
+    if (where && where.attr) { // attribute: placeholder, title, aria-label…
+      parts.push(`[${where.attr}] de ${elementInfo(where.el)}`);
+      const sec = sectionOf(where.el);
+      if (sec) parts.push(`sección «${sec}»`);
+      return parts.join(' · ');
+    }
+    const el = where && where.parentElement;
+    if (!el) return parts[0];
+    parts.push(elementInfo(el));
+    const section = sectionOf(el);
+    if (section) parts.push(`sección «${section}»`);
+    const block = el.closest('p, li, h1, h2, h3, h4, label, button, td, th, div') || el;
+    const full = englishText(block);
+    if (full && full !== where.nodeValue.trim()) parts.push(`«${clip(full, 140)}»`);
+    return parts.join(' · ');
   }
 
   function translateText(original, where) {
@@ -1698,8 +1811,12 @@
   const isNewsPost = (el) =>
     /^(H1|H2|H3|H4|P|LI|ARTICLE)$/.test(el.tagName) && !!el.closest('a[href^="/news/"], article');
 
+  // Links to a player's, character's or guild's page (transparency, rankings…)
+  const isProfileLink = (el) =>
+    el.tagName === 'A' && /\/(players?|characters?|chars?|guilds?)\//i.test(el.getAttribute('href') || '');
+
   const isPlayerText = (el) =>
-    isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isNewsPost(el);
+    isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isNewsPost(el) || isProfileLink(el);
 
   function shouldSkip(node) {
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
@@ -1852,7 +1969,7 @@
       if (!value) continue;
       const done = attrsSet.get(el);
       if (done && done[attr] === value) continue;
-      const translated = translateText(value, `[${attr}]`);
+      const translated = translateText(value, { el, attr });
       if (translated !== null && translated !== value) {
         el.setAttribute(attr, translated);
         attrsSet.set(el, { ...done, [attr]: translated });
