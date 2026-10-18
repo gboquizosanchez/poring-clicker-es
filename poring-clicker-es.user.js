@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.9
+// @version      1.24.10
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -2253,6 +2253,7 @@
     }],
     [/^\| Cost: ([\d.,]+) per fight$/i, '| Coste: $1 por combate'],
     [/^Fight! \((.+)\)$/i, '¡Luchar! ($1)'],
+    [/^🔥 COMEBACK BONUS - ([\d.,]+)× COINS$/i, '🔥 BONIFICACIÓN DE REMONTADA: MONEDAS ×$1'],
     [/^Win ([\d.,]+) PvP fights in a row$/i, 'Gana $1 combates PvP seguidos'],
     [/^Win ([\d.,]+) PvP fights$/i, 'Gana $1 combates PvP'],
     [/^Rating: ([\d.,]+)$/i, 'Puntuación: $1'],
@@ -2579,6 +2580,8 @@
     isRatedName(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
 
   function shouldSkip(node) {
+    if (node.nodeType === Node.TEXT_NODE && node.previousSibling &&
+        /(^|\s)vs\s*$/.test(node.previousSibling.textContent || '')) return true;
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
     while (el) {
       if (SKIP_TAGS.has(el.tagName) || el.isContentEditable || isPlayerText(el)) return true;
@@ -3007,7 +3010,9 @@
     if (/[A-Za-z]/.test(trimmed) && !NUMERIC.test(trimmed) && !DURATION.test(trimmed) && !ARENA_ID.test(trimmed)) {
       const t = translateCore(trimmed);
       if (t != null) out = text.replace(trimmed, t);
-      else if (!missing.has(trimmed) && !ignoredNames.has(trimmed)) {
+      else if (!missing.has(trimmed) && !ignoredNames.has(trimmed) &&
+          (/\s/.test(trimmed) || trimmed === trimmed.toUpperCase())) {
+        // labels are drawn in capitals; a lone mixed-case word is a player's name
         missing.set(trimmed, { page: location.pathname, element: '<canvas>', section: '', sentence: '' });
       }
     }
