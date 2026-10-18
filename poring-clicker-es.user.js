@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.4
+// @version      1.24.5
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -158,7 +158,7 @@
     'cards': 'cartas',
     'Achievements': 'Logros',
     'Cheevos': 'Logros',
-    'Ranks': 'Clasificación',
+    'Ranks': 'Ranking',
     'Leaderboard': 'Clasificación',
     'Refresh leaderboard': 'Actualizar clasificación',
     'Inventory': 'Inventario',
@@ -539,7 +539,7 @@
     'Siege Commander': 'Comandante de asedios',
     'PvP Auto Arena': 'Arena PvP automática',
     'Enter PvP Auto Arena with your pet team!': '¡Entra en la Arena PvP automática con tu equipo de mascotas!',
-    'Battle': 'Combatir',
+    'Battle': 'Lucha',
     'Fighter': 'Luchador',
     'History': 'Historial',
     'Replay': 'Repetición',
@@ -569,6 +569,50 @@
     'Remove from team': 'Quitar del equipo',
     'Remove a pet first to add this one': 'Quita antes una mascota para añadir esta',
     'Climbing the Ladder': 'Escalando la clasificación',
+    'First Duel': 'Primer duelo',
+    'First Blood (PvP)': 'Primera sangre (PvP)',
+    'Win your first PvP fight': 'Gana tu primer combate PvP',
+    'Pit Fighter': 'Luchador de foso',
+    'PvP Arena Champion': 'Campeón de la Arena PvP',
+    'Gladiator': 'Gladiador',
+    'PvP Arena Legend': 'Leyenda de la Arena PvP',
+    'Hot Streak': 'En racha',
+    'On Fire': 'Imparable',
+    'Untouchable Champion': 'Campeón intocable',
+    'Contender': 'Aspirante',
+    'Top Tier': 'Élite',
+    'Apex Predator': 'Superdepredador',
+    'Complete your first PvP fight': 'Completa tu primer combate PvP',
+    'Choose Your Opponent': 'Elige a tu rival',
+    'Confirm Match': 'Confirmar combate',
+    'Easy': 'Fácil',
+    'Even': 'Igualado',
+    'Hard': 'Difícil',
+    'Re-scout': 'Volver a explorar',
+    'Scouting...': 'Explorando...',
+    'vs you': 'frente a ti',
+    'streak': 'de racha',
+    'Level:': 'Nivel:',
+    'Prestige:': 'Prestigio:',
+    'Job:': 'Oficio:',
+    'Pets:': 'Mascotas:',
+    'Record:': 'Balance:',
+    'Fight Again': 'Volver a luchar',
+    'Fighting...': 'Luchando...',
+    'Watch Replay': 'Ver repetición',
+    'PvP Replay': 'Repetición PvP',
+    'Replay ready': 'Repetición lista',
+    'Replay playing in the main view': 'Repetición en curso en la vista principal',
+    'Play in Main View': 'Ver en la vista principal',
+    'Playback opens in the main view, not inside this panel.': 'La reproducción se abre en la vista principal, no en este panel.',
+    'Back to Field': 'Volver al campo',
+    'Venom Strike': 'Golpe venenoso',
+    'Shadow Pair': 'Dúo de sombra',
+    'Thief Bug Female': 'Thief Bug Female',
+    'Shield Broken': 'Escudo roto',
+    'Reflect': 'Reflejo',
+    'REF': 'REF',
+    'PSN': 'VEN',
     'Lv': 'Nv',
     'W/': 'V/',
     'Prev': 'Anterior',
@@ -1089,6 +1133,8 @@
     'Copy invite link': 'Copiar enlace de invitación',
     'Orc Village': 'Aldea Orca',
     'Orc Hero Bellows A War Cry': 'Orc Hero lanza un grito de guerra',
+    'Moonlight Dances Into Being': 'La luz de luna cobra vida danzando',
+    'The Spell Unravels': 'El hechizo se deshace',
     'The Tyrant Is Felled': 'El tirano ha caído',
     'The Tiger Falls Silent': 'El tigre enmudece',
     'Eddga Stalks From The Tall Grass': 'Eddga acecha entre la hierba alta',
@@ -1681,6 +1727,7 @@
     'refine success': 'éxito de refinado',
     'drops': 'botín',
     'pet dps': 'DPS de mascotas',
+    'mvp raid damage': 'daño en incursiones MVP',
     'pet arena coins': 'monedas de la Arena de mascotas',
     'guild exp': 'EXP de clan',
     'zeny drop': 'zeny obtenido',
@@ -2201,6 +2248,19 @@
       return t == null ? null : `${n}× ${t}`;
     }],
     [/^\| Cost: ([\d.,]+) per fight$/i, '| Coste: $1 por combate'],
+    [/^Fight! \((.+)\)$/i, '¡Luchar! ($1)'],
+    [/^Win ([\d.,]+) PvP fights in a row$/i, 'Gana $1 combates PvP seguidos'],
+    [/^Win ([\d.,]+) PvP fights$/i, 'Gana $1 combates PvP'],
+    [/^Lv(\s*)([\d.,]+)$/, 'Nv$1$2'],
+    [/^Shiny chance: ([\d.,]+%)$/i, 'Prob. de shiny: $1'],
+    [/^DEFEAT - (ally|enemy) side wins$/i, (_, side) =>
+      `DERROTA: gana el bando ${side.toLowerCase() === 'ally' ? 'aliado' : 'enemigo'}`],
+    [/^(.+?) takes ([\d.,]+) (\w+) damage$/, (_, unit, n, kind) =>
+      `${arenaUnits(unit)} recibe ${n} de daño por ${BONUS[kind.toLowerCase()] ?? tr(kind)}`],
+    [/^([\d.,]+)W\/([\d.,]+)L$/, '$1V/$2D'],
+    [/^Lv ([\d.,]+) P([\d.,]+)$/, 'Nv $1 P$2'],
+    // Status codes drawn on the arena canvas: "ATK_UP", "DEF_DOWN"
+    [/^[A-Z]+(?:_[A-Z]+)+$/, (code) => ARENA_STATUS[code] ?? null],
     [/^Energy: ([\d.,]+)\/([\d.,]+)$/i, 'Energía: $1/$2'],
     [/^Page ([\d.,]+)$/i, 'Página $1'],
     [/^Page ([\d.,]+) \/ ([\d.,]+)( · [\d.,]+)?$/i, (_, a, b, rest = '') => `Página ${a} / ${b}${rest}`],
@@ -2440,9 +2500,14 @@
     (el.matches('.truncate') && !!el.parentElement && el.parentElement.matches('.text-right') &&
       !!el.closest('button[aria-expanded]')) ||
     (!!el.previousElementSibling && el.previousElementSibling.textContent.trim() === 'vs');
-  // PvP Auto Arena ranking: the fighter's name is the span right before "Lv"
+  // PvP Auto Arena ranking: the fighter's name is the span right before "Lv" / "Lv99"
   const isArenaFighterName = (el) =>
-    el.tagName === 'SPAN' && !!el.nextElementSibling && /^(Lv|Nv)$/.test(el.nextElementSibling.textContent.trim());
+    el.tagName === 'SPAN' && !!el.nextElementSibling &&
+    /^(Lv|Nv)\.?\s*[\d.,]*$/.test(el.nextElementSibling.textContent.trim());
+  // PvP opponent picker: the name right after the EASY / EVEN / HARD badge
+  const OPPONENT_BADGES = new Set(['EASY', 'EVEN', 'HARD', 'FÁCIL', 'IGUALADO', 'DIFÍCIL']);
+  const isOpponentName = (el) =>
+    !!el.previousElementSibling && OPPONENT_BADGES.has(el.previousElementSibling.textContent.trim().toUpperCase());
   const isGuildMemberName = (el) => {
     const box = el.parentElement;
     return !!box && box.matches('.flex-1') && el === box.firstElementChild &&
@@ -2485,7 +2550,7 @@
   const isPlayerText = (el) =>
     el.hasAttribute('data-poring-es-totals') || // our own totals box, already in Spanish
     isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isGuildName(el) ||
-    isGuildMemberName(el) || isWoeGuildName(el) || isArenaFighterName(el) || isNewsPost(el) ||
+    isGuildMemberName(el) || isWoeGuildName(el) || isArenaFighterName(el) || isOpponentName(el) || isNewsPost(el) ||
     isProfileLink(el) || isLogName(el);
 
   function shouldSkip(node) {
