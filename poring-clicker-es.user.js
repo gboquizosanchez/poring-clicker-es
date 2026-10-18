@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.11.2
+// @version      1.11.3
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -593,6 +593,10 @@
     'Way of the Sword': 'Camino de la espada',
     'Way of Magic': 'Camino de la magia',
     'Way of the Arrow': 'Camino de la flecha',
+    'Way of Commerce': 'Camino del comercio',
+    'Way of Light': 'Camino de la luz',
+    'Way of Shadows': 'Camino de las sombras',
+    'Splash of Color': 'Toque de color',
 
     // Achievement descriptions (fixed text; the ones with numbers are in RULES)
     'Choose your first job class': 'Elige tu primera clase',
@@ -821,6 +825,7 @@
     'Goblin': 'Goblin',
     'Nightmare': 'Nightmare',
     'Marc': 'Marc',
+    'Abys': 'Abys', // seen on leaderboards; player, guild or monster, it stays the same
     'EXP': 'EXP',
     'Guild': 'Clan',
     'Members': 'Miembros',
@@ -1119,7 +1124,12 @@
     [/^Unlock ([\d.,]+) name colors$/i, 'Desbloquea $1 colores de nombre'],
     [/^Become an? (.+)$/i, (_, cls) => `Hazte ${tr(cls)}`],
     [/^Unlock (.+?) \(Prestige ([\d.,]+)\)$/i, (_, zone, n) => `Desbloquea ${tr(zone)} (Prestigio ${n})`],
-    [/^Unlock (.+)$/i, (_, zone) => `Desbloquea ${tr(zone)}`],
+    [/^Unlock your first name colou?r$/i, 'Desbloquea tu primer color de nombre'],
+    // Only when the rest translates too, so half-English text still shows up in untranslated()
+    [/^Unlock (.+)$/i, (_, what) => {
+      const t = translateCore(what);
+      return t == null ? null : `Desbloquea ${t}`;
+    }],
     [/^No (.+) in (?:the )?inventory$/i, (_, item) => `No tienes ${tr(item)} en el inventario`],
     [/^([\d.,]+)W ([\d.,]+)L$/, '$1V $2D'],
     [/^([\d.,]+ ?)ELO$/, '$1ELO'],
