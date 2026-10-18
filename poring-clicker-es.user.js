@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.13.1
+// @version      1.13.2
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -179,6 +179,8 @@
     // Chat & profile
     'Say something...': 'Escribe algo...',
     'Search...': 'Buscar...',
+    'Search…': 'Buscar…',
+    'Search': 'Buscar',
     'Send': 'Enviar',
     'Loading chat...': 'Cargando chat...',
     'Loading...': 'Cargando...',
@@ -846,6 +848,7 @@
     'Petegg': 'Huevo de mascota',
     'Loading inventory...': 'Cargando inventario...',
     'No items found.': 'No se han encontrado objetos.',
+    'Clear (': 'Limpiar (',
     'Baphomet': 'Baphomet',
     'Glast Heim': 'Glast Heim',
     'Leaving...': 'Saliendo...',
@@ -1224,6 +1227,7 @@
     [/^Equipment Drops \((.+)\)$/i, 'Botín de equipo ($1)'],
     [/^Members \((.+)\)$/i, 'Miembros ($1)'],
     [/^Characters \((.+)\)$/i, 'Personajes ($1)'],
+    [/^Clear \((.+)\)$/i, 'Limpiar ($1)'],
     [/^([\d.,]+) items?$/i, (_, n) => `${n} ${n === '1' ? 'objeto' : 'objetos'}`],
     [/^([\d.,]+)[–-]([\d.,]+) characters: English letters, numbers or symbols\. No spaces, other whitespace or double quotes\.$/i,
       '$1–$2 caracteres: letras del alfabeto inglés, números o símbolos. Sin espacios de ningún tipo ni comillas dobles.'],
@@ -1525,11 +1529,19 @@
     return false;
   }
 
+  // Form fields: never touch what the user types, but do translate their
+  // placeholder / title ("Search...", "Say something...")
+  const FIELD_TAGS = new Set(['INPUT', 'TEXTAREA']);
+
   const skipFilter = {
-    acceptNode: (n) =>
-      n.nodeType === Node.ELEMENT_NODE && (SKIP_TAGS.has(n.tagName) || isPlayerText(n))
-        ? NodeFilter.FILTER_REJECT
-        : NodeFilter.FILTER_ACCEPT,
+    acceptNode: (n) => {
+      if (n.nodeType !== Node.ELEMENT_NODE) return NodeFilter.FILTER_ACCEPT;
+      if (FIELD_TAGS.has(n.tagName)) {
+        translateAttributes(n);
+        return NodeFilter.FILTER_REJECT;
+      }
+      return SKIP_TAGS.has(n.tagName) || isPlayerText(n) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+    },
   };
 
   // English text of every node we changed, so it can be re-translated
@@ -1673,7 +1685,9 @@
       translateTextNode(root);
       return;
     }
-    if (root.nodeType !== Node.ELEMENT_NODE || shouldSkip(root)) return;
+    if (root.nodeType !== Node.ELEMENT_NODE) return;
+    if (FIELD_TAGS.has(root.tagName)) return translateAttributes(root);
+    if (shouldSkip(root)) return;
 
     translateAttributes(root);
     translateSplitText(root);
