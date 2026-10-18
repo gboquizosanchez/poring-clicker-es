@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.23.7
+// @version      1.23.8
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -2055,6 +2055,8 @@
     [/^Pick ([\d.,]+) pets? to join$/i, (_, n) => `Elige ${n} ${n === '1' ? 'mascota' : 'mascotas'} para unirte`],
     [/^(Front|Middle|Back) row · ([\d.,]+) of$/i, (_, row, n) =>
       `Fila ${{ front: 'delantera', middle: 'central', back: 'trasera' }[row.toLowerCase()]} · ${n} de`],
+    [/^([\d.,]+) defender rows?$/i, (_, n) => `${n} ${n === '1' ? 'fila' : 'filas'} de defensores`],
+    [/^Castle breather (.+)$/i, 'Descanso del castillo $1'],
     [/^([\d.,]+) tokens?$/i, (_, n) => `${n} ${n === '1' ? 'ficha' : 'fichas'}`],
     [/^([\d.,]+) guilds? queued$/i, (_, n) => `${n} ${n === '1' ? 'clan' : 'clanes'} en cola`],
     [/^(.+) rests ([\d.,]+) minutes after every siege, for every guild\. It does not heal defenders\.$/i,
@@ -2277,6 +2279,12 @@
     const panel = el.closest('.bg-ro-panel');
     return !!panel && !!panel.querySelector(ROLE_BADGE);
   };
+  // WoE: the guild holding each castle (right column of the castle button) and
+  // the guild after "vs" in the battle log ("Geffen Tower vs Faenyx")
+  const isWoeGuildName = (el) =>
+    (el.matches('.truncate') && !!el.parentElement && el.parentElement.matches('.text-right') &&
+      !!el.closest('button[aria-expanded]')) ||
+    (!!el.previousElementSibling && el.previousElementSibling.textContent.trim() === 'vs');
   const isGuildMemberName = (el) => {
     const box = el.parentElement;
     return !!box && box.matches('.flex-1') && el === box.firstElementChild &&
@@ -2319,7 +2327,7 @@
   const isPlayerText = (el) =>
     el.hasAttribute('data-poring-es-totals') || // our own totals box, already in Spanish
     isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isGuildName(el) ||
-    isGuildMemberName(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
+    isGuildMemberName(el) || isWoeGuildName(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
 
   function shouldSkip(node) {
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
