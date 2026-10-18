@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.21.0
+// @version      1.21.1
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -905,6 +905,10 @@
     'Event': 'Evento',
     'Announcement': 'Anuncio',
     'Read full post': 'Leer la entrada completa',
+    'All posts': 'Todas las entradas',
+    'Share': 'Compartir',
+    'Previous': 'Anterior',
+    'Next': 'Siguiente',
 
     // Rules page
     'Server Rules': 'Normas del servidor',
@@ -1498,7 +1502,15 @@
     [/^No (.+) records found\.$/i, (_, type) => {
       const t = translateCore(type);
       return t == null ? null : `No hay registros de ${t}.`;
-    }],    [/^(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4})$/,
+    }],
+    // "Friday, October 16, 2026" -> "viernes, 16/10/2026"
+    [/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), (.+)$/, (_, wd, date) => {
+      const t = translateCore(date);
+      const es = { Monday: 'lunes', Tuesday: 'martes', Wednesday: 'miércoles', Thursday: 'jueves',
+        Friday: 'viernes', Saturday: 'sábado', Sunday: 'domingo' }[wd];
+      return t == null ? null : `${es}, ${t}`;
+    }],
+    [/^(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4})$/,
       (_, month, day, year) => {
         const mm = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
           'September', 'October', 'November', 'December'].indexOf(month) + 1;
@@ -1861,9 +1873,14 @@
 
   // News: the posts themselves (title and excerpt) stay in English; only the
   // page around them (badges, dates, buttons) is translated
+  // On /news: the article body, its title, and the titles/excerpts of the
+  // linked posts (list cards, previous/next) stay in English
   const isNewsPost = (el) =>
-    location.pathname.startsWith('/news') &&
-    /^(H1|H2|H3|H4|P|LI|ARTICLE)$/.test(el.tagName) && !!el.closest('a[href^="/news/"], article');
+    location.pathname.startsWith('/news') && (
+      el.matches('.news-article') ||
+      (el.tagName === 'H1' && !!el.closest('article')) ||
+      (!!el.closest('a[href^="/news/"]') && (/^(H2|H3|P)$/.test(el.tagName) || el.matches('.line-clamp-2')))
+    );
 
   // Links to a player's, character's or guild's page (transparency, rankings…)
   const isProfileLink = (el) =>
