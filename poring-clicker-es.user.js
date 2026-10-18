@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.22.0
+// @version      1.22.1
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -358,6 +358,7 @@
     'Water Veil': 'Velo de agua',
     'Banana Barrage': 'Lluvia de plátanos',
     'Battle Charge': 'Carga de batalla',
+    'Battle Cry': 'Grito de batalla',
     'Blast from the Ass': 'Explosión trasera',
     'Fart': 'Pedo',
     'Jumpslash': 'Tajo saltarín',
@@ -1137,6 +1138,7 @@
     'Deviruchi': 'Deviruchi',
     'Ghostring': 'Ghostring',
     'Goblin Leader': 'Goblin Leader',
+    'Goblin Archer': 'Goblin Archer',
     'Golden Bug': 'Golden Bug',
     'Savage': 'Savage',
     'Swordfish': 'Swordfish',
@@ -1349,6 +1351,7 @@
     'auto dps': 'DPS automático',
     'buff duration': 'duración de mejoras',
     'burn': 'quemadura',
+    'click damage': 'daño por clic',
     'click dmg': 'daño por clic',
     'crit': 'crítico',
     'damage': 'daño',
@@ -1754,6 +1757,12 @@
       return t == null ? null : `¡${t}!`;
     }],
 
+    // Pet abilities: "Battle Cry: +12% click damage"
+    [/^([^:]+): ([+\-][\d.,]+%? .+)$/, (_, name, bonus) => {
+      const n = translateCore(name);
+      const b = translateCore(bonus);
+      return n == null || b == null ? null : `${n}: ${b}`;
+    }],
     // Stat bonuses: "+5% Crit", "+20 DPS", "-15% purchase costs"
     [/^([+\-][\d.,]+%?) (.+?)( \([\d.,]+x\))?$/, (_, n, term, times = '') => {
       const t = BONUS[term.toLowerCase()];
