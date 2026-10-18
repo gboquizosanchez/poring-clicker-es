@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.12.0
+// @version      1.13.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
+// @match        https://springro.com/account*
 // @homepageURL  https://github.com/gboquizosanchez/poring-clicker-es
 // @updateURL    https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js
 // @downloadURL  https://raw.githubusercontent.com/gboquizosanchez/poring-clicker-es/main/poring-clicker-es.user.js
@@ -779,6 +780,7 @@
     'Clip': 'Clip',
     'DPS': 'DPS',
     'PvP/WoE': 'PvP/WoE',
+    'PvP': 'PvP',
     'Dokebi': 'Dokebi',
     'Jellopy': 'Jellopy',
     'Lunatic': 'Lunatic',
@@ -798,6 +800,52 @@
     'Moonlight Kit': 'Cría de Moonlight',
     'Explosion Seed': 'Semilla explosiva',
     'Scroll to top': 'Volver arriba',
+
+    // Account page
+    'Account Details': 'Datos de la cuenta',
+    'Security': 'Seguridad',
+    'Email': 'Correo electrónico',
+    'New Email': 'Correo nuevo',
+    'Change Email': 'Cambiar correo',
+    'Update Email': 'Actualizar correo',
+    'Change Password': 'Cambiar contraseña',
+    'Current Password': 'Contraseña actual',
+    'New Password': 'Contraseña nueva',
+    'Confirm Password': 'Confirmar contraseña',
+    'Changing your password signs you out on every other device.':
+      'Al cambiar la contraseña se cerrará la sesión en todos los demás dispositivos.',
+    'Last IP': 'Última IP',
+    'Last Login': 'Último inicio de sesión',
+    'Logins': 'Inicios de sesión',
+    'Member Since': 'Miembro desde',
+    'Never': 'Nunca',
+    'Status:': 'Estado:',
+    'Linked': 'Vinculada',
+    'Your account is linked to': 'Tu cuenta está vinculada a',
+    'RetroAchievements': 'RetroAchievements',
+    'Characters': 'Personajes',
+    'No characters yet. Create one in-game to get started!':
+      'Aún no tienes personajes. ¡Crea uno en el juego para empezar!',
+    'Total Zeny': 'Zeny total',
+    'The side game. Tap mobs, build a party, climb the arena. Tied to this account.':
+      'El juego secundario. Toca monstruos, forma un grupo y escala en la arena. Vinculado a esta cuenta.',
+
+    // Account storage
+    'All': 'Todo',
+    'All Storage': 'Todo el almacén',
+    'Softcore Storage': 'Almacén softcore',
+    'Hardcore Storage': 'Almacén hardcore',
+    'Cart': 'Carro',
+    'Item location': 'Ubicación del objeto',
+    'Item type': 'Tipo de objeto',
+    'Usable': 'Usables',
+    'Healing': 'Curación',
+    'Ammo': 'Munición',
+    'Etc': 'Varios',
+    'Petarmor': 'Armadura de mascota',
+    'Petegg': 'Huevo de mascota',
+    'Loading inventory...': 'Cargando inventario...',
+    'No items found.': 'No se han encontrado objetos.',
     'Baphomet': 'Baphomet',
     'Glast Heim': 'Glast Heim',
     'Leaving...': 'Saliendo...',
@@ -1175,6 +1223,10 @@
     [/^ATK: ([\d.,]+) base \+ ([\d.,]+) refine\s*= ?([\d.,]+)$/i, 'ATQ: $1 base + $2 refinado = $3'],
     [/^Equipment Drops \((.+)\)$/i, 'Botín de equipo ($1)'],
     [/^Members \((.+)\)$/i, 'Miembros ($1)'],
+    [/^Characters \((.+)\)$/i, 'Personajes ($1)'],
+    [/^([\d.,]+) items?$/i, (_, n) => `${n} ${n === '1' ? 'objeto' : 'objetos'}`],
+    [/^([\d.,]+)[–-]([\d.,]+) characters: English letters, numbers or symbols\. No spaces, other whitespace or double quotes\.$/i,
+      '$1–$2 caracteres: letras del alfabeto inglés, números o símbolos. Sin espacios de ningún tipo ni comillas dobles.'],
     [/^(.+): waiting$/, '$1: esperando'],
     [/^(.+) joined the party\.$/, '$1 se ha unido al grupo.'],
     [/^([\d.,]+) active$/i, (_, n) => `${n} ${n === '1' ? 'activo' : 'activos'}`],
@@ -1221,6 +1273,11 @@
     [/^.+ \| Ragnarok Online .+ Tour$/, (m) => m],
     [/^This run: (.+)$/i, 'En esta partida: $1'],
     [/^Lv\.\s*([\d.,]+)\+$/i, 'Nv. $1+'],
+    // Party member line: "Lv.31 Swordsman"
+    [/^Lv\.(\s*)([\d.,]+) (.+)$/, (_, sp, n, cls) => {
+      const t = translateCore(cls);
+      return t == null ? null : `Nv.${sp}${n} ${t}`;
+    }],
     [/^Reach Lv\.\s*([\d.,]+) to access (.+)$/i, (_, lv, zone) => `Alcanza el Nv. ${lv} para acceder a ${tr(zone)}`],
     [/^Defeat (.+) first to unlock this mob in your current run$/i, (_, mob) =>
       `Elimina a ${tr(mob)} primero para desbloquear este monstruo en tu partida actual`],
@@ -1452,6 +1509,11 @@
     el.matches('.flex-1.truncate') &&
     !!el.previousElementSibling && el.previousElementSibling.matches('.w-5.h-5');
 
+  // Party member names: the button right above "Lv.31 Swordsman"
+  const isPartyMemberName = (el) =>
+    el.tagName === 'BUTTON' && el.matches('.truncate') &&
+    !!el.nextElementSibling && /^(Lv|Nv)\.\s*\d/.test(el.nextElementSibling.textContent.trim());
+
   const isPlayerText = (el) => isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el);
 
   function shouldSkip(node) {
@@ -1576,6 +1638,10 @@
   function translateTextNode(node) {
     if (shouldSkip(node)) return;
     if (isLootHeader(node)) return setText(node, node.nodeValue.replace('Drops', 'Botín'));
+    // Party member: keep the player's name, translate only the leader tag
+    if (node.parentElement && isPartyMemberName(node.parentElement)) {
+      return setText(node, node.nodeValue.replace('(Leader)', '(Líder)'));
+    }
     // Already translated by us and untouched since
     const o = originals.get(node);
     if (o && node.nodeValue === o.set) return;
