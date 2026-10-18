@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.23.0
+// @version      1.23.1
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -314,6 +314,11 @@
     'Card Binder': 'Carpeta de cartas',
     'Pet Kennel': 'Caseta de mascotas',
     'Weapon Rack': 'Armero',
+    'Kafra Weapon Rack': 'Armero Kafra',
+    'Homestead': 'Granja',
+    'Warp Portal': 'Portal de teletransporte',
+    'Merchant Outpost': 'Puesto de mercader',
+    'Homestead (Warp Portal, Merchant Outpost)': 'Granja (Portal de teletransporte, Puesto de mercader)',
     'Supply Depot': 'Depósito de suministros',
     'The Workshop': 'El taller',
     'Training Grounds': 'Campo de entrenamiento',
@@ -324,6 +329,8 @@
     'Pet Arena': 'Arena de mascotas',
     'Dungeon Expeditions': 'Expediciones a mazmorras',
     'Zone Events': 'Eventos de zona',
+    'Monster Invasion': 'Invasión de monstruos',
+    'Mob respawn time halved': 'Los monstruos reaparecen el doble de rápido',
     'Claim': 'Reclamar',
     'Almost there!': '¡Ya casi lo tienes!',
     'Frenzy!': '¡Frenesí!',
@@ -1141,6 +1148,7 @@
     'Ghostring': 'Ghostring',
     'Goblin Leader': 'Goblin Leader',
     'Goblin Archer': 'Goblin Archer',
+    'Flora': 'Flora',
     'Golden Bug': 'Golden Bug',
     'Savage': 'Savage',
     'Swordfish': 'Swordfish',
@@ -1217,6 +1225,8 @@
     // Zones
     'Geffen Outskirts': 'Afueras de Geffen',
     'Payon Forest': 'Bosque de Payon',
+    'Payon Cave': 'Cueva de Payon',
+    'Payon Cave dungeon': 'Mazmorra de la Cueva de Payon',
     'Prontera North': 'Prontera Norte',
     'Prontera South': 'Prontera Sur',
     'Sograt Desert': 'Desierto de Sograt',
@@ -1744,6 +1754,8 @@
     [/^Elite Mobs \((.+?) chance\)$/i, 'Monstruos élite ($1 de prob.)'],
     [/^Pets \((.+) DPS\)$/i, 'Mascotas ($1 DPS)'],
     [/^(.+) zone$/, (_, zone) => `Zona de ${tr(zone)}`],
+    [/^Pet Arena (Bronze|Silver|Gold|Platinum|Diamond) tier$/i, (_, tier) =>
+      `Arena de mascotas, rango ${ARENA_TIERS[tier[0].toUpperCase() + tier.slice(1).toLowerCase()]}`],
     [/^Pet Arena \((.+)\)$/i, (_, tier) => `Arena de mascotas (${ARENA_TIERS[tier] ?? tier})`],
     [/^Claim (.+)$/i, (_, x) => `Reclamar ${tr(x)}`],
 
