@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.0
+// @version      1.24.1
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -427,6 +427,8 @@
     'Taken': 'Recibido',
     'Healed': 'Curado',
     'Shields given': 'Escudos dados',
+    'CLEAR': 'SUPERADA',
+    'K.O.': 'K.O.',
     'KO': 'KO',
     'Mute': 'Silenciar',
     'Unmute': 'Activar sonido',
@@ -2119,6 +2121,15 @@
     [/^(.+?) gets ([A-Z_]+) \(([\d.,]+)t\)$/, (_, unit, status, turns) =>
       `${arenaUnits(unit)} recibe ${ARENA_STATUS[status] ?? status} (${turns} t)`],
     [/^(.+) \((ally|enemy)\)$/, (text) => arenaUnits(text)],
+    [/^(.+?) heals (.+) for \+([\d.,]+)$/, (_, unit, target, n) => `${arenaUnits(unit)} cura a ${arenaUnits(target)} +${n}`],
+    [/^(.+) \(Boss\)$/, (_, name) => `${tr(name)} (jefe)`],
+    [/^([\d.,]+) ticks · ([\d.,]+) events$/i, '$1 tics · $2 eventos'],
+    // Canvas headers: "TURN ORDER  ›  NEXT"
+    [/^(.+?)(\s+›\s+)(.+)$/, (_, a, sep, b) => {
+      const ta = translateCore(a);
+      const tb = translateCore(b);
+      return ta == null || tb == null ? null : `${ta}${sep}${tb}`;
+    }],
     [/^(.+?)'s shield breaks$/, (_, unit) => `Se rompe el escudo de ${arenaUnits(unit)}`],
     [/^(.+?) is defeated!$/, (_, unit) => `¡${arenaUnits(unit)} cae derrotado!`],
     [/^([\d.,]+) first \/ ([\d.,]+) repeat$/i, '$1 la 1.ª vez / $2 al repetir'],
