@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.9.6
+// @version      1.9.7
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -81,6 +81,7 @@
     'Kills': 'Bajas',
     'kills': 'bajas',
     'kills remaining': 'por eliminar',
+    'kills to discover': 'bajas para descubrirlo',
     'kills | HP:': 'bajas | PV:',
     'mobs |': 'monstruos |',
     'mobs': 'monst.',
@@ -649,6 +650,8 @@
       'La energía MVP se regenera sola. Puedes consultarla sin unirte a un grupo.',
     'Join': 'Unirse',
     'Join party': 'Unirse al grupo',
+    'Joining': 'Uniéndote',
+    'Joining...': 'Uniéndote...',
     'Join Party': 'Unirse al grupo',
     'Create': 'Crear',
     'Enter a party code to join:': 'Introduce un código de grupo para unirte:',
@@ -659,6 +662,7 @@
     'Party Job Bonuses': 'Bonificaciones de oficio del grupo',
     'Invite Link': 'Enlace de invitación',
     'Link copied!': '¡Enlace copiado!',
+    'Copied!': '¡Copiado!',
     'Party not found': 'No se ha encontrado el grupo',
     'Party not found.': 'No se ha encontrado el grupo.',
     'Invalid party code': 'Código de grupo no válido',
@@ -670,6 +674,7 @@
     'Damage': 'Daño',
     'Copy invite link to share with friends': 'Copia el enlace de invitación para compartirlo con tus amigos',
     'Disband Party': 'Disolver grupo',
+    'Leave Party': 'Salir del grupo',
     'Need 2+ party members.': 'Hacen falta 2 o más miembros en el grupo.',
 
     // MVP rhythm fight
@@ -700,6 +705,63 @@
     'Special Cards': 'Cartas especiales',
     'New': 'Nueva',
     'Scratch to reveal': 'Rasca para descubrirla',
+
+    // MVP rhythm fight: phases, judgements and live feedback
+    'Find the Beat': 'Encuentra el ritmo',
+    'Double Time': 'Doble tiempo',
+    'Finale': 'Final',
+    'Faster! Doubles, and taps over holds': '¡Más rápido! Dobles y toques sobre notas largas',
+    'Faster again! Roll the A-S-D stairs': '¡Aún más rápido! Haz la escalera A-S-D',
+    'A S D or ← ↓ →': 'A S D o ← ↓ →',
+    'hold long notes': 'mantén las notas largas',
+    'HOLD': 'MANTÉN',
+    'Keep holding for bonus…': 'Mantén pulsado para el extra…',
+    'Perfect': 'Perfecto',
+    'Good': 'Bien',
+    'Wrong': 'Error',
+    'Wrong!': '¡Error!',
+    'Great!': '¡Muy bien!',
+    'Nice!': '¡Genial!',
+    'Amazing!': '¡Increíble!',
+    'Unstoppable!': '¡Imparable!',
+    'Fever!': '¡Fiebre!',
+    'Fever!!': '¡¡Fiebre!!',
+    'Finish it!': '¡Acaba con él!',
+    'Clear!': '¡Superado!',
+    'Halfway!': '¡Mitad!',
+    'RUSH! ×': '¡RUSH! ×',
+    'Combo': 'Combo',
+    'Best': 'Mejor',
+    'BPM': 'BPM',
+    'Performance': 'Rendimiento',
+    'Party performance': 'Rendimiento del grupo',
+    'Finishing party results...': 'Calculando los resultados del grupo...',
+    'The Seas Reclaim Him': 'El mar lo reclama',
+    'early': 'pronto',
+    'late': 'tarde',
+    'on-time': 'a tiempo',
+    'dmg': 'daño',
+    'rebuilding...': 'reconstruyendo...',
+    'Connecting...': 'Conectando...',
+    '% accuracy': '% de precisión',
+    'the closer to flawless, the better your card odds': 'cuanto más cerca de la perfección, más probabilidades de carta',
+    'MVP rhythm game. A or Left arrow for left, S or Down arrow for middle, D or Right arrow for right. Press a lane as its note crosses the line; keep holding long notes for bonus points.':
+      'Juego de ritmo MVP. A o flecha izquierda para la izquierda, S o flecha abajo para el centro, D o flecha derecha para la derecha. Pulsa un carril cuando su nota cruce la línea; mantén pulsadas las notas largas para ganar puntos extra.',
+
+    // Names that stay as they are (kept here so they don't show up in untranslated())
+    'Chat': 'Chat',
+    'Discord': 'Discord',
+    'Wiki': 'Wiki',
+    'RateMyServer': 'RateMyServer',
+    'SpringRO': 'SpringRO',
+    'Poring Clicker': 'Poring Clicker',
+    'Zeny': 'Zeny',
+    'zeny': 'zeny',
+    'Collecting...': 'Recogiendo...',
+    'Drake': 'Drake',
+    'Hydra': 'Hydra',
+    'Obeaune': 'Obeaune',
+    'Vadon': 'Vadon',
     'Collect Rewards': 'Recoger recompensas',
     'Defeated': 'Derrotado',
     'Ready:': 'Listos:',
@@ -774,6 +836,9 @@
     // PvP record "205W 84L" arrives split: the letters come as their own nodes
     'W': 'V',
     'L': 'D',
+    // Rhythm accuracy "133P 12G 6M" (Perfect / Good / Miss → Perfecto / Bien / Fallo)
+    'G': 'B',
+    'M': 'F',
     'Refine succeeded!': '¡Refinado con éxito!',
     'Refine failed!': '¡El refinado ha fallado!',
     'Critical!': '¡Crítico!',
@@ -871,6 +936,7 @@
     'drop rate': 'prob. de botín',
     'drops': 'botín',
     'pet dps': 'DPS de mascotas',
+    'pet': 'mascotas',
     'poison': 'veneno',
     'purchase costs': 'coste de las compras',
     'pvp/woe hp': 'PV en PvP/WoE',
@@ -1003,6 +1069,9 @@
     [/^ATK: ([\d.,]+) base \+ ([\d.,]+) refine\s*= ?([\d.,]+)$/i, 'ATQ: $1 base + $2 refinado = $3'],
     [/^Equipment Drops \((.+)\)$/i, 'Botín de equipo ($1)'],
     [/^Members \((.+)\)$/i, 'Miembros ($1)'],
+    // Completed achievement: "Evolve any pet to Tier 2 - Claim 3000z reward!"
+    [/^(.+) - Claim (.+?) reward!$/i, (_, goal, amount) => `${tr(goal)} - ¡Reclama ${amount} de recompensa!`],
+    [/^([\d.,]+\/[\d.,]+) kills to discover$/i, '$1 bajas para descubrirlo'],
     [/^MVP RAID - (.+) appears!$/, (_, boss) => `INCURSIÓN MVP - ¡Aparece ${tr(boss)}!`],
     [/^Ready: (.+?) \(need ([\d.,]+)\+\)$/i, 'Listos: $1 (mín. $2)'],
     [/^([\d.,]+%) perfect$/i, '$1 perfectos'],
@@ -1023,8 +1092,22 @@
     [/^([\d.,]+%) to clear$/i, '$1 para superarlo'],
     [/^(Timing) ([+\-]?[\d.,]+ ?ms)$/i, (_, word, ms) =>
       `${word === word.toUpperCase() ? 'DESFASE' : 'Desfase'} ${ms}`],
-    [/^MVP Stamina ([\d.,]+) of ([\d.,]+)(\. Full)?$/i, (_, n, max, full) =>
-      `Energía MVP ${n} de ${max}` + (full ? '. Llena' : '')],
+    [/^MVP Stamina ([\d.,]+) of ([\d.,]+)(?:\. (.+))?$/i, (_, n, max, rest) =>
+      `Energía MVP ${n} de ${max}` + (rest ? `. ${tr(rest)}` : '')],
+    [/^\+([\d.,]+) in (.+)$/i, '+$1 en $2'],
+    [/^([\d.,]+%) to S$/, '$1 para la S'],
+    [/^([\d.,]+)% accuracy$/i, '$1% de precisión'],
+    [/^Rank · (.+)$/, (_, x) => `Nota · ${tr(x)}`],
+    [/^(.+): ([\d.,]+) combo, meter ([\d.,]+\/[\d.,]+)$/, '$1: combo de $2, medidor $3'],
+    [/^Party member ([\d.,]+)$/i, 'Miembro del grupo $1'],
+    [/^Phase ([\d.,]+) Bonus: (.+)$/i, 'Bonificación de la fase $1: $2'],
+    [/^CHAIN ×([\d.,]+) \+([\d.,]+)$/, 'CADENA ×$1 +$2'],
+    [/^([\d.,]+%) DOWN! \+([\d.,]+)$/, '¡$1 HECHO! +$2'],
+    // Milestone bonus: "ALMOST THERE! +800", "HALFWAY! +500"
+    [/^(.+!) \+([\d.,]+)$/, (_, x, n) => {
+      const t = translateCore(x);
+      return t == null ? null : `${t} +${n}`;
+    }],
     [/^([+\-]?[\d.,]+)% of last prestige's zeny as starting zeny$/i,
       '$1% del zeny del último prestigio como zeny inicial'],
     [/^Next: (.+)$/i, (_, x) => {
@@ -1085,10 +1168,10 @@
     [/^(Login|Character|Map) \((\d+)\): (online|offline)$/i, (_, s, port, st) =>
       `${SERVERS[s.toLowerCase()]} (${port}): ${st.toLowerCase() === 'online' ? 'en línea' : 'desconectado'}`],
 
-    // Achievement tabs with a new unlock: "Combat!", "Pets !"
+    // Achievement tabs with a new unlock: "Combat!" → "¡Combate!"
     [/^(.+?)\s*!$/, (_, x) => {
       const t = translateCore(x);
-      return t == null ? null : `${t}!`;
+      return t == null ? null : `¡${t}!`;
     }],
 
     // Stat bonuses: "+5% Crit", "+20 DPS", "-15% purchase costs"
@@ -1117,7 +1200,14 @@
   const missing = new Set();
 
   function remember(set, value) {
-    if (set.size < MAX_TRACKED) set.add(value);
+    if (set.size >= MAX_TRACKED) {
+      if (set !== known) return;
+      // Live counters keep producing new Spanish text: start over instead of
+      // silently forgetting it (which made it show up in untranslated())
+      known.clear();
+      Object.values(DICTIONARY).forEach((v) => known.add(v));
+    }
+    set.add(value);
   }
 
   // strict: compound text only counts as translated when every part is
@@ -1170,7 +1260,8 @@
     }
     const out = translateCore(trimmed);
     if (out == null) {
-      remember(missing, trimmed);
+      // Single letters (grades, keys) and text already in Spanish aren't worth listing
+      if (!/^[A-Za-z]$/.test(trimmed) && !/[áéíóúüñÁÉÍÓÚÜÑ¡¿]/.test(trimmed)) remember(missing, trimmed);
       return null;
     }
     remember(known, out);
@@ -1277,6 +1368,9 @@
   function translateTextNode(node) {
     if (shouldSkip(node)) return;
     if (isLootHeader(node)) return setText(node, node.nodeValue.replace('Drops', 'Botín'));
+    // Already translated by us and untouched since
+    const o = originals.get(node);
+    if (o && node.nodeValue === o.set) return;
     const translated = translateText(node.nodeValue);
     if (translated !== null && translated !== node.nodeValue) setText(node, translated);
   }
