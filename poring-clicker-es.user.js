@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.23.3
+// @version      1.23.4
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -352,6 +352,9 @@
     'Monster Invasion': 'Invasión de monstruos',
     'Treasure Hunter': 'Cazatesoros',
     'Element Storm': 'Tormenta elemental',
+    'Boss Rush': 'Oleada de jefes',
+    'Boss spawns repeatedly': 'El jefe aparece una y otra vez',
+    'Dungeons': 'Mazmorras',
     'Mob respawn time halved': 'Los monstruos reaparecen el doble de rápido',
     'Claim': 'Reclamar',
     'Almost there!': '¡Ya casi lo tienes!',
@@ -628,6 +631,12 @@
     'Kafra Customer': 'Cliente de Kafra',
     'Fully Automated': 'Totalmente automatizado',
     'Kafra Regular': 'Habitual de Kafra',
+    'Dungeon Crawler': 'Explorador de mazmorras',
+    'Dungeon Regular': 'Habitual de mazmorras',
+    'Dungeon Veteran': 'Veterano de mazmorras',
+    'Dungeon Master': 'Maestro de mazmorras',
+    'Dungeon Legend': 'Leyenda de mazmorras',
+    'Complete your first expedition': 'Completa tu primera expedición',
     'Perfect Build': 'Personaje perfecto',
     'Fully Allocated': 'Todo repartido',
     'Colorful': 'Colorido',
@@ -1442,6 +1451,7 @@
 
     // Goals & achievements
     // "Kill" is always "Elimina", to match "bajas" / "por eliminar"
+    [/^Complete ([\d.,]+) expeditions$/i, 'Completa $1 expediciones'],
     [/^Kill (.+?) ([\d.,]+) times$/i, (_, mob, n) => `Elimina a ${tr(mob)} ${n} veces`],
     [/^Kill all ([\d.,]+) base zone bosses$/i, 'Elimina a los $1 jefes de zona base'],
     [/^Kill all ([\d.,]+) prestige zone bosses$/i, 'Elimina a los $1 jefes de zona de prestigio'],
