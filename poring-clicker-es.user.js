@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.16
+// @version      1.24.17
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -403,6 +403,36 @@
     'Pair:': 'Dúo:',
     'Trinity:': 'Trío:',
     'Triangle:': 'Triángulo:',
+    'Bench': 'Banquillo',
+    'Pet Shop': 'Tienda',
+    'Connecting…': 'Conectando…',
+    'Loading battle…': 'Cargando combate…',
+    'Saving…': 'Guardando…',
+    'Sold': 'Vendida',
+    'Sold. Sold': 'Vendida',
+    'Empty bench': 'Banquillo vacío',
+    'Empty bench position': 'Hueco libre del banquillo',
+    'Empty bench position. Empty bench position': 'Hueco libre del banquillo',
+    'Back row': 'Fila trasera',
+    'Back row. Protected while your front row lives. Watch for Hunter Fly’s Dive.':
+      'Fila trasera. Protegida mientras viva tu fila delantera. Cuidado con el Picado de Hunter Fly.',
+    'Front row': 'Fila delantera',
+    'Front row. Enemies hit this row first. Put pets that can take a hit here.':
+      'Fila delantera. Los enemigos golpean primero esta fila. Pon aquí mascotas que aguanten golpes.',
+    'Lock shop': 'Bloquear tienda',
+    'Lock shop. Keep unsold pets for next round. Free.':
+      'Bloquear tienda. Conserva las mascotas no vendidas para la siguiente ronda. Gratis.',
+    'Lock shop. Unready to change the shop.': 'Bloquear tienda. Quita el Listo para cambiar la tienda.',
+    'Unready to change the shop.': 'Quita el Listo para cambiar la tienda.',
+    'Ready for battle': 'Listo para el combate',
+    'Unready to edit': 'Quitar Listo para editar',
+    'Buy a pet first. Ready fills open slots from your bench.':
+      'Compra antes una mascota. Al pulsar Listo, los huecos libres se llenan con el banquillo.',
+    'Lock in your team. Bench pets fill open slots. Battle starts when everyone’s ready or time runs out.':
+      'Fija tu equipo. Las mascotas del banquillo ocupan los huecos libres. El combate empieza cuando todos están listos o se acaba el tiempo.',
+    'Team locked. Click again to edit. Battle starts when everyone’s ready or time runs out.':
+      'Equipo fijado. Vuelve a hacer clic para editarlo. El combate empieza cuando todos están listos o se acaba el tiempo.',
+    'Your board changed. Try again with the current round.': 'Tu tablero ha cambiado. Inténtalo de nuevo con la ronda actual.',
 
     // Login
     'Sign in to your SpringRO account.': 'Inicia sesión en tu cuenta de SpringRO.',
@@ -1941,6 +1971,10 @@
     [/^Unlock (.+?) \(Prestige ([\d.,]+)\)$/i, (_, zone, n) => `Desbloquea ${tr(zone)} (Prestigio ${n})`],
     [/^Unlock your first name colou?r$/i, 'Desbloquea tu primer color de nombre'],
     // Only when the rest translates too, so half-English text still shows up in untranslated()
+    // Endless Tower slot locks, before the generic "Unlock X"
+    [/^Unlock ([\d.,]+) pet slots · ([\d.,]+) gold(?:\. Field ([\d.,]+) pets for ([\d.,]+)g\. ([\d.,]+\/[\d.,]+) XP; earn ([\d.,]+) XP per round to unlock it for free\.(?: Need ([\d.,]+)g more\.)?)?$/,
+      (_, n, gold, field, cost, xp, per, need) => `Desbloquear ${n} casillas · ${gold} de oro` + (field
+        ? `. Alinea ${field} mascotas por ${cost}g. ${xp} EXP; gana ${per} EXP por ronda para desbloquearla gratis.${need ? ` Te faltan ${need}g.` : ''}` : '')],
     [/^Unlock (.+)$/i, (_, what) => {
       const t = translateCore(what);
       return t == null ? null : `Desbloquea ${t}`;
@@ -2169,6 +2203,46 @@
     [/^([\d.,]+) wins ·$/i, '$1 victorias ·'],
     [/^([\d.,]+)b$/, '$1 mil M'],
     [/^Friendly fight with (.+)$/i, 'Combate amistoso con $1'],
+    // Endless Tower match: buttons, their aria-label and the status line
+    [/^([\d.,]+) gold$/, '$1 de oro'],
+    [/^([\d.,]+) gold\. Next round: ([\d.,]+)g, \+([\d.,]+)g if you win\. Every ([\d.,]+)g saved earns \+([\d.,]+)g interest \(max \+([\d.,]+)g\)\. You’d earn \+([\d.,]+)g at this balance\. Gold resets after the match\.$/,
+      '$1 de oro. Próxima ronda: $2g, +$3g si ganas. Cada $4g ahorrados dan +$5g de interés (máx. +$6g). Con este saldo ganarías +$7g. El oro se reinicia al acabar la partida.'],
+    [/^Interest \+([\d.,]+)g$/, 'Interés +$1g'],
+    [/^Interest \+([\d.,]+)g\. Each round: ([\d.,]+)g, \+([\d.,]+)g if you win\. Every ([\d.,]+)g saved earns \+([\d.,]+)g interest, up to \+([\d.,]+)g\.$/,
+      'Interés +$1g. Cada ronda: $2g, +$3g si ganas. Cada $4g ahorrados dan +$5g de interés, hasta +$6g.'],
+    [/^↻ Reroll ([\d.,]+)g$/, '↻ Renovar $1g'],
+    [/^↻ Reroll ([\d.,]+)g\. ([\d.,]+) new offers for ([\d.,]+)g\. Pet prices don’t change\.$/,
+      '↻ Renovar $1g. $2 ofertas nuevas por $3g. Los precios de las mascotas no cambian.'],
+    [/^✓ Ready ([\d.,]+\/[\d.,]+)$/, '✓ Listo $1'],
+    [/^Ready · ([\d.,]+\/[\d.,]+)$/, 'Listos · $1'],
+    [/^([\d.,]+)(?:st|nd|rd|th) pet$/, '$1.ª mascota'],
+    [/^(Back|Front) ([\d.,]+): (.+?)(\. Click a pet, then this spot\..*)?$/, (_, row, n, pet, help) =>
+      `${row === 'Back' ? 'Detrás' : 'Delante'} ${n}: ${pet === 'empty' ? 'vacío' : pet}` + (!help ? '' :
+        '. Haz clic en una mascota y luego en esta casilla.' + (row === 'Back'
+          ? ' Protegida mientras viva tu fila delantera. El Picado de Hunter Fly llega aquí.'
+          : ' Las mascotas de delante protegen la fila trasera.'))],
+    [/^(Buy|Round ends) (\d+:\d+)(?:\. ([\d.,]+)s to shop\. Battle starts early when everyone’s ready\. Everyone gets the next shop at the same time\.)?$/,
+      (_, what, time, secs) => `${what === 'Buy' ? 'Compra' : 'Fin de ronda'} ${time}` + (secs
+        ? `. ${secs} s para comprar. El combate empieza antes si todos están listos. Todos reciben la siguiente tienda a la vez.` : '')],
+    [/^Buy (.+) · ([\d.,]+) gold$/, 'Comprar $1 · $2 de oro'],
+    [/^Select (.+) on bench$/, 'Seleccionar $1 en el banquillo'],
+    [/^(.+) \(you\)$/, '$1 (tú)'],
+    [/^(.+) loses a life$/, '$1 pierde una vida'],
+    [/^(Ready for battle|Saving…|Unready to edit)\. (.+)$/, (_, a, b) => `${tr(a)}. ${tr(b)}`],
+    [/^Round ([\d.,]+)$/, 'Ronda $1'],
+    [/^Round ([\d.,]+)\. (buy|battle) phase\. ([\d.,]+) seconds\. ([\d.,]+) gold\. ([\d.,]+) (?:lives?|life)\.$/, (_, r, phase, secs, gold, lives) =>
+      `Ronda ${r}. Fase de ${phase === 'buy' ? 'compra' : 'combate'}. ${secs} s. ${gold} de oro. ${lives} ${lives === '1' ? 'vida' : 'vidas'}.`],
+    [/^Round ([\d.,]+): \+([\d.,]+)g\. ([\d.,]+) base \+ ([\d.,]+) win \+ ([\d.,]+) interest\. Interest earned on ([\d.,]+)g saved\. \+([\d.,]+) XP\.$/,
+      'Ronda $1: +$2g. $3 base + $4 por victoria + $5 de interés. Interés sobre $6g ahorrados. +$7 EXP.'],
+    [/^Round income \+([\d.,]+) gold(?:\. (.+))?$/, (_, n, rest) => `Ingresos de la ronda +${n} de oro` + (rest ? `. ${tr(rest)}` : '')],
+    [/^(Scout|Watch) (\S+)$/, (_, what, name) => `${what === 'Scout' ? 'Espiar a' : 'Ver a'} ${name}`],
+    [/^(Scout|Watch) (\S+)\. (.+): ([\d.,]+) (?:lives?|life)\. (?:Check their last team\. Click your name to see your team|Watch their fight)\.$/,
+      (_, what, name, who, lives) => `${what === 'Scout' ? 'Espiar a' : 'Ver a'} ${name}. ${who}: ${lives} ${lives === '1' ? 'vida' : 'vidas'}. ` +
+        (what === 'Scout' ? 'Mira su último equipo. Haz clic en tu nombre para ver tu equipo.' : 'Mira su combate.')],
+    [/^Team ([\d.,]+\/[\d.,]+)( · .+?)?(?:\. ([\d.,]+) slots\. Click a lock to buy more, or earn ([\d.,]+) XP per round to unlock them for free\. Moving pets is free\. Bench pets sit out\.)?$/,
+      (_, team, syn, slots, xp) => `Equipo ${team}${syn ? ' · ' + tr(syn.slice(3)) : ''}` + (slots
+        ? `. ${slots} casillas. Haz clic en un candado para comprar más o gana ${xp} EXP por ronda para desbloquearlas gratis. Mover mascotas es gratis. Las del banquillo no luchan.` : '')],
+    [/^(.+) vs (.+)$/, (m) => m],
     [/^(common|uncommon|rare|epic|legendary): ([\d.,]+%)$/i, (_, r, n) =>
       `${{ common: 'común', uncommon: 'poco común', rare: 'raro', epic: 'épico', legendary: 'legendario' }[r.toLowerCase()]}: ${n}`],
     [/^([\d.,]+) wins to unlock · ([\d.,]+)b\.$/i, '$1 victorias para desbloquear · $2 mil M.'],
@@ -3161,12 +3235,13 @@
   document.addEventListener('poring-es:canvas', () => {
     const root = document.documentElement;
     const text = root.dataset.poringEsCanvasIn || '';
+    const measure = root.dataset.poringEsCanvasMeasure === '1';
     const trimmed = text.trim();
     let out = text;
     if (/[A-Za-z]/.test(trimmed) && !NUMERIC.test(trimmed) && !DURATION.test(trimmed) && !ARENA_ID.test(trimmed)) {
       const t = translateCore(trimmed);
       if (t != null) out = text.replace(trimmed, t);
-      else if (!missing.has(trimmed) && !ignoredNames.has(trimmed) &&
+      else if (!measure && !missing.has(trimmed) && !ignoredNames.has(trimmed) &&
           (/\s/.test(trimmed) || trimmed === trimmed.toUpperCase())) {
         // labels are drawn in capitals; a lone mixed-case word is a player's name
         missing.set(trimmed, { page: location.pathname, element: '<canvas>', section: '', sentence: '' });
@@ -3180,23 +3255,27 @@
       const proto = CanvasRenderingContext2D.prototype;
       const root = document.documentElement;
       const cache = new Map();
-      const translate = (text) => {
+      const translate = (text, measure) => {
         if (typeof text !== 'string' || !/[A-Za-z]/.test(text)) return text;
-        let out = cache.get(text);
+        const key = (measure ? 'm' : 'd') + text;
+        let out = cache.get(key);
         if (out === undefined) {
           root.dataset.poringEsCanvasIn = text;
+          if (measure) root.dataset.poringEsCanvasMeasure = '1';
           document.dispatchEvent(new CustomEvent('poring-es:canvas'));
           out = root.dataset.poringEsCanvasOut ?? text;
           delete root.dataset.poringEsCanvasIn;
           delete root.dataset.poringEsCanvasOut;
-          if (cache.size > 2000) cache.clear();
-          cache.set(text, out);
+          delete root.dataset.poringEsCanvasMeasure;
+          if (cache.size > 4000) cache.clear();
+          cache.set(key, out);
         }
         return out;
       };
       for (const name of ['fillText', 'strokeText', 'measureText']) {
         const original = proto[name];
-        proto[name] = function (text, ...rest) { return original.call(this, translate(text), ...rest); };
+        const measure = name === 'measureText';
+        proto[name] = function (text, ...rest) { return original.call(this, translate(text, measure), ...rest); };
       }
     })();`;
     (document.head || document.documentElement).appendChild(canvasBridge);
