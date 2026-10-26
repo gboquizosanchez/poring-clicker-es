@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.15
+// @version      1.24.16
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -353,6 +353,56 @@
     'Search items...': 'Buscar objetos...',
     'Friendly Fight': 'Combate amistoso',
     'Free · no rewards or rating': 'Gratis · sin recompensas ni puntuación',
+    'Auto to Legendary': 'Auto hasta Legendario',
+    'Auto discards lower rolls. Stops at Legendary or when Zeny runs out.':
+      'Descarta solo las tiradas peores. Se detiene en Legendario o al quedarte sin zeny.',
+    'Legendary:': 'Legendario:',
+
+    // Endless Tower (auto battler)
+    'Endless Tower lobby': 'Sala de la Torre sin fin',
+    'Endless Tower board, bench, pet shop and match controls':
+      'Tablero, banquillo, tienda de mascotas y controles de partida de la Torre sin fin',
+    'Play': 'Jugar',
+    'Battles': 'Combates',
+    'Ranked': 'Clasificatoria',
+    'Elo': 'Elo',
+    'wins': 'victorias',
+    'How to play': 'Cómo se juega',
+    'Find match': 'Buscar partida',
+    'Loading…': 'Cargando…',
+    'No battles yet.': 'Aún no hay combates.',
+    'Next page': 'Página siguiente',
+    'Previous page': 'Página anterior',
+    'Battle log': 'Registro de combate',
+    'Battle log entries': 'Entradas del registro de combate',
+    'Battle recap': 'Resumen del combate',
+    'Last player standing': 'Último en pie',
+    'This week’s players, sorted by Elo. Your rating carries over.':
+      'Jugadores de esta semana, por Elo. Tu puntuación se mantiene.',
+    'Click a name to check their last team during shopping, or watch their fight during battle.':
+      'Haz clic en un nombre para ver su último equipo durante las compras o su combate durante la batalla.',
+    'Element bonuses': 'Bonificaciones de elemento',
+    'Slots and moving pets': 'Casillas y movimiento',
+    'Leaving and watching': 'Salir y observar',
+    'Buy pets.': 'Compra mascotas.',
+    'Two': 'Dos',
+    'matching pets of the same star level merge automatically.':
+      'mascotas iguales con las mismas estrellas se fusionan solas.',
+    'Place them.': 'Colócalas.',
+    'Hit Ready.': 'Pulsa Listo.',
+    'Click a pet, then a spot to move it. Moving is free. Bench pets sit out. Your front row protects the back until it falls.':
+      'Haz clic en una mascota y luego en una casilla para moverla. Moverla es gratis. Las del banquillo no luchan. Tu fila delantera protege a la trasera hasta que cae.',
+    'Melee pets belong in front; ranged and support pets can sit behind them. Normal attacks and single-target skills hit the enemy front row first. Hunter Fly’s Dive can reach the back. Explosion Seed and Gargoyle hit one row, front first.':
+      'Las mascotas cuerpo a cuerpo van delante; las de distancia y apoyo, detrás. Los ataques normales y las habilidades de un objetivo golpean primero la fila delantera enemiga. El Picado de Hunter Fly llega a la trasera. Semilla explosiva y Gargoyle golpean una fila, la delantera primero.',
+    'Your team keeps fighting if you leave. Hit Rejoin when you’re back to shop again.':
+      'Tu equipo sigue luchando si sales. Pulsa Volver al regresar para seguir comprando.',
+    'Gold:': 'Oro:',
+    'g each round, +': 'g por ronda, +',
+    'g if you win. Every': 'g si ganas. Cada',
+    'g.': 'g.',
+    'Pair:': 'Dúo:',
+    'Trinity:': 'Trío:',
+    'Triangle:': 'Triángulo:',
 
     // Login
     'Sign in to your SpringRO account.': 'Inicia sesión en tu cuenta de SpringRO.',
@@ -1806,6 +1856,7 @@
     'ATK%': 'ATQ',
     'Boss Dmg%': 'daño a jefes',
     'Dbl Click%': 'doble clic',
+    'Auto DPS': 'DPS automático',
   };
   // "Poring (enemy)", "p2_pet0, Lunatic (ally)": monster names stay, sides are translated
   const arenaUnits = (text) => text.split(', ').map((unit) => {
@@ -2118,6 +2169,29 @@
     [/^([\d.,]+) wins ·$/i, '$1 victorias ·'],
     [/^([\d.,]+)b$/, '$1 mil M'],
     [/^Friendly fight with (.+)$/i, 'Combate amistoso con $1'],
+    [/^(common|uncommon|rare|epic|legendary): ([\d.,]+%)$/i, (_, r, n) =>
+      `${{ common: 'común', uncommon: 'poco común', rare: 'raro', epic: 'épico', legendary: 'legendario' }[r.toLowerCase()]}: ${n}`],
+    [/^([\d.,]+) wins to unlock · ([\d.,]+)b\.$/i, '$1 victorias para desbloquear · $2 mil M.'],
+    [/^([\d.,]+) lives\.$/i, '$1 vidas.'],
+    [/^Each loss costs one\. Lose ([\d.,]+) fights and you’re out\.$/i, 'Cada derrota cuesta una. Pierde $1 combates y quedas fuera.'],
+    [/^([\d.,]+) players\. Everyone starts with the same gold and no pets\.$/i,
+      '$1 jugadores. Todos empiezan con el mismo oro y sin mascotas.'],
+    [/^They cost ([\d.,]+)–([\d.,]+)g\.$/i, 'Cuestan $1–$2g.'],
+    [/^Start with ([\d.,]+) slots\. Buy more by clicking a lock, up to ([\d.,]+)\. Tanks in front, damage and support in back\.$/i,
+      'Empiezas con $1 casillas. Compra más haciendo clic en un candado, hasta $2. Tanques delante; daño y apoyo detrás.'],
+    [/^You get ([\d.,]+)s to shop\. The fight starts early if everyone’s ready\. Top ([\d.,]+) counts for achievements\. Take ([\d.,]+)(?:st|nd|rd|th) to earn a Tower Crest\.$/i,
+      'Tienes $1 s para comprar. El combate empieza antes si todos están listos. Quedar entre los $2 primeros cuenta para los logros. Queda $3.º para ganar un emblema de la torre.'],
+    [/^Locks show the price to field ([\d.,]+), ([\d.,]+) or ([\d.,]+) pets\. XP also unlocks slots for free: you get ([\d.,]+) XP per round, with new slots at ([\d.,]+), ([\d.,]+) and ([\d.,]+) XP\.$/i,
+      'Los candados muestran el precio para alinear $1, $2 o $3 mascotas. La EXP también desbloquea casillas gratis: ganas $4 EXP por ronda y se abren casillas nuevas con $5, $6 y $7 EXP.'],
+    [/^Fire → Earth → Wind → Water → Fire\. Each deals ([\d.,]+%) more damage to the next element\.$/i,
+      'Fuego → Tierra → Viento → Agua → Fuego. Cada uno hace un $1 más de daño al siguiente elemento.'],
+    [/^g you save earns \+([\d.,]+)g interest, up to \+$/i, 'g ahorrados dan +$1g de interés, hasta +'],
+    [/^two different pets of one element gain \+([\d.,]+%) ATK and \+([\d.,]+%) HP\.$/i,
+      'dos mascotas distintas de un elemento ganan +$1 de ATQ y +$2 de PV.'],
+    [/^three different pets of one element gain \+([\d.,]+%) ATK, \+([\d.,]+%) HP and \+([\d.,]+%) crit\. Replaces Pair\.$/i,
+      'tres mascotas distintas de un elemento ganan +$1 de ATQ, +$2 de PV y +$3 de crítico. Sustituye a Dúo.'],
+    [/^three different elements from fire, water, wind and earth give the whole team \+([\d.,]+%) ATK and \+([\d.,]+%) HP\.$/i,
+      'tres elementos distintos entre fuego, agua, viento y tierra dan a todo el equipo +$1 de ATQ y +$2 de PV.'],
     [/^Party is full \(max ([\d.,]+)\)$/i, 'El grupo está lleno (máx. $1)'],
     [/^All ([\d.,]+) pets evolved to Tier ([\d.,]+)( or beyond)? and max fed$/i, (_, n, tier, more) =>
       `Las ${n} mascotas evolucionadas al rango ${tier}${more ? ' o más' : ''} y bien alimentadas`],
@@ -2302,6 +2376,8 @@
     [/^(.+?) shields (.+) \(([\d.,]+)\)$/, (_, unit, target, n) => `${arenaUnits(unit)} protege a ${arenaUnits(target)} (${n})`],
     [/^(.+?) gets ([A-Z_]+) \(([\d.,]+)t\)$/, (_, unit, status, turns) =>
       `${arenaUnits(unit)} recibe ${ARENA_STATUS[status] ?? status} (${turns} t)`],
+    [/^(.+?) gets ([A-Z_]+) \(([\d.,]+) actions?\)$/, (_, unit, status, n) =>
+      `${arenaUnits(unit)} recibe ${ARENA_STATUS[status] ?? status} (${n} ${n === '1' ? 'acción' : 'acciones'})`],
     [/^(.+) \((ally|enemy)\)$/, (text) => arenaUnits(text)],
     [/^(.+?) heals (.+) for \+([\d.,]+)$/, (_, unit, target, n) => `${arenaUnits(unit)} cura a ${arenaUnits(target)} +${n}`],
     [/^(.+) \(Boss\)$/, (_, name) => `${tr(name)} (jefe)`],
@@ -2541,7 +2617,7 @@
     const out = translateCore(trimmed);
     if (out == null) {
       // Single letters (grades, keys) and text already in Spanish aren't worth listing
-      if (!/^[A-Za-z]$/.test(trimmed) && !/[áéíóúüñÁÉÍÓÚÜÑ¡¿]/.test(trimmed) &&
+      if (!(where && where.quiet) && !/^[A-Za-z]$/.test(trimmed) && !/[áéíóúüñÁÉÍÓÚÜÑ¡¿]/.test(trimmed) &&
           !missing.has(trimmed) && missing.size < MAX_TRACKED) {
         missing.set(trimmed, describe(where));
       }
@@ -2812,7 +2888,7 @@
       if (!value) continue;
       const done = attrsSet.get(el);
       if (done && done[attr] === value) continue;
-      const translated = translateText(value, { el, attr });
+      const translated = translateText(value, { el, attr, quiet: attr === 'title' && value.trim() === el.textContent.trim() });
       if (translated !== null && translated !== value) {
         el.setAttribute(attr, translated);
         attrsSet.set(el, { ...done, [attr]: translated });
