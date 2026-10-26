@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.14
+// @version      1.24.15
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -331,6 +331,35 @@
     'Training Grounds': 'Campo de entrenamiento',
     'Lucky Charm': 'Amuleto de la suerte',
     'Kafra Lucky Charm': 'Amuleto de la suerte Kafra',
+    'lucky charm': 'amuleto de la suerte',
+    'Kafra Card Binder': 'Carpeta de cartas Kafra',
+    'Homestead (Herb Garden, Forge)': 'Granja (Huerto de hierbas, Forja)',
+    'Build and upgrade facilities for permanent bonuses. Upgrades persist through rebirth.':
+      'Construye y mejora instalaciones para obtener bonificaciones permanentes. Las mejoras se conservan al renacer.',
+    'Herb Garden': 'Huerto de hierbas',
+    'Forge': 'Forja',
+    'Library': 'Biblioteca',
+    'Watchtower': 'Atalaya',
+    'Training Dojo': 'Dojo de entrenamiento',
+    'Card Recycler': 'Recicladora de cartas',
+    'Exchange': 'Intercambio',
+    'Legendary enchants': 'Encantamientos legendarios',
+    'Tower Crests:': 'Emblemas de la torre:',
+    'Reach': 'Alcanza el',
+    'to upgrade further': 'para seguir mejorando',
+    'Prismatic': 'Prismático',
+    'WoE Tokens:': 'Fichas de WoE:',
+    "Inventory's empty.": 'El inventario está vacío.',
+    'Search items...': 'Buscar objetos...',
+    'Friendly Fight': 'Combate amistoso',
+    'Free · no rewards or rating': 'Gratis · sin recompensas ni puntuación',
+
+    // Login
+    'Sign in to your SpringRO account.': 'Inicia sesión en tu cuenta de SpringRO.',
+    'Username': 'Usuario',
+    'Password': 'Contraseña',
+    'Forgot password?': '¿Has olvidado la contraseña?',
+    'Logging in...': 'Iniciando sesión...',
     'Guilds & MVP Raids': 'Clanes e incursiones MVP',
 
     // Guilds, War of Emperium & Pet Arena shop
@@ -956,6 +985,24 @@
     'Fully Allocated': 'Todo repartido',
     'Colorful': 'Colorido',
     'Full Spectrum': 'Espectro completo',
+    'Homeowner': 'Casa propia',
+    'Build your first homestead building': 'Construye tu primer edificio de la granja',
+    'Renovation': 'Reforma',
+    'Estate Owner': 'Terrateniente',
+    'Dream Home': 'Casa de ensueño',
+    'MVP Cardbook': 'Álbum MVP',
+    'Perfect MVP Cardbook': 'Álbum MVP perfecto',
+    'Collect all non-MVP cards': 'Consigue todas las cartas no MVP',
+    'Legendary Set': 'Conjunto legendario',
+    'High Roller': 'Gran apostador',
+    'Kafra Maxed': 'Kafra al máximo',
+    'Max every Kafra upgrade except Legendary enchant chance.':
+      'Sube al máximo todas las mejoras Kafra salvo la prob. de encantamiento legendario.',
+    'Finish an MVP encounter all-Perfect or have the best damage performance':
+      'Acaba un encuentro MVP todo en Perfecto o con el mejor daño',
+    'First Win': 'Primera victoria',
+    'Tower Winner': 'Triunfo en la torre',
+    'Tower Regular': 'Habitual de la torre',
     'Stat Builder': 'Primeros atributos',
     'Specialized': 'Especializado',
     'Way of the Sword': 'Camino de la espada',
@@ -2048,6 +2095,30 @@
     [/^Collect all cards and merge every one to Tier ([\d.,]+)$/i,
       'Consigue todas las cartas y fusiónalas todas hasta el rango $1'],
     [/^Merge your first card to Tier ([\d.,]+)$/i, 'Fusiona tu primera carta hasta el rango $1'],
+    [/^Collect all non-MVP cards and merge every one to Tier ([\d.,]+)$/i,
+      'Consigue todas las cartas no MVP y fusiónalas todas hasta el rango $1'],
+    [/^Collect all ([\d.,]+) MVP cards$/i, 'Consigue las $1 cartas MVP'],
+    [/^Get all ([\d.,]+) MVP cards to Tier ([\d.,]+)$/i, 'Sube las $1 cartas MVP al rango $2'],
+    [/^Equip all ([\d.,]+) pieces with Legendary enchantments$/i, 'Equipa las $1 piezas con encantamientos legendarios'],
+    [/^Equip max card slots on all ([\d.,]+) pieces: ([\d.,]+) on your weapon and ([\d.,]+) on each other piece$/i,
+      'Llena las ranuras de carta de las $1 piezas: $2 en el arma y $3 en cada una de las demás'],
+    [/^Reach ([\d.,]+) total homestead levels( \(all maxed\))?$/i, (_, n, max) =>
+      `Alcanza ${n} niveles de granja en total${max ? ' (todo al máximo)' : ''}`],
+    [/^Unlock all ([\d.,]+) shop name colors$/i, 'Desbloquea los $1 colores de nombre de la tienda'],
+    [/^Finish in the top ([\d.,]+) in Endless Tower once\.$/i, 'Acaba entre los $1 primeros de la Torre sin fin una vez.'],
+    [/^Finish in the top ([\d.,]+) in Endless Tower ([\d.,]+) times\.$/i, 'Acaba entre los $1 primeros de la Torre sin fin $2 veces.'],
+    [/^Finish in the top ([\d.,]+) in Endless Tower ([\d.,]+) times to unlock\. ([\d.,]+) zeny$/i,
+      'Acaba entre los $1 primeros de la Torre sin fin $2 veces para desbloquearlo. $3 zeny'],
+    [/^Finish in the top ([\d.,]+) in Endless Tower ([\d.,]+) times\. Unlocks Prismatic in the name color shop for ([\d.,]+) billion zeny\.$/i,
+      'Acaba entre los $1 primeros de la Torre sin fin $2 veces. Desbloquea Prismático en la tienda de colores de nombre por $3 mil millones de zeny.'],
+    [/^Consumes your crests\. Each permanently transfers ([\d.,]+) percentage points from Common to Legendary\. Other rarities stay the same\.$/i,
+      'Consume tus emblemas. Cada uno pasa para siempre $1 puntos porcentuales de Común a Legendario. Las demás rarezas no cambian.'],
+    [/^· \+([\d.,]+%) each$/i, '· +$1 cada uno'],
+    [/^Respawn: ([\d.,]+)ms \(([\d.,]+%) faster\)$/i, 'Reaparición: $1 ms ($2 más rápida)'],
+    [/^([\d.,]+) wins ·$/i, '$1 victorias ·'],
+    [/^([\d.,]+)b$/, '$1 mil M'],
+    [/^Friendly fight with (.+)$/i, 'Combate amistoso con $1'],
+    [/^Party is full \(max ([\d.,]+)\)$/i, 'El grupo está lleno (máx. $1)'],
     [/^All ([\d.,]+) pets evolved to Tier ([\d.,]+)( or beyond)? and max fed$/i, (_, n, tier, more) =>
       `Las ${n} mascotas evolucionadas al rango ${tier}${more ? ' o más' : ''} y bien alimentadas`],
     [/^Reach Lv\s*([\d.,]+), Job Lv\s*([\d.,]+), all stats allocated, and all slots equipped$/i,
@@ -2335,6 +2406,7 @@
   const NUMERIC = /^\(?[+\-]?[\d.,]+[kKMBT]?(?:\/[\d.,]+[kKMBT]?)?\s*(?:x|z|%|\/s|s)?\)?$/;
   // Countdowns and durations: "9m 57s", "1h 30m", "10m" (the same in Spanish)
   const DURATION = /^\(?(?:\d+\s*[dhms]\s*)+\)?$/;
+  const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   // Enchantment grade tags: "[C]", "[R]"…
   const GRADE_TAG = /^\[[A-Z]\]$/;
   const MAX_TRACKED = 5000;
@@ -2463,7 +2535,7 @@
     if (ignoredNames.has(trimmed)) return null;
     // Damage pop-ups ("1230!") get the Spanish opening mark
     if (/^[\d.,]+[kKMB]?!$/.test(trimmed)) return original.replace(trimmed, () => '¡' + trimmed);
-    if (!trimmed || !/[A-Za-z]/.test(trimmed) || NUMERIC.test(trimmed) || DURATION.test(trimmed) || GRADE_TAG.test(trimmed) || known.has(trimmed)) {
+    if (!trimmed || !/[A-Za-z]/.test(trimmed) || NUMERIC.test(trimmed) || DURATION.test(trimmed) || GRADE_TAG.test(trimmed) || EMAIL.test(trimmed) || known.has(trimmed)) {
       return null;
     }
     const out = translateCore(trimmed);
