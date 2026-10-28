@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.17
+// @version      1.24.18
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1825,6 +1825,78 @@
     'Score': 'Puntuación',
     'You': 'Tú',
     'Unknown': 'Desconocido',
+
+    // Items, pet synergies and misc labels
+    'Alarm': 'Alarm',
+    'Clock': 'Clock',
+    'Clock Tower Manager': 'Clock Tower Manager',
+    'Punk': 'Punk',
+    'Kyrie Eleison': 'Kyrie Eleison',
+    'Clockwork Blade': 'Hoja mecánica',
+    'Clockwork Suit': 'Traje mecánico',
+    'Gear Ring': 'Anillo de engranaje',
+    'Greaves': 'Grebas',
+    'Nature\'s Gift': 'Don de la naturaleza',
+    'Dust Front': 'Frente de polvo',
+    'Living Bulwark': 'Baluarte viviente',
+    '🟢 heal': '🟢 curar',
+    'Blue Potion': 'Poción azul',
+    'Yellow Gemstone': 'Gema amarilla',
+    'Unholy Thread': 'Hilo profano',
+    'Ghostring Shard': 'Fragmento de Ghostring',
+    'Rune Pieces:': 'Fragmentos de runa:',
+    'Cave Explorer': 'Explorador de cuevas',
+    'weapon rack': 'armero',
+    'Steam Pressure': 'Presión de vapor',
+    'Tailwind': 'Viento de cola',
+    'Wildfire': 'Fuego salvaje',
+    'Stun Chance': 'Prob. de aturdir',
+    'Trample': 'Pisotón',
+    'Weakened - taking extra damage': 'Debilitado: recibe más daño',
+    'Submit Ticket': 'Enviar ticket',
+
+    // PvP Auto Arena & Endless Tower
+    'Lobby': 'Sala de espera',
+    'Lobby. Back to the lobby.': 'Sala de espera. Volver a la sala de espera.',
+    'Search players': 'Buscar jugadores',
+    'No players found.': 'No se han encontrado jugadores.',
+    'Match finished': 'Combate finalizado',
+    'Opponents': 'Rivales',
+    'rating': 'puntuación',
+    'Replay open': 'Repetición abierta',
+    'Test Current Build': 'Probar la build actual',
+    'Stop': 'Detener',
+    'damage over time': 'daño continuo',
+    'damage and healing reduction': 'daño y reducción de curación',
+    'Burn': 'Quemadura',
+    'Fast': 'Rápido',
+    'Mammonite': 'Mammonite',
+    'Twilight Pact': 'Pacto del crepúsculo',
+    'Water Formation': 'Formación de agua',
+    'Rain of Arrows': 'Lluvia de flechas',
+    'Missing materials': 'Faltan materiales',
+    '⚔ Win streak active - opponents will be tougher.': '⚔ Racha de victorias activa: los rivales serán más duros.',
+
+    // War of Emperium & guilds
+    'Joined': 'Unido',
+    'Leave Team': 'Abandonar equipo',
+    'Leave guild?': '¿Abandonar el clan?',
+    'Yes': 'Sí',
+    'officer': 'oficial',
+    'full team': 'equipo completo',
+    'full teams': 'equipos completos',
+    'guild': 'clan',
+    'guilds': 'clanes',
+    'queued': 'en cola',
+    'Guild cooldown': 'Reutilización del clan',
+    'Guild must be': 'El clan debe tener',
+    'days old (currently': 'días (ahora',
+    'd)': 'd)',
+    'Waiting for teammates ·': 'Esperando a compañeros ·',
+    '· ★ marks yours': '· ★ marca los tuyos',
+    'Changing pets keeps your place.': 'Cambiar de mascotas mantiene tu puesto.',
+    'PvP uses a shared stat baseline. Allocated points have 40% effect, falling to 20% beyond 50 points. Crits deal double damage and help accuracy; blocked hits cannot crit. Pet crit caps at 35%.':
+      'El PvP usa una base de estadísticas compartida. Los puntos asignados tienen un 40% de efecto, que baja al 20% a partir de 50 puntos. Los críticos hacen doble daño y mejoran la precisión; los golpes bloqueados no pueden ser críticos. El crítico de las mascotas tiene un límite del 35%.',
   };
 
   // ---------------------------------------------------------------------------
@@ -1887,6 +1959,7 @@
     'Boss Dmg%': 'daño a jefes',
     'Dbl Click%': 'doble clic',
     'Auto DPS': 'DPS automático',
+    'Pet DPS%': 'DPS de mascotas',
   };
   // "Poring (enemy)", "p2_pet0, Lunatic (ally)": monster names stay, sides are translated
   const arenaUnits = (text) => text.split(', ').map((unit) => {
@@ -1895,7 +1968,7 @@
   }).join(', ');
   const ARENA_STATUS = {
     ATK_UP: 'ATQ ↑', ATK_DOWN: 'ATQ ↓', DEF_UP: 'DEF ↑', DEF_DOWN: 'DEF ↓',
-    STUN: 'aturdimiento', POISON: 'veneno', BURN: 'quemadura', SLEEP: 'sueño',
+    STUN: 'aturdimiento', POISON: 'veneno', BURN: 'quemadura', SLEEP: 'sueño', EVADE_UP: 'ESQ ↑',
   };
   const ARENA_TIERS = { Bronze: 'Bronce', Silver: 'Plata', Gold: 'Oro', Platinum: 'Platino', Diamond: 'Diamante' };
 
@@ -2450,8 +2523,11 @@
     [/^(.+?) shields (.+) \(([\d.,]+)\)$/, (_, unit, target, n) => `${arenaUnits(unit)} protege a ${arenaUnits(target)} (${n})`],
     [/^(.+?) gets ([A-Z_]+) \(([\d.,]+)t\)$/, (_, unit, status, turns) =>
       `${arenaUnits(unit)} recibe ${ARENA_STATUS[status] ?? status} (${turns} t)`],
-    [/^(.+?) gets ([A-Z_]+) \(([\d.,]+) actions?\)$/, (_, unit, status, n) =>
-      `${arenaUnits(unit)} recibe ${ARENA_STATUS[status] ?? status} (${n} ${n === '1' ? 'acción' : 'acciones'})`],
+    [/^(.+?) gets ([A-Z_]+) \(([\d.,]+) actions?\)(?:: (.+))?$/, (_, unit, status, n, effect) =>
+      `${arenaUnits(unit)} recibe ${ARENA_STATUS[status] ?? status} (${n} ${n === '1' ? 'acción' : 'acciones'})` +
+      (effect ? `: ${tr(effect)}` : '')],
+    [/^(.+?)'s shield blocks ([A-Z_]+)$/, (_, unit, status) =>
+      `El escudo de ${arenaUnits(unit)} bloquea ${ARENA_STATUS[status] ?? status}`],
     [/^(.+) \((ally|enemy)\)$/, (text) => arenaUnits(text)],
     [/^(.+?) heals (.+) for \+([\d.,]+)$/, (_, unit, target, n) => `${arenaUnits(unit)} cura a ${arenaUnits(target)} +${n}`],
     [/^(.+) \(Boss\)$/, (_, name) => `${tr(name)} (jefe)`],
@@ -2536,6 +2612,43 @@
       const t = translateCore(item);
       return t == null ? null : `${n} ${t}`;
     }],
+    // Cooldowns, pet stats and PvP Auto Arena
+    [/^([\d.,]+) own actions?$/i, (_, n) => `${n} ${n === '1' ? 'acción propia' : 'acciones propias'}`],
+    [/^Crit Rate \(([\d.,]+%) cap\)$/i, 'Prob. de crítico (límite $1)'],
+    [/^([\d.,]+%) chance pet attack deals ([\d.,]+)x damage$/i,
+      '$1 de prob. de que el ataque de la mascota cause daño x$2'],
+    [/^View (.+)['’]s profile$/, 'Ver el perfil de $1'],
+    [/^Match finished\. ([\d.,]+)s to shop\. Battle starts early when everyone’s ready\. Everyone gets the next shop at the same time\.$/,
+      'Combate finalizado. $1 s para comprar. El combate empieza antes si todos están listos. Todos reciben la siguiente tienda a la vez.'],
+    [/^([\d.,]+) energy ·$/i, '$1 de energía ·'],
+    // The page ends these with the one-character ellipsis: (.) keeps whatever it sent
+    [/^(Fighting|Rolling)(.)$/, (_, word, dot) => `${word === 'Fighting' ? 'Luchando' : 'Tirando'}${dot}`],
+    [/^Free · ([\d.,]+) trials?$/i, 'Gratis · $1 pruebas'],
+    [/^Poison: ([\d.,]+)% maximum HP per action and ([\d.,]+)% less healing received$/i,
+      'Veneno: $1% de los PV máx. por acción y $2% menos de curación recibida'],
+    [/^\+([\d.,]+)% (.+) for all members$/i, (_, n, stat) => {
+      const name = BONUS[stat.toLowerCase()];
+      return name == null ? null : `+${n}% de ${name} para todos los miembros`;
+    }],
+    [/^\+([\d.,]+)% (.+) \(total \+([\d.,]+)%\), max members: ([\d.,]+)$/i, (_, n, stat, total, max) => {
+      const name = BONUS[stat.toLowerCase()];
+      return name == null ? null : `+${n}% de ${name} (total +${total}%), máx. de miembros: ${max}`;
+    }],
+    [/^\+([\d.,]+)% expedition rewards, guild emblem unlocked$/i,
+      '+$1% de recompensas de expediciones, emblema de clan desbloqueado'],
+    [/^\+([\d.,]+)% damage per kill this cycle \(caps \+([\d.,]+)%\)$/i,
+      '+$1% de daño por baja en este ciclo (límite +$2%)'],
+    [/^Waiting for teammates · ([\d.,]+\/[\d.,]+)$/, 'Esperando a compañeros · $1'],
+    [/^· yours #([\d.,]+)$/, '· tu clan: n.º $1'],
+    [/^An attack needs one pet from each of ([\d.,]+) different guildmates\. It will not start with fewer\.$/,
+      'Un ataque necesita una mascota de cada uno de $1 compañeros de clan distintos. No empieza con menos.'],
+    [/^Your guild attacks (.+) at most once every ([\d.,]+) minutes\. Other castles have separate timers\.$/,
+      (_, castle, n) => `Tu clan ataca el ${tr(castle)} como máximo una vez cada ${n} minutos. Los demás castillos tienen temporizadores propios.`],
+    [/^Out · #([\d.,]+)$/, 'Eliminado · #$1'],
+    [/^Finished #([\d.,]+)$/, 'Puesto #$1'],
+    [/^([+\-−]?[\d.,]+) Elo$/, '$1 Elo'],
+    // Pet names with their star rank: "Hunter Fly ★★", the name keeps its RO spelling
+    [/^(.+?) (★+)$/, (_, pet, stars) => `${tr(pet)} ${stars}`],
     // Rewards: "+5 White Herb"
     [/^\+([\d.,]+) (.+)$/, (_, n, item) => `+${n} ${tr(item)}`],
   ];
