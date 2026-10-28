@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.24
+// @version      1.24.25
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -320,6 +320,11 @@
     'Kafra Vault': 'Bóveda Kafra',
     'Card Binder': 'Carpeta de cartas',
     'Pet Kennel': 'Caseta de mascotas',
+    'pet kennel': 'caseta de mascotas',
+    'Kafra Training Grounds': 'Campo de entrenamiento Kafra',
+    'No expedition bonus': 'Sin bonus de expedición',
+    'Time limit reached · decided by remaining HP': 'Límite de tiempo alcanzado · decide los PV restantes',
+    'Time up - winner by HP advantage': 'Tiempo agotado: gana quien tenga ventaja de PV',
     'Weapon Rack': 'Armero',
     'Kafra Weapon Rack': 'Armero Kafra',
     'Homestead': 'Granja',
@@ -843,8 +848,12 @@
     // Items (names with an established community name, like Jellopy, stay as-is)
     'Apple': 'Manzana',
     'Unripe Apple': 'Manzana verde',
+    'Unripe Apples': 'Manzanas verdes',
     'Green Herb': 'Hierba verde',
+    'Green Herbs': 'Hierbas verdes',
+    'Apples': 'Manzanas',
     'White Herb': 'Hierba blanca',
+    'White Herbs': 'Hierbas blancas',
     'Empty Bottle': 'Botella vacía',
     'Feather': 'Pluma',
     'Fluff': 'Pelusa',
@@ -852,6 +861,7 @@
     'Shell': 'Concha',
     'Sticky Mucus': 'Moco pegajoso',
     'Orange Juice': 'Zumo de naranja',
+    'OJ': 'Zumo de naranja',
     'Tooth of Bat': 'Colmillo de murciélago',
     'Chrysalis': 'Crisálida',
     'Crystal Blue': 'Cristal azul',
@@ -2101,7 +2111,7 @@
     [/^Prestige ([\d.,]+)$/i, 'Prestigio $1'],
     [/^Level ([\d.,]+)$/i, 'Nivel $1'],
     [/^Lv\.\s*([\d.,]+)$/i, 'Nv. $1'],
-    [/^card binder: Lv\.\s*([\d.,]+)$/i, 'carpeta de cartas: Nv. $1'],
+    [/^(card binder|pet kennel): Lv\.\s*([\d.,]+)$/i, (_, name, n) => `${tr(name)}: Nv. ${n}`],
     [/^Weapon Lv\.?\s*([\d.,/]+)$/i, 'Nv. de arma $1'],
     [/^Refine: (.+)$/i, (_, x) => `Refinado: ${tr(x)}`],
     [/^ATK ([\d.,]+)$/, 'ATQ $1'],
@@ -2302,7 +2312,9 @@
     [/^Respawn: ([\d.,]+)ms \(([\d.,]+%) faster\)$/i, 'Reaparición: $1 ms ($2 más rápida)'],
     [/^Attack speed: ([\d.,]+)ms(?: \(([\d.,]+%) faster\))?$/i,
       (_, ms, pct) => `Velocidad de ataque: ${ms} ms${pct ? ` (${pct} más rápida)` : ''}`],
+    [/^-([\d.,]+%) expedition time$/i, '-$1 de tiempo de expedición'],
     [/^\+([\d.,]+%) all EXP gain$/i, '+$1 de toda la EXP ganada'],
+    [/^([\d.,]+) OJ$/, (_, n) => `${n} ${n === '1' ? 'Zumo' : 'Zumos'} de naranja`],
     [/^Start with (.+ \+ .+)$/i, (_, items) => `Empiezas con ${items.split(' + ').map(tr).join(' + ')}`],
     [/^Start with ([\d.,]+) cheapest pets?$/i,
       (_, n) => `Empiezas con ${n} ${n === '1' ? 'mascota más barata' : 'mascotas más baratas'}`],
