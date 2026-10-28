@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.21
+// @version      1.24.22
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -864,6 +864,10 @@
     'Manteau': 'Manto',
     'Muffler': 'Bufanda',
     'Sandals': 'Sandalias',
+    'Boots': 'Botas',
+    'Coat': 'Abrigo',
+    'Silver Ring': 'Anillo de plata',
+    'Swordbreaker': 'Rompespadas',
     'Shoes': 'Zapatos',
     'Safety Ring': 'Anillo de seguridad',
     'Critical Ring': 'Anillo crítico',
@@ -881,6 +885,9 @@
     'HP Recovery': 'Recuperación de PV',
     'Heal': 'Curar',
     'Blessing': 'Bendición',
+    'Holy Blessing': 'Bendición sagrada',
+    'Continue (No Reward)': 'Continuar (sin recompensa)',
+    'card binder': 'carpeta de cartas',
     'Increase AGI': 'Aumentar AGI',
     'Cold Bolt': 'Rayo de hielo',
     'Fire Bolt': 'Rayo de fuego',
@@ -2085,6 +2092,7 @@
     [/^Prestige ([\d.,]+)$/i, 'Prestigio $1'],
     [/^Level ([\d.,]+)$/i, 'Nivel $1'],
     [/^Lv\.\s*([\d.,]+)$/i, 'Nv. $1'],
+    [/^card binder: Lv\.\s*([\d.,]+)$/i, 'carpeta de cartas: Nv. $1'],
     [/^Weapon Lv\.?\s*([\d.,/]+)$/i, 'Nv. de arma $1'],
     [/^Refine: (.+)$/i, (_, x) => `Refinado: ${tr(x)}`],
     [/^ATK ([\d.,]+)$/, 'ATQ $1'],
