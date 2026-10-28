@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.19
+// @version      1.24.20
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -2806,6 +2806,12 @@
     return info;
   }
 
+  // "Owned" beside a piece of gear ("Equipment Drops" list) is masculine; for cards it stays "Conseguidas"
+  const isGearOwned = (text, node) => {
+    const list = text === 'Owned' && node && node.parentElement && node.parentElement.closest('.space-y-0\\.5');
+    return !!list && /^(Equipment Drops|Botín de equipo)/.test(list.firstElementChild.textContent.trim());
+  };
+
   function translateText(original, where) {
     const trimmed = original.trim();
     if (ignoredNames.has(trimmed)) return null;
@@ -2814,7 +2820,7 @@
     if (!trimmed || !/[A-Za-z]/.test(trimmed) || NUMERIC.test(trimmed) || DURATION.test(trimmed) || GRADE_TAG.test(trimmed) || EMAIL.test(trimmed) || known.has(trimmed)) {
       return null;
     }
-    const out = translateCore(trimmed);
+    const out = isGearOwned(trimmed, where) ? 'Conseguido' : translateCore(trimmed);
     if (out == null) {
       // Single letters (grades, keys) and text already in Spanish aren't worth listing
       if (!(where && where.quiet) && !/^[A-Za-z]$/.test(trimmed) && !/[áéíóúüñÁÉÍÓÚÜÑ¡¿]/.test(trimmed) &&
@@ -3272,10 +3278,7 @@
     frame.src = `https://www.youtube.com/embed/${DEFAULT_BG_VIDEO}?autoplay=1&mute=1&controls=0&` +
       `modestbranding=1&rel=0&disablekb=1&playsinline=1&iv_load_policy=3&fs=0&start=5&loop=1&` +
       `playlist=${DEFAULT_BG_VIDEO}`;
-    const vignette = document.createElement('div');
-    vignette.className = 'absolute inset-0';
-    vignette.style.background = 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%)';
-    box.append(frame, vignette);
+    box.append(frame);
     return box;
   }
 
