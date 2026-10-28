@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.22
+// @version      1.24.23
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -323,6 +323,8 @@
     'Weapon Rack': 'Armero',
     'Kafra Weapon Rack': 'Armero Kafra',
     'Homestead': 'Granja',
+    'Homestead Watchtower': 'Atalaya de la granja',
+    'Kafra Supply Depot': 'Depósito de suministros Kafra',
     'Warp Portal': 'Portal de teletransporte',
     'Merchant Outpost': 'Puesto de mercader',
     'Homestead (Warp Portal, Merchant Outpost)': 'Granja (Portal de teletransporte, Puesto de mercader)',
@@ -1829,6 +1831,7 @@
     'Demon': 'Demonio',
     'Demi-Human': 'Semihumano',
     'Demihuman': 'Semihumano',
+    'No EXP bonus': 'Sin bonus de EXP',
     'No buff bonus': 'Sin bonus de mejoras',
     'No refine bonus': 'Sin bonus de refinado',
     'Angel': 'Ángel',
@@ -2291,6 +2294,11 @@
       'Consume tus emblemas. Cada uno pasa para siempre $1 puntos porcentuales de Común a Legendario. Las demás rarezas no cambian.'],
     [/^· \+([\d.,]+%) each$/i, '· +$1 cada uno'],
     [/^Respawn: ([\d.,]+)ms \(([\d.,]+%) faster\)$/i, 'Reaparición: $1 ms ($2 más rápida)'],
+    [/^Attack speed: ([\d.,]+)ms(?: \(([\d.,]+%) faster\))?$/i,
+      (_, ms, pct) => `Velocidad de ataque: ${ms} ms${pct ? ` (${pct} más rápida)` : ''}`],
+    [/^\+([\d.,]+%) all EXP gain$/i, '+$1 de toda la EXP ganada'],
+    [/^Start with ([\d.,]+) cheapest pets?$/i,
+      (_, n) => `Empiezas con ${n} ${n === '1' ? 'mascota más barata' : 'mascotas más baratas'}`],
     [/^([\d.,]+) wins ·$/i, '$1 victorias ·'],
     [/^([\d.,]+)b$/, '$1 mil M'],
     [/^Friendly fight with (.+)$/i, 'Combate amistoso con $1'],
