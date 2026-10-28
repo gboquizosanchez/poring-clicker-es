@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.23
+// @version      1.24.24
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -856,6 +856,10 @@
     'Chrysalis': 'Crisálida',
     'Crystal Blue': 'Cristal azul',
     'Knife': 'Cuchillo',
+    'Combat Knife': 'Cuchillo de combate',
+    'Crystal Pumps': 'Zapatos de cristal',
+    'Ragamuffin Manteau': 'Manto andrajoso',
+    'Ring': 'Anillo',
     'Cutter': 'Cúter',
     'Stiletto': 'Estilete',
     'Sword': 'Espada',
@@ -1858,6 +1862,8 @@
     '🟢 heal': '🟢 curar',
     'Blue Potion': 'Poción azul',
     'Yellow Gemstone': 'Gema amarilla',
+    'Yggdrasil Seed': 'Semilla de Yggdrasil',
+    'Ghost Hunter': 'Cazafantasmas',
     'Unholy Thread': 'Hilo profano',
     'Ghostring Shard': 'Fragmento de Ghostring',
     'Rune Pieces:': 'Fragmentos de runa:',
@@ -2297,6 +2303,7 @@
     [/^Attack speed: ([\d.,]+)ms(?: \(([\d.,]+%) faster\))?$/i,
       (_, ms, pct) => `Velocidad de ataque: ${ms} ms${pct ? ` (${pct} más rápida)` : ''}`],
     [/^\+([\d.,]+%) all EXP gain$/i, '+$1 de toda la EXP ganada'],
+    [/^Start with (.+ \+ .+)$/i, (_, items) => `Empiezas con ${items.split(' + ').map(tr).join(' + ')}`],
     [/^Start with ([\d.,]+) cheapest pets?$/i,
       (_, n) => `Empiezas con ${n} ${n === '1' ? 'mascota más barata' : 'mascotas más baratas'}`],
     [/^([\d.,]+) wins ·$/i, '$1 victorias ·'],
@@ -2493,6 +2500,8 @@
       '. Cada $2 horas aparecen $1 MVP y los clanes compiten por hacer más daño. ¡Consigue cartas de jefe, zeny y EXP de clan!'],
     [/^Join ([\d.,]+) guildmates to siege castles for$/i, 'Únete a $1 compañeros de clan para asediar castillos y conseguir'],
     [/^\+([\d.,]+)% damage for all members$/i, '+$1% de daño para todos los miembros'],
+    [/^\+([\d.,]+)% damage for all members \(total \+([\d.,]+)%\)$/i,
+      '+$1% de daño para todos los miembros (total +$2%)'],
     [/^(.+) \(shared cap with (.+)\)$/i, (_, bonus, castle) => {
       const t = translateCore(bonus);
       return t == null ? null : `${t} (límite compartido con ${tr(castle)})`;
