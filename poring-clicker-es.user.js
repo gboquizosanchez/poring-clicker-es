@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.18
+// @version      1.24.19
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -326,6 +326,9 @@
     'Warp Portal': 'Portal de teletransporte',
     'Merchant Outpost': 'Puesto de mercader',
     'Homestead (Warp Portal, Merchant Outpost)': 'Granja (Portal de teletransporte, Puesto de mercader)',
+    'Homestead (Training Dojo, Library)': 'Granja (Dojo de entrenamiento, Biblioteca)',
+    'Kafra Pet Kennel': 'Caseta de mascotas Kafra',
+    'Glast Heim dungeon': 'Mazmorra de Glast Heim',
     'Supply Depot': 'Depósito de suministros',
     'The Workshop': 'El taller',
     'Training Grounds': 'Campo de entrenamiento',
@@ -1818,6 +1821,9 @@
     'buff': 'mejora',
     'Demon': 'Demonio',
     'Demi-Human': 'Semihumano',
+    'Demihuman': 'Semihumano',
+    'No buff bonus': 'Sin bonus de mejoras',
+    'No refine bonus': 'Sin bonus de refinado',
     'Angel': 'Ángel',
     'Dragon': 'Dragón',
     'Rank': 'Puesto',
@@ -1874,6 +1880,10 @@
     'Twilight Pact': 'Pacto del crepúsculo',
     'Water Formation': 'Formación de agua',
     'Rain of Arrows': 'Lluvia de flechas',
+    'Light/Dark Duality': 'Dualidad de luz y oscuridad',
+    'Shadow Formation': 'Formación de sombra',
+    '↩ team reflect': '↩ reflejo del equipo',
+    'Watch': 'Ver',
     'Missing materials': 'Faltan materiales',
     '⚔ Win streak active - opponents will be tougher.': '⚔ Racha de victorias activa: los rivales serán más duros.',
 
@@ -2622,7 +2632,8 @@
       'Combate finalizado. $1 s para comprar. El combate empieza antes si todos están listos. Todos reciben la siguiente tienda a la vez.'],
     [/^([\d.,]+) energy ·$/i, '$1 de energía ·'],
     // The page ends these with the one-character ellipsis: (.) keeps whatever it sent
-    [/^(Fighting|Rolling)(.)$/, (_, word, dot) => `${word === 'Fighting' ? 'Luchando' : 'Tirando'}${dot}`],
+    [/^(Fighting|Rolling|Testing)(.)$/, (_, word, dot) =>
+      `${{ Fighting: 'Luchando', Rolling: 'Tirando', Testing: 'Probando' }[word]}${dot}`],
     [/^Free · ([\d.,]+) trials?$/i, 'Gratis · $1 pruebas'],
     [/^Poison: ([\d.,]+)% maximum HP per action and ([\d.,]+)% less healing received$/i,
       'Veneno: $1% de los PV máx. por acción y $2% menos de curación recibida'],
@@ -2644,6 +2655,8 @@
       'Un ataque necesita una mascota de cada uno de $1 compañeros de clan distintos. No empieza con menos.'],
     [/^Your guild attacks (.+) at most once every ([\d.,]+) minutes\. Other castles have separate timers\.$/,
       (_, castle, n) => `Tu clan ataca el ${tr(castle)} como máximo una vez cada ${n} minutos. Los demás castillos tienen temporizadores propios.`],
+    [/^Card drop rate: ([\d.,]+)x$/i, 'Prob. de obtener cartas: x$1'],
+    [/^\+([\d.,]+)% refine success rate$/i, '+$1% de éxito de refinado'],
     [/^Out · #([\d.,]+)$/, 'Eliminado · #$1'],
     [/^Finished #([\d.,]+)$/, 'Puesto #$1'],
     [/^([+\-−]?[\d.,]+) Elo$/, '$1 Elo'],
@@ -3213,7 +3226,14 @@
     'button[data-poring-es-system]>svg{visibility:hidden}' +
     `button[data-poring-es-system]::after{content:"";position:absolute;inset:0;margin:auto;width:1rem;height:1rem;` +
     `background:currentColor;-webkit-mask:url("${MONITOR_ICON}") center/contain no-repeat;` +
-    `mask:url("${MONITOR_ICON}") center/contain no-repeat}`;
+    `mask:url("${MONITOR_ICON}") center/contain no-repeat}` +
+    // Light mode: element badges ("Neutro 2", "Viento 2", "Tierra 2"...) are pale text on a pale tint,
+    // whatever the hue, so they are all darkened the same way
+    'html[data-theme="light"] span.text-\\[9px\\].px-1.rounded[class*="/20"]{filter:brightness(.5)}' +
+    // Light mode: a monster panel with no map picture keeps its white, shadowed text on a light panel
+    // (unless our default video is behind it)
+    'html[data-theme="light"] .bg-ro-panel.min-h-\\[380px\\]:not([style*="background"]):not(:has([data-poring-es-bg])) ' +
+    ':is(.text-white,[class*="text-white/"]){color:#1f2937;text-shadow:none!important}';
   document.documentElement.appendChild(themeStyle);
 
   document.addEventListener('click', (e) => {
@@ -3235,6 +3255,39 @@
   const pending = new Set();
   let scheduled = false;
 
+  // Zones without a map video get a Ragnarok Online map tour as background
+  const DEFAULT_BG_VIDEO = 'bq-86q-Jszw'; // Payon Forest - Nano East
+  const BG_FRAME_STYLE = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);' +
+    'min-width:180%;min-height:180%;border:0';
+
+  function makeBackground() {
+    const box = document.createElement('div');
+    box.className = 'absolute inset-0 z-0 pointer-events-none overflow-hidden';
+    box.dataset.poringEsBg = '';
+    const frame = document.createElement('iframe');
+    frame.title = 'Payon Forest - Nano East | Ragnarok Online Map Tour';
+    frame.allow = 'autoplay; encrypted-media';
+    frame.referrerPolicy = 'strict-origin-when-cross-origin';
+    frame.style.cssText = BG_FRAME_STYLE;
+    frame.src = `https://www.youtube.com/embed/${DEFAULT_BG_VIDEO}?autoplay=1&mute=1&controls=0&` +
+      `modestbranding=1&rel=0&disablekb=1&playsinline=1&iv_load_policy=3&fs=0&start=5&loop=1&` +
+      `playlist=${DEFAULT_BG_VIDEO}`;
+    const vignette = document.createElement('div');
+    vignette.className = 'absolute inset-0';
+    vignette.style.background = 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%)';
+    box.append(frame, vignette);
+    return box;
+  }
+
+  function addDefaultBackground() {
+    for (const panel of document.querySelectorAll('.bg-ro-panel.min-h-\\[380px\\]')) {
+      const mine = panel.querySelector(':scope > [data-poring-es-bg]');
+      const gameHasOwn = [...panel.querySelectorAll('iframe')].some((f) => !mine || !mine.contains(f));
+      if (gameHasOwn) mine?.remove();
+      else if (!mine) panel.prepend(makeBackground());
+    }
+  }
+
   function flushPending() {
     scheduled = false;
     observer.disconnect();
@@ -3242,6 +3295,7 @@
       if (node.isConnected) translateTree(node);
     }
     pending.clear();
+    addDefaultBackground();
     translateTitle();
     updateZoneTotals();
     updateThemeButtons();
@@ -3286,6 +3340,7 @@
   function start() {
     translateTitle();
     translateTree(document.body);
+    addDefaultBackground();
     updateZoneTotals();
     observe();
     applySystemTheme();
