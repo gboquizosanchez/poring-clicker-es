@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.20
+// @version      1.24.21
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -3235,11 +3235,7 @@
     `mask:url("${MONITOR_ICON}") center/contain no-repeat}` +
     // Light mode: element badges ("Neutro 2", "Viento 2", "Tierra 2"...) are pale text on a pale tint,
     // whatever the hue, so they are all darkened the same way
-    'html[data-theme="light"] span.text-\\[9px\\].px-1.rounded[class*="/20"]{filter:brightness(.5)}' +
-    // Light mode: a monster panel with no map picture keeps its white, shadowed text on a light panel
-    // (unless our default video is behind it)
-    'html[data-theme="light"] .bg-ro-panel.min-h-\\[380px\\]:not([style*="background"]):not(:has([data-poring-es-bg])) ' +
-    ':is(.text-white,[class*="text-white/"]){color:#1f2937;text-shadow:none!important}';
+    'html[data-theme="light"] span.text-\\[9px\\].px-1.rounded[class*="/20"]{filter:brightness(.5)}';
   document.documentElement.appendChild(themeStyle);
 
   document.addEventListener('click', (e) => {
