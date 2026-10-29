@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.37
+// @version      1.24.38
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1974,6 +1974,23 @@
     'days old (currently': 'días (ahora',
     'd)': 'd)',
     'Waiting for teammates ·': 'Esperando a compañeros ·',
+    'Waiting line': 'Cola de espera',
+    'Leave the Line': 'Salir de la cola',
+    'Your pet joins the next available team automatically. You can close the game.':
+      'Tu mascota se une automáticamente al siguiente equipo disponible. Puedes cerrar el juego.',
+    'Waiting line ·': 'Cola de espera ·',
+    'Attackers': 'Atacantes',
+    'Defenders': 'Defensores',
+    'Defense held': 'Defensa mantenida',
+    'Siege Failed': 'Asedio fallido',
+    'Dismiss': 'Descartar',
+    'Neutral Anchor': 'Ancla neutra',
+    'next round': 'siguiente ronda',
+    'Revive': 'Revivir',
+    'A holy pet and a shadow pet sharpen each other': 'Una mascota sagrada y una de sombra se potencian entre sí',
+    'Neutral pets stabilize a flexible lineup': 'Las mascotas neutrales estabilizan una alineación flexible',
+    'You stay joined. The server checks the whole team again when these timers finish.':
+      'Sigues apuntado. El servidor vuelve a comprobar todo el equipo cuando terminen estos temporizadores.',
     '· ★ marks yours': '· ★ marca los tuyos',
     'Changing pets keeps your place.': 'Cambiar de mascotas mantiene tu puesto.',
     'PvP uses a shared stat baseline. Allocated points have 40% effect, falling to 20% beyond 50 points. Crits deal double damage and help accuracy; blocked hits cannot crit. Pet crit caps at 35%.':
@@ -2743,6 +2760,8 @@
       '+$1% de daño por baja en este ciclo (límite +$2%)'],
     [/^Waiting for teammates · ([\d.,]+\/[\d.,]+)$/, 'Esperando a compañeros · $1'],
     [/^· yours #([\d.,]+)$/, '· tu clan: n.º $1'],
+    [/^· your guild #([\d.,]+)$/, '· tu clan: n.º $1'],
+    [/^Team full · you['’]d be #([\d.,]+) in line$/, 'Equipo completo · serías el n.º $1 de la cola'],
     [/^An attack needs one pet from each of ([\d.,]+) different guildmates\. It will not start with fewer\.$/,
       'Un ataque necesita una mascota de cada uno de $1 compañeros de clan distintos. No empieza con menos.'],
     [/^Your guild attacks (.+) at most once every ([\d.,]+) minutes\. Other castles have separate timers\.$/,
