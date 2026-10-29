@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.30
+// @version      1.24.31
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -377,6 +377,11 @@
     'Battles': 'Combates',
     'Ranked': 'Clasificatoria',
     'Elo': 'Elo',
+    'Round': 'Ronda',
+    'Won': 'Ganada',
+    'Lost': 'Perdida',
+    'Last match: #': 'Último combate: #',
+    'Back to the lobby.': 'Volver al vestíbulo.',
     'wins': 'victorias',
     'How to play': 'Cómo se juega',
     'Find match': 'Buscar partida',
@@ -2724,6 +2729,8 @@
     [/^Out · #([\d.,]+)$/, 'Eliminado · #$1'],
     [/^Finished #([\d.,]+)$/, 'Puesto #$1'],
     [/^([+\-−]?[\d.,]+) Elo$/, '$1 Elo'],
+    [/^· ([+\-−]?[\d.,]+) Elo$/, '· $1 Elo'],
+    [/^Watch round ([\d.,]+) from (\d{4})-(\d{2})-(\d{2})$/i, 'Ver la ronda $1 del $4/$3/$2'],
     // Pet names with their star rank: "Hunter Fly ★★", the name keeps its RO spelling
     [/^(.+?) (★+)$/, (_, pet, stars) => `${tr(pet)} ${stars}`],
     // Rewards: "+5 White Herb"
@@ -2950,6 +2957,11 @@
       (!!el.nextSibling && el.nextSibling.nodeType === Node.TEXT_NODE &&
         /^\s*\((Opponent|Rival)\)/.test(el.nextSibling.nodeValue)));
 
+  // Tournament ranking: the name span right before "1382 Elo"
+  const isEloName = (el) =>
+    el.tagName === 'SPAN' && !!el.nextElementSibling &&
+    /^[\d.,]+ Elo$/.test(el.nextElementSibling.textContent.trim());
+
   // WoE: the guild holding each castle (right column of the castle button) and
   // the guild after "vs" in the battle log ("Geffen Tower vs Faenyx")
   const isWoeGuildName = (el) =>
@@ -3011,7 +3023,7 @@
     el.hasAttribute('data-poring-es-totals') || // our own totals box, already in Spanish
     isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isGuildName(el) ||
     isGuildMemberName(el) || isWoeGuildName(el) || isArenaFighterName(el) || isOpponentName(el) ||
-    isRatedName(el) || isProfileButton(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
+    isRatedName(el) || isEloName(el) || isProfileButton(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
 
   function shouldSkip(node) {
     if (node.nodeType === Node.TEXT_NODE && node.previousSibling &&
