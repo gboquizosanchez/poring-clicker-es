@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.28
+// @version      1.24.29
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1336,6 +1336,12 @@
     'Flawless Victory': 'Victoria impecable',
     'The Pharaoh Returns To Rest': 'El faraón vuelve a descansar',
     'Osiris': 'Osiris',
+    'Sohee': 'Sohee',
+    'Cruiser': 'Cruiser',
+    'Isis': 'Isis',
+    'Myst Case': 'Myst Case',
+    'Thief Bug F.': 'Thief Bug F.',
+    'Spirit': 'Espíritu',
     'Clicker': 'Clicker',
     'Clip': 'Clip',
     'DPS': 'DPS',
@@ -2006,6 +2012,8 @@
     'Dbl Click%': 'doble clic',
     'Auto DPS': 'DPS automático',
     'Pet DPS%': 'DPS de mascotas',
+    'Drop%': 'botín',
+    'Zeny%': 'zeny',
   };
   // "Poring (enemy)", "p2_pet0, Lunatic (ally)": monster names stay, sides are translated
   const arenaUnits = (text) => text.split(', ').map((unit) => {
@@ -2928,8 +2936,12 @@
   };
   // PvP screens: the opponent's name, followed by "Rating: 1098" or "(Opponent)"
   const isRatedName = (el) =>
-    el.tagName === 'SPAN' && !!el.nextElementSibling &&
-    /^((Rating|Puntuación):|\((Opponent|Rival)\)$)/.test(el.nextElementSibling.textContent.trim());
+    el.tagName === 'SPAN' && (
+      (!!el.nextElementSibling &&
+        /^((Rating|Puntuación):|\((Opponent|Rival)\)$)/.test(el.nextElementSibling.textContent.trim())) ||
+      // PvP Replay: "(Opponent)" is a bare text node after the name span
+      (!!el.nextSibling && el.nextSibling.nodeType === Node.TEXT_NODE &&
+        /^\s*\((Opponent|Rival)\)/.test(el.nextSibling.nodeValue)));
 
   // WoE: the guild holding each castle (right column of the castle button) and
   // the guild after "vs" in the battle log ("Geffen Tower vs Faenyx")
