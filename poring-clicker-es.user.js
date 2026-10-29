@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.36
+// @version      1.24.37
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1352,6 +1352,11 @@
     'Soul Link': 'Enlace de almas',
     'Pack Hunter': 'Cazador de manada',
     'Golden Shield': 'Escudo dorado',
+    'War Cry': 'Grito de guerra',
+    'Ancient Root': 'Raíz ancestral',
+    'Holy Light': 'Luz sagrada',
+    'Shadow Cloak': 'Capa de sombras',
+    'Shadow Robe': 'Túnica de sombras',
     'Cursed Manteau': 'Manto maldito',
     'Tower Conqueror': 'Conquistador de la torre',
     'Max Level': 'Nivel máximo',
@@ -2360,6 +2365,7 @@
     [/^([\d.,]+%) chance kills have double drop rate$/i, '$1 de probabilidad de que las bajas tengan doble tasa de botín'],
     [/^\+([\d.,]+%) DPS per other owned pet$/i, '+$1 de DPS por cada otra mascota que tengas'],
     [/^\+([\d.,]+%) bonus auto-attack damage$/i, '+$1 de daño extra de autoataque'],
+    [/^\+([\d.,]+%) damage to all attacks$/i, '+$1 de daño en todos los ataques'],
     [/^\+([\d.,]+%) consumable buff duration$/i, '+$1 de duración de mejoras de consumibles'],
     [/^Pet attacks hit twice \(2x pet DPS\)$/i, 'Los ataques de la mascota golpean dos veces (x2 DPS de mascota)'],
     [/^\+([\d.,]+%) all EXP gain$/i, '+$1 de toda la EXP ganada'],
