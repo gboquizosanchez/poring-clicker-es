@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.26
+// @version      1.24.27
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1781,6 +1781,7 @@
     'Success': 'Éxito',
     'Failed': 'Fallido',
     'MAX': 'MÁX.',
+    'Max Enhanced!': '¡Mejora al máximo!',
     '(MAX)': '(MÁX.)',
     '(max': '(máx.',
     '(cd:': '(reutil.:',
@@ -2655,7 +2656,7 @@
     [/^Permanent \+([\d.,]+)% damage \(survives prestige\)$/i, '+$1% de daño permanente (se conserva al hacer prestigio)'],
     // Expeditions: "10m | Power: 100\", "Select party (1-3 pets):"
     [/^Select party \(([\d.,]+)-([\d.,]+) pets\):$/i, 'Elige el grupo ($1-$2 mascotas):'],
-    [/^(\S+) \| Power: ([\d.,]+)$/i, '$1 | Poder: $2'],
+    [/^([\dhms ]+) \| Power: ([\d.,]+)$/i, '$1 | Poder: $2'],
     // Zone events: "2x zeny from all kills", "+50% damage to all mobs"
     [/^\+([\d.,]+)% damage to all mobs$/i, '+$1% de daño a todos los monstruos'],
     [/^([\d.,]+)x (zeny|EXP) from all kills$/i, (_, n, what) =>
