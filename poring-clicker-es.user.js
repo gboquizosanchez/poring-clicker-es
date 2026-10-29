@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.25
+// @version      1.24.26
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -337,6 +337,7 @@
     'Kafra Pet Kennel': 'Caseta de mascotas Kafra',
     'Glast Heim dungeon': 'Mazmorra de Glast Heim',
     'Supply Depot': 'Depósito de suministros',
+    'supply depot': 'depósito de suministros',
     'The Workshop': 'El taller',
     'Training Grounds': 'Campo de entrenamiento',
     'Lucky Charm': 'Amuleto de la suerte',
@@ -1739,6 +1740,14 @@
     'Byalan Island': 'Isla Byalan',
     'Clock Tower': 'Torre del Reloj',
     'Toy Factory': 'Fábrica de Juguetes',
+    'Frost Blade': 'Hoja de escarcha',
+    'Frost Mail': 'Malla de escarcha',
+    'Icicle Ring': 'Anillo de carámbano',
+    'Winter Manteau': 'Manto invernal',
+    'Fire Formation': 'Formación de fuego',
+    'Sanctuary Bond': 'Vínculo del santuario',
+    'Haste': 'Celeridad',
+    'Resolve': 'Determinación',
     'Cursed Abbey': 'Abadía Maldita',
 
     // Common messages & actions
@@ -2111,7 +2120,7 @@
     [/^Prestige ([\d.,]+)$/i, 'Prestigio $1'],
     [/^Level ([\d.,]+)$/i, 'Nivel $1'],
     [/^Lv\.\s*([\d.,]+)$/i, 'Nv. $1'],
-    [/^(card binder|pet kennel): Lv\.\s*([\d.,]+)$/i, (_, name, n) => `${tr(name)}: Nv. ${n}`],
+    [/^(card binder|pet kennel|supply depot): Lv\.\s*([\d.,]+)$/i, (_, name, n) => `${tr(name)}: Nv. ${n}`],
     [/^Weapon Lv\.?\s*([\d.,/]+)$/i, 'Nv. de arma $1'],
     [/^Refine: (.+)$/i, (_, x) => `Refinado: ${tr(x)}`],
     [/^ATK ([\d.,]+)$/, 'ATQ $1'],
@@ -2278,6 +2287,8 @@
       const t = translateCore(cls);
       return t == null ? null : `Nv.${sp}${n} ${t}`;
     }],
+    [/^Reach Lv\.\s*([\d.,]+) \(Prestige ([\d.,]+)\) to access (.+)$/i,
+      (_, lv, p, zone) => `Alcanza el Nv. ${lv} (Prestigio ${p}) para acceder a ${tr(zone)}`],
     [/^Reach Lv\.\s*([\d.,]+) to access (.+)$/i, (_, lv, zone) => `Alcanza el Nv. ${lv} para acceder a ${tr(zone)}`],
     [/^Defeat (.+) first to unlock this mob in your current run$/i, (_, mob) =>
       `Elimina a ${tr(mob)} primero para desbloquear este monstruo en tu partida actual`],
@@ -2981,6 +2992,8 @@
   function shouldSkip(node) {
     if (node.nodeType === Node.TEXT_NODE && node.previousSibling &&
         /(^|\s)vs\s*$/.test(node.previousSibling.textContent || '')) return true;
+    // PvP history rows: "vs Mamazoom" is one text node, the name is a player
+    if (node.nodeType === Node.TEXT_NODE && /^\s*vs\s+\S/.test(englishOf(node))) return true;
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
     while (el) {
       if (SKIP_TAGS.has(el.tagName) || el.isContentEditable || isPlayerText(el)) return true;
