@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.27
+// @version      1.24.28
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -2956,6 +2956,10 @@
     el.tagName === 'BUTTON' && el.matches('.truncate') &&
     !!el.nextElementSibling && /^(Lv|Nv)\.\s*\d/.test(el.nextElementSibling.textContent.trim());
 
+  // PvP rival picker: the name button labelled "View X's profile"
+  const isProfileButton = (el) =>
+    el.tagName === 'BUTTON' && /^(View .+['’]s profile|Ver el perfil de .+)$/.test(el.getAttribute('aria-label') || '');
+
   // News: the posts themselves (title and excerpt) stay in English; only the
   // page around them (badges, dates, buttons) is translated
   // On /news: the article body, its title, and the titles/excerpts of the
@@ -2988,7 +2992,7 @@
     el.hasAttribute('data-poring-es-totals') || // our own totals box, already in Spanish
     isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isGuildName(el) ||
     isGuildMemberName(el) || isWoeGuildName(el) || isArenaFighterName(el) || isOpponentName(el) ||
-    isRatedName(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
+    isRatedName(el) || isProfileButton(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
 
   function shouldSkip(node) {
     if (node.nodeType === Node.TEXT_NODE && node.previousSibling &&
