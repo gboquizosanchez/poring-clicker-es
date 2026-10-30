@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.43
+// @version      1.24.44
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -323,6 +323,7 @@
     'Pet Kennel': 'Caseta de mascotas',
     'pet kennel': 'caseta de mascotas',
     'training grounds': 'campo de entrenamiento',
+    'pet auto feed': 'autoalimentación de mascotas',
     'Kafra Training Grounds': 'Campo de entrenamiento Kafra',
     'No expedition bonus': 'Sin bonus de expedición',
     'Time limit reached · decided by remaining HP': 'Límite de tiempo alcanzado · decide los PV restantes',
@@ -780,6 +781,11 @@
     'Recent Expeditions': 'Expediciones recientes',
     'Tokens': 'Fichas',
     'Collect': 'Recoger',
+    'Collect & Re-run': 'Recoger y repetir',
+    'Collect rewards and immediately re-run with the same pets':
+      'Recoge las recompensas y repite al instante con las mismas mascotas',
+    'Collect & Re-run enabled': 'Recoger y repetir activado',
+    'Unlocks Collect & Re-run on dungeons': 'Desbloquea Recoger y repetir en las mazmorras',
     'Depart': 'Partir',
     'Rewards:': 'Recompensas:',
     'Power:': 'Poder:',
@@ -820,6 +826,7 @@
     'Pet Auto-Feed': 'Autoalimentación de mascotas',
     'Auto-feed:': 'Autoalimentación:',
     'Kafra Pet Auto-Feed': 'Autoalimentación de mascotas Kafra',
+    'Kafra Pet Arena Auto-Fighter': 'Luchador automático de la arena de mascotas Kafra',
     'Dungeon Auto-Repeat': 'Repetición automática de mazmorras',
     'Kafra Dungeon Auto-Repeat': 'Repetición automática de mazmorras Kafra',
     'Pets auto-eat their favorite food': 'Las mascotas comen solas su comida favorita',
@@ -2198,7 +2205,7 @@
     [/^Prestige ([\d.,]+)$/i, 'Prestigio $1'],
     [/^Level ([\d.,]+)$/i, 'Nivel $1'],
     [/^Lv\.\s*([\d.,]+)$/i, 'Nv. $1'],
-    [/^(card binder|pet kennel|supply depot|training grounds): Lv\.\s*([\d.,]+)$/i, (_, name, n) => `${tr(name)}: Nv. ${n}`],
+    [/^(card binder|pet kennel|supply depot|training grounds|pet auto feed): Lv\.\s*([\d.,]+)$/i, (_, name, n) => `${tr(name)}: Nv. ${n}`],
     [/^Weapon Lv\.?\s*([\d.,/]+)$/i, 'Nv. de arma $1'],
     [/^Refine: (.+)$/i, (_, x) => `Refinado: ${tr(x)}`],
     [/^ATK ([\d.,]+)$/, 'ATQ $1'],
