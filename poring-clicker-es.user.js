@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.42
+// @version      1.24.43
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -818,6 +818,7 @@
     'Claim All Rewards': 'Reclamar todas las recompensas',
     'All Rewards': 'todas las recompensas',
     'Pet Auto-Feed': 'Autoalimentación de mascotas',
+    'Auto-feed:': 'Autoalimentación:',
     'Kafra Pet Auto-Feed': 'Autoalimentación de mascotas Kafra',
     'Dungeon Auto-Repeat': 'Repetición automática de mazmorras',
     'Kafra Dungeon Auto-Repeat': 'Repetición automática de mazmorras Kafra',
@@ -2410,6 +2411,9 @@
     [/^Pet attacks hit twice \(2x pet DPS\)$/i, 'Los ataques de la mascota golpean dos veces (x2 DPS de mascota)'],
     [/^\+([\d.,]+%) all EXP gain$/i, '+$1 de toda la EXP ganada'],
     [/^([\d.,]+) OJ$/, (_, n) => `${n} ${n === '1' ? 'Zumo' : 'Zumos'} de naranja`],
+    [/^Auto-feed (.+)$/, (_, pet) => `Autoalimentar a ${tr(pet)}`],
+    [/^Automatically feed (.+) when this pet's buff expires\. Turn off to save food for upgrades\.$/,
+      (_, food) => `Alimenta con ${tr(food)} automáticamente cuando caduque el efecto de esta mascota. Desactívalo para guardar comida para las mejoras.`],
     [/^Start at Lv\.\s*([\d.,]+)$/i, 'Empiezas en Nv. $1'],
     [/^Start with (.+ \+ .+)$/i, (_, items) => `Empiezas con ${items.split(' + ').map(tr).join(' + ')}`],
     [/^Start with ([\d.,]+) cheapest pets?$/i,
