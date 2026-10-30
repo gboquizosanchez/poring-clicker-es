@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.41
+// @version      1.24.42
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -322,6 +322,7 @@
     'Card Binder': 'Carpeta de cartas',
     'Pet Kennel': 'Caseta de mascotas',
     'pet kennel': 'caseta de mascotas',
+    'training grounds': 'campo de entrenamiento',
     'Kafra Training Grounds': 'Campo de entrenamiento Kafra',
     'No expedition bonus': 'Sin bonus de expedición',
     'Time limit reached · decided by remaining HP': 'Límite de tiempo alcanzado · decide los PV restantes',
@@ -819,6 +820,9 @@
     'Pet Auto-Feed': 'Autoalimentación de mascotas',
     'Kafra Pet Auto-Feed': 'Autoalimentación de mascotas Kafra',
     'Dungeon Auto-Repeat': 'Repetición automática de mazmorras',
+    'Kafra Dungeon Auto-Repeat': 'Repetición automática de mazmorras Kafra',
+    'Pets auto-eat their favorite food': 'Las mascotas comen solas su comida favorita',
+    'Unlocks pet auto-feeding': 'Desbloquea la alimentación automática de mascotas',
     'Pet Arena Auto-Fighter': 'Autocombate en la Arena',
     'Party System': 'Sistema de grupos',
 
@@ -2077,6 +2081,7 @@
     'Pet DPS%': 'DPS de mascotas',
     'Drop%': 'botín',
     'Zeny%': 'zeny',
+    'Crit%': 'crítico',
   };
   // "Poring (enemy)", "p2_pet0, Lunatic (ally)": monster names stay, sides are translated
   const arenaUnits = (text) => text.split(', ').map((unit) => {
@@ -2192,7 +2197,7 @@
     [/^Prestige ([\d.,]+)$/i, 'Prestigio $1'],
     [/^Level ([\d.,]+)$/i, 'Nivel $1'],
     [/^Lv\.\s*([\d.,]+)$/i, 'Nv. $1'],
-    [/^(card binder|pet kennel|supply depot): Lv\.\s*([\d.,]+)$/i, (_, name, n) => `${tr(name)}: Nv. ${n}`],
+    [/^(card binder|pet kennel|supply depot|training grounds): Lv\.\s*([\d.,]+)$/i, (_, name, n) => `${tr(name)}: Nv. ${n}`],
     [/^Weapon Lv\.?\s*([\d.,/]+)$/i, 'Nv. de arma $1'],
     [/^Refine: (.+)$/i, (_, x) => `Refinado: ${tr(x)}`],
     [/^ATK ([\d.,]+)$/, 'ATQ $1'],
