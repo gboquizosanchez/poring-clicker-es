@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.45
+// @version      1.24.46
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -1599,6 +1599,9 @@
     'Old Purple Box': 'Caja morada antigua',
     'Old Card Album': 'Álbum de cartas antiguo',
     'Lost Archive Card': 'Carta del archivo perdido',
+    'Old Card Album created': 'Álbum de cartas antiguo creado',
+    'Leave queue': 'Salir de la cola',
+    'Rejoin': 'Volver a unirse',
     // Fragments of the recycler tooltips: numbers and item names sit between them
     'Keeps one completed copy and cards needed to level all Warpets to':
       'Conserva una copia completa y las cartas necesarias para subir todas las mascotas de guerra a',
@@ -2433,6 +2436,13 @@
       (_, food) => `Alimenta con ${tr(food)} automáticamente cuando caduque el efecto de esta mascota. Desactívalo para guardar comida para las mejoras.`],
     [/^Homestead Card Recycler \(([\d.,]+) surplus ([\d.,]+)-star cards (?:->|→) (.+)\)$/,
       (_, n, stars, item) => `Recicladora de cartas de la granja (${n} cartas de ${stars} estrellas sobrantes -> ${tr(item)})`],
+    [/^([\d.,]+) surplus ([\d.,]+)-star card copies recycled\.$/, '$1 copias sobrantes de cartas de $2 estrellas recicladas.'],
+    [/^Finding players(?:(\u2026)| · ([\d.,]+) \/ ([\d.,]+))?$/, (_, dots, n, max) =>
+      n ? `Buscando jugadores · ${n} / ${max}` : `Buscando jugadores${dots ? '...' : ''}`],
+    [/^\/ ([\d.,]+) players$/, '/ $1 jugadores'],
+    [/^Rejoin\. (.+)$/, (_, rest) => `Volver a unirse. ${tr(rest)}`],
+    [/^Scout (.+?)\. (.+?): ([\d.,]+) lifes?\. Away\. Their saved team keeps fighting\. Click your name to see your team\.$/,
+      (_, who, name, n) => `Espiar a ${who}. ${name}: ${n} ${n === '1' ? 'vida' : 'vidas'}. Ausente. Su equipo guardado sigue luchando. Haz clic en tu nombre para ver tu equipo.`],
     [/^Start at Lv\.\s*([\d.,]+)$/i, 'Empiezas en Nv. $1'],
     [/^Start with (.+ \+ .+)$/i, (_, items) => `Empiezas con ${items.split(' + ').map(tr).join(' + ')}`],
     [/^Start with ([\d.,]+) cheapest pets?$/i,
