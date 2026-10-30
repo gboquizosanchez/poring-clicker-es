@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.38
+// @version      1.24.39
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -9,6 +9,7 @@
 // @match        https://springro.com/download*
 // @match        https://springro.com/news*
 // @match        https://springro.com/rules*
+// @match        https://springro.com/register*
 // @match        https://springro.com/transparency*
 // @match        https://springro.com/support*
 // @homepageURL  https://github.com/gboquizosanchez/poring-clicker-es
@@ -1497,6 +1498,19 @@
 
     // Rules page
     'Server Rules': 'Normas del servidor',
+    'Create Account': 'Crear cuenta',
+    'Create a free account and start your adventure on SpringRO.':
+      'Crea una cuenta gratis y empieza tu aventura en SpringRO.',
+    'Gender': 'Sexo',
+    'Male': 'Hombre',
+    'Female': 'Mujer',
+    'I have read and agree to the': 'He leído y acepto las',
+    'server rules': 'normas del servidor',
+    'Read the Server Rules First': 'Lee primero las normas del servidor',
+    'Know what\'s allowed before you play. Bans are issued for violations.':
+      'Conoce lo permitido antes de jugar. Las infracciones se sancionan con baneo.',
+    'Required for verification': 'Obligatorio para la verificación',
+    'MAX REFINE!': '¡Refinado máximo!',
     'General Conduct': 'Conducta general',
     'Botting & Cheating': 'Bots y trampas',
     'Accounts': 'Cuentas',
@@ -2273,6 +2287,7 @@
     [/^([\d.,]+) items?$/i, (_, n) => `${n} ${n === '1' ? 'objeto' : 'objetos'}`],
     [/^([\d.,]+)[–-]([\d.,]+) characters: English letters, numbers or symbols\. No spaces, other whitespace or double quotes\.$/i,
       '$1–$2 caracteres: letras del alfabeto inglés, números o símbolos. Sin espacios de ningún tipo ni comillas dobles.'],
+    [/^([\d.,]+)[–-]([\d.,]+) characters$/i, '$1–$2 caracteres'],
     [/^(.+): waiting$/, '$1: esperando'],
     [/^(.+) joined the party\.$/, '$1 se ha unido al grupo.'],
     [/^([\d.,]+) active$/i, (_, n) => `${n} ${n === '1' ? 'activo' : 'activos'}`],
