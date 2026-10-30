@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.44
+// @version      1.24.45
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -324,6 +324,7 @@
     'pet kennel': 'caseta de mascotas',
     'training grounds': 'campo de entrenamiento',
     'pet auto feed': 'autoalimentación de mascotas',
+    'dungeon repeat': 'repetición de mazmorras',
     'Kafra Training Grounds': 'Campo de entrenamiento Kafra',
     'No expedition bonus': 'Sin bonus de expedición',
     'Time limit reached · decided by remaining HP': 'Límite de tiempo alcanzado · decide los PV restantes',
@@ -359,6 +360,7 @@
     'Exchange': 'Intercambio',
     'Legendary enchants': 'Encantamientos legendarios',
     'Tower Crests:': 'Emblemas de la torre:',
+    'Use crests': 'Usar emblemas',
     'Reach': 'Alcanza el',
     'to upgrade further': 'para seguir mejorando',
     'Prismatic': 'Prismático',
@@ -1596,6 +1598,14 @@
     'Old Blue Box': 'Caja azul antigua',
     'Old Purple Box': 'Caja morada antigua',
     'Old Card Album': 'Álbum de cartas antiguo',
+    'Lost Archive Card': 'Carta del archivo perdido',
+    // Fragments of the recycler tooltips: numbers and item names sit between them
+    'Keeps one completed copy and cards needed to level all Warpets to':
+      'Conserva una copia completa y las cartas necesarias para subir todas las mascotas de guerra a',
+    'has a': 'tiene un',
+    '% chance for': '% de probabilidad de',
+    'random surplus 3-star card copies for 1': 'copias sobrantes aleatorias de cartas de 3 estrellas por 1',
+    'Surplus available:': 'Sobrantes disponibles:',
     'Damascus': 'Damascus',
     'Mandragora': 'Mandragora',
     'Martin': 'Martin',
@@ -2205,7 +2215,7 @@
     [/^Prestige ([\d.,]+)$/i, 'Prestigio $1'],
     [/^Level ([\d.,]+)$/i, 'Nivel $1'],
     [/^Lv\.\s*([\d.,]+)$/i, 'Nv. $1'],
-    [/^(card binder|pet kennel|supply depot|training grounds|pet auto feed): Lv\.\s*([\d.,]+)$/i, (_, name, n) => `${tr(name)}: Nv. ${n}`],
+    [/^(card binder|pet kennel|supply depot|training grounds|pet auto feed|dungeon repeat): Lv\.\s*([\d.,]+)$/i, (_, name, n) => `${tr(name)}: Nv. ${n}`],
     [/^Weapon Lv\.?\s*([\d.,/]+)$/i, 'Nv. de arma $1'],
     [/^Refine: (.+)$/i, (_, x) => `Refinado: ${tr(x)}`],
     [/^ATK ([\d.,]+)$/, 'ATQ $1'],
@@ -2421,6 +2431,8 @@
     [/^Auto-feed (.+)$/, (_, pet) => `Autoalimentar a ${tr(pet)}`],
     [/^Automatically feed (.+) when this pet's buff expires\. Turn off to save food for upgrades\.$/,
       (_, food) => `Alimenta con ${tr(food)} automáticamente cuando caduque el efecto de esta mascota. Desactívalo para guardar comida para las mejoras.`],
+    [/^Homestead Card Recycler \(([\d.,]+) surplus ([\d.,]+)-star cards (?:->|→) (.+)\)$/,
+      (_, n, stars, item) => `Recicladora de cartas de la granja (${n} cartas de ${stars} estrellas sobrantes -> ${tr(item)})`],
     [/^Start at Lv\.\s*([\d.,]+)$/i, 'Empiezas en Nv. $1'],
     [/^Start with (.+ \+ .+)$/i, (_, items) => `Empiezas con ${items.split(' + ').map(tr).join(' + ')}`],
     [/^Start with ([\d.,]+) cheapest pets?$/i,
