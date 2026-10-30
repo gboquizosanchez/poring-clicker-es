@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.39
+// @version      1.24.40
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -817,6 +817,7 @@
     'Claim All Rewards': 'Reclamar todas las recompensas',
     'All Rewards': 'todas las recompensas',
     'Pet Auto-Feed': 'Autoalimentación de mascotas',
+    'Kafra Pet Auto-Feed': 'Autoalimentación de mascotas Kafra',
     'Dungeon Auto-Repeat': 'Repetición automática de mazmorras',
     'Pet Arena Auto-Fighter': 'Autocombate en la Arena',
     'Party System': 'Sistema de grupos',
@@ -1996,6 +1997,8 @@
     'Attackers': 'Atacantes',
     'Defenders': 'Defensores',
     'Defense held': 'Defensa mantenida',
+    'Attack won': 'Ataque ganado',
+    'Castle Captured!': '¡Castillo capturado!',
     'Siege Failed': 'Asedio fallido',
     'Dismiss': 'Descartar',
     'Neutral Anchor': 'Ancla neutra',
@@ -3087,6 +3090,10 @@
         /(^|\s)vs\s*$/.test(node.previousSibling.textContent || '')) return true;
     // PvP history rows: "vs Mamazoom" is one text node, the name is a player
     if (node.nodeType === Node.TEXT_NODE && /^\s*vs\s+\S/.test(englishOf(node))) return true;
+    // WoE team headers: "Attackers · A + B + C", the names are players
+    if (node.nodeType === Node.TEXT_NODE && node.parentElement && node.parentElement.tagName === 'TH' &&
+        /^(Attackers|Defenders|Atacantes|Defensores)\s·\s/.test(node.parentElement.textContent) &&
+        !/^\s*(Attackers|Defenders|Atacantes|Defensores|·)?\s*$/.test(englishOf(node))) return true;
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
     while (el) {
       if (SKIP_TAGS.has(el.tagName) || el.isContentEditable || isPlayerText(el)) return true;
