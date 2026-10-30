@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.47
+// @version      1.24.48
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -325,6 +325,7 @@
     'training grounds': 'campo de entrenamiento',
     'pet auto feed': 'autoalimentación de mascotas',
     'dungeon repeat': 'repetición de mazmorras',
+    'arena auto': 'arena automática',
     'Kafra Training Grounds': 'Campo de entrenamiento Kafra',
     'No expedition bonus': 'Sin bonus de expedición',
     'Time limit reached · decided by remaining HP': 'Límite de tiempo alcanzado · decide los PV restantes',
@@ -1836,6 +1837,13 @@
     'Sell:': 'Venta:',
     'Use:': 'Uso:',
     'Container:': 'Contenedor:',
+    'Card chance': 'Prob. de carta',
+    '% · performance': '% · rendimiento',
+    'All pets are on expeditions!': '¡Todas las mascotas están de expedición!',
+    'Auto': 'Automático',
+    'Auto-replay pet arena': 'Repetir automáticamente la arena de mascotas',
+    'Auto-fight toggle enabled': 'Interruptor de combate automático activado',
+    'Unlocks auto-fight in Pet Arena': 'Desbloquea el combate automático en la arena de mascotas',
     'Open to obtain a random non-MVP card.': 'Ábrelo para obtener una carta no MVP al azar.',
     'Pet Food:': 'Comida de mascota:',
     'Refine:': 'Refinado:',
@@ -2220,7 +2228,7 @@
     [/^Prestige ([\d.,]+)$/i, 'Prestigio $1'],
     [/^Level ([\d.,]+)$/i, 'Nivel $1'],
     [/^Lv\.\s*([\d.,]+)$/i, 'Nv. $1'],
-    [/^(card binder|pet kennel|supply depot|training grounds|pet auto feed|dungeon repeat): Lv\.\s*([\d.,]+)$/i, (_, name, n) => `${tr(name)}: Nv. ${n}`],
+    [/^(card binder|pet kennel|supply depot|training grounds|pet auto feed|dungeon repeat|arena auto): Lv\.\s*([\d.,]+)$/i, (_, name, n) => `${tr(name)}: Nv. ${n}`],
     [/^Weapon Lv\.?\s*([\d.,/]+)$/i, 'Nv. de arma $1'],
     [/^Refine: (.+)$/i, (_, x) => `Refinado: ${tr(x)}`],
     [/^ATK ([\d.,]+)$/, 'ATQ $1'],
@@ -2445,6 +2453,7 @@
     [/^Rejoin\. (.+)$/, (_, rest) => `Volver a unirse. ${tr(rest)}`],
     [/^Scout (.+?)\. (.+?): ([\d.,]+) lifes?\. Away\. Their saved team keeps fighting\. Click your name to see your team\.$/,
       (_, who, name, n) => `Espiar a ${who}. ${name}: ${n} ${n === '1' ? 'vida' : 'vidas'}. Ausente. Su equipo guardado sigue luchando. Haz clic en tu nombre para ver tu equipo.`],
+    [/^· includes \+([\d.,]+)% MVP bonus$/, '· incluye +$1% de bonus MVP'],
     [/^Start at Lv\.\s*([\d.,]+)$/i, 'Empiezas en Nv. $1'],
     [/^Start with (.+ \+ .+)$/i, (_, items) => `Empiezas con ${items.split(' + ').map(tr).join(' + ')}`],
     [/^Start with ([\d.,]+) cheapest pets?$/i,
@@ -3058,6 +3067,12 @@
       (!!el.nextSibling && el.nextSibling.nodeType === Node.TEXT_NODE &&
         /^\s*\((Opponent|Rival)\)/.test(el.nextSibling.nodeValue)));
 
+  // MVP Boss damage ranking: the name span right before its "0%" share, unless it is a known label
+  const isDamageShareName = (el) =>
+    el.tagName === 'SPAN' && !!el.nextElementSibling &&
+    /^[\d.,]+%$/.test(el.nextElementSibling.textContent.trim()) &&
+    !Object.prototype.hasOwnProperty.call(DICTIONARY, el.textContent.trim());
+
   // Tournament ranking: the name span right before "1382 Elo"
   const isEloName = (el) =>
     el.tagName === 'SPAN' && !!el.nextElementSibling &&
@@ -3124,7 +3139,7 @@
     el.hasAttribute('data-poring-es-totals') || // our own totals box, already in Spanish
     isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isGuildName(el) ||
     isGuildMemberName(el) || isWoeGuildName(el) || isArenaFighterName(el) || isOpponentName(el) ||
-    isRatedName(el) || isEloName(el) || isProfileButton(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
+    isRatedName(el) || isDamageShareName(el) || isEloName(el) || isProfileButton(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
 
   function shouldSkip(node) {
     if (node.nodeType === Node.TEXT_NODE && node.previousSibling &&
