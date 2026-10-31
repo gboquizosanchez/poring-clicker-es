@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.49
+// @version      1.24.50
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -530,6 +530,9 @@
     'Platinum': 'Platino',
     'Diamond': 'Diamante',
     "Champion's Crown": 'Corona de campeón',
+    "Champion's Crowns:": 'Coronas de campeón:',
+    '% damage)': '% de daño)',
+    'Holy Judgment': 'Juicio sagrado',
     'Consumable Pack': 'Lote de consumibles',
     'Pet EXP Crystal': 'Cristal de EXP de mascota',
     'Rune Piece': 'Fragmento de runa',
@@ -1216,6 +1219,9 @@
     'Copy invite link to share with friends': 'Copia el enlace de invitación para compartirlo con tus amigos',
     'Disband Party': 'Disolver grupo',
     'Leave Party': 'Salir del grupo',
+    'Leave (transfers leadership)': 'Salir (cede el liderazgo)',
+    'Kick': 'Expulsar',
+    'Creating...': 'Creando...',
 
     // MVP rhythm fight
     'MVP Boss': 'Jefe MVP',
@@ -1275,6 +1281,9 @@
     'Best': 'Mejor',
     'BPM': 'BPM',
     'Performance': 'Rendimiento',
+    '- DOWNED, CLIMB BACK!': '- ¡CAÍDO, RECUPÉRATE!',
+    'DOWNED': 'CAÍDO',
+    'You stayed in sync long enough to claim the kill.': 'Mantuviste el ritmo lo bastante para conseguir la baja.',
     'Party performance': 'Rendimiento del grupo',
     'Finishing party results...': 'Calculando los resultados del grupo...',
     'The Seas Reclaim Him': 'El mar lo reclama',
@@ -2366,6 +2375,9 @@
     [/^([\d.,]+\/[\d.,]+) kills to discover$/i, '$1 bajas para descubrirlo'],
     [/^MVP RAID - (.+) appears!$/, (_, boss) => `INCURSIÓN MVP - ¡Aparece ${tr(boss)}!`],
     [/^Ready: (.+?) \(need ([\d.,]+)\+\)$/i, 'Listos: $1 (mín. $2)'],
+    [/^Need ([\d.,]+)\+ ready members \(and you must be ready\)$/i, 'Necesitas $1+ miembros listos (y estar listo tú)'],
+    [/^Hit your notes to rebuild the meter - back in at ([\d.,]+)\.$/i, 'Acierta tus notas para recargar el medidor: vuelves al llegar a $1.'],
+    [/^(.+): downed$/i, '$1: caído'],
     [/^([\d.,]+%) perfect$/i, '$1 perfectos'],
     [/^([\d.,]+) cards?$/i, (_, n) => `${n} ${n === '1' ? 'carta' : 'cartas'}`],
     [/^(✓\s*)?You're ready$/i, (_, check = '') => `${check}Estás listo`],
