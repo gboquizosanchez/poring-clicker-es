@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.50
+// @version      1.24.51
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -374,6 +374,9 @@
     'Auto discards lower rolls. Stops at Legendary or when Zeny runs out.':
       'Descarta solo las tiradas peores. Se detiene en Legendario o al quedarte sin zeny.',
     'Legendary:': 'Legendario:',
+    '✦ LEGENDARY ROLL ✦': '✦ TIRADA LEGENDARIA ✦',
+    'Apply this Legendary enchant?': '¿Aplicar este encantamiento legendario?',
+    'Yes, apply Legendary': 'Sí, aplicar legendario',
 
     // Endless Tower (auto battler)
     'Endless Tower lobby': 'Sala de la Torre sin fin',
@@ -1833,6 +1836,8 @@
     'Icicle Ring': 'Anillo de carámbano',
     'Winter Manteau': 'Manto invernal',
     'Fire Formation': 'Formación de fuego',
+    'Earth Formation': 'Formación de tierra',
+    'Neutral Formation': 'Formación neutral',
     'Sanctuary Bond': 'Vínculo del santuario',
     'Haste': 'Celeridad',
     'Resolve': 'Determinación',
@@ -2043,6 +2048,26 @@
     'Waiting line ·': 'Cola de espera ·',
     'Attackers': 'Atacantes',
     'Defenders': 'Defensores',
+    'Defenders held': 'Los defensores resistieron',
+    'Castle Defense': 'Defensa del castillo',
+    'Manage Castle Defense': 'Gestionar defensa del castillo',
+    'Loading castle defense...': 'Cargando defensa del castillo...',
+    'Save My Defenders': 'Guardar mis defensores',
+    'Withdraw My Defenders': 'Retirar mis defensores',
+    'Saving...': 'Guardando...',
+    'Front wall': 'Muralla frontal',
+    '· Front wall': '· Muralla frontal',
+    'Your guild holds:': 'Tu clan tiene:',
+    'Your leader and officers control the defense order.': 'Tu líder y los oficiales deciden el orden de defensa.',
+    'Wounds persist when pets are moved or withdrawn.': 'Las heridas se mantienen al mover o retirar mascotas.',
+    'Your leader and officers control the defense order. Wounds persist when pets are moved or withdrawn.':
+      'Tu líder y los oficiales deciden el orden de defensa. Las heridas se mantienen al mover o retirar mascotas.',
+    'Pet display order · Targets are chosen by health, elements, and skills.':
+      'Orden de las mascotas · Los objetivos se eligen por vida, elementos y habilidades.',
+    'Attackers fight rows in order and carry their wounds into each next row. Put your opening counter on the front wall and protect valuable reserves behind it. Changing formation does not heal defenders.':
+      'Los atacantes luchan contra las filas en orden y arrastran sus heridas a la siguiente. Pon en la muralla frontal a tu mejor contra y protege detrás a tus reservas valiosas. Cambiar la formación no cura a los defensores.',
+    'Update My Pet': 'Actualizar mi mascota',
+    'This species is already on the team. Each species can appear once.': 'Esta especie ya está en el equipo. Cada una solo puede aparecer una vez.',
     'Defense held': 'Defensa mantenida',
     'Attack won': 'Ataque ganado',
     'Castle Captured!': '¡Castillo capturado!',
@@ -2142,6 +2167,10 @@
   const SERVERS = { login: 'Inicio de sesión', character: 'Personajes', map: 'Mapa' };
 
   const RULES = [
+    // WoE: before the generic "+5% ..." bonus rules
+    [/^([\d.,]+) defender rows? set( · defenders get \+([\d.,]+)% stats\.)?$/i, (_, n, more, b) =>
+      `${n} ${n === '1' ? 'fila' : 'filas'} de defensores ${n === '1' ? 'lista' : 'listas'}` +
+      (more ? ` · los defensores obtienen +${b}% de atributos.` : '')],
     // Kill counters
     [/^([\d.,]+) kills? remaining$/i, (_, n) => `${n === '1' ? 'Queda' : 'Quedan'} ${bajas(n)}`],
     [/^([\d.,]+) (.+) kills remaining$/i, (_, n, mob) => `${n} ${tr(mob)} por eliminar`],
@@ -2855,6 +2884,21 @@
       'Un ataque necesita una mascota de cada uno de $1 compañeros de clan distintos. No empieza con menos.'],
     [/^Your guild attacks (.+) at most once every ([\d.,]+) minutes\. Other castles have separate timers\.$/,
       (_, castle, n) => `Tu clan ataca el ${tr(castle)} como máximo una vez cada ${n} minutos. Los demás castillos tienen temporizadores propios.`],
+    [/^Select up to ([\d.,]+) of your pets to defend (.+?)\. Defenders get a ([\d.,]+)% stat bonus\.$/i, (_, n, castle, b) => {
+      const c = tr(castle);
+      return `Elige hasta ${n} de tus mascotas para defender ${/^Torre/.test(c) ? 'la' : 'el'} ${c}. Los defensores reciben un ${b}% más de atributos.`;
+    }],
+    [/^My defenders · ([\d.,]+)\/([\d.,]+) available slots$/i, 'Mis defensores · $1/$2 huecos libres'],
+    [/^Garrison Rows \(([\d.,]+)\/([\d.,]+)\)$/i, 'Filas de guarnición ($1/$2)'],
+    [/^defenders get \+([\d.,]+)% stats\.$/i, 'los defensores obtienen +$1% de atributos.'],
+    // "Your guild holds: Prontera Castle, Geffen Tower"
+    [/^(?:(?:Prontera Castle|Geffen Tower|Payon Fortress|Morroc Bastion|Aldebaran Citadel|Izlude Stronghold)(?:, |$))+$/,
+      (list) => list.split(', ').map(tr).join(', ')],
+    [/^Your pets defend row ([\d.,]+)\.$/i, 'Tus mascotas defienden la fila $1.'],
+    [/^Move (.+) earlier$/i, 'Adelantar a $1'],
+    [/^Move (.+) later$/i, 'Retrasar a $1'],
+    [/^Captured siege teams stay together as one row with each pet's owner shown\. Edit only your own pets\. Your guildmates keep their pets and wounds in that row; the whole row can hold at most ([\d.,]+) pets\.$/i,
+      'Los equipos de asedio capturados siguen juntos en una fila, con el dueño de cada mascota a la vista. Edita solo las tuyas. Tus compañeros de clan conservan sus mascotas y heridas en esa fila; la fila admite como mucho $1 mascotas.'],
     [/^Card drop rate: ([\d.,]+)x$/i, 'Prob. de obtener cartas: x$1'],
     [/^\+([\d.,]+)% refine success rate$/i, '+$1% de éxito de refinado'],
     [/^Out · #([\d.,]+)$/, 'Eliminado · #$1'],
@@ -2958,6 +3002,10 @@
     try { return new Set(JSON.parse(localStorage.getItem(IGNORE_KEY) || '[]')); } catch (e) { return new Set(); }
   };
   let ignoredNames = loadIgnored();
+  // Names already recognised as players somewhere: the same text elsewhere
+  // (an owner tag, a tooltip) isn't worth listing as untranslated
+  const playerNames = new Set();
+
 
   // Where an untranslated text was seen, so it can be translated in context:
   //   /page · <a href="/players/x"> · sección «Recent Card Drops» · «whole sentence»
@@ -3026,7 +3074,7 @@
     if (out == null) {
       // Single letters (grades, keys) and text already in Spanish aren't worth listing
       if (!(where && where.quiet) && !/^[A-Za-z]$/.test(trimmed) && !/[áéíóúüñÁÉÍÓÚÜÑ¡¿]/.test(trimmed) &&
-          !missing.has(trimmed) && missing.size < MAX_TRACKED) {
+          !missing.has(trimmed) && !playerNames.has(trimmed) && missing.size < MAX_TRACKED) {
         missing.set(trimmed, describe(where));
       }
       return null;
@@ -3084,9 +3132,17 @@
     el.tagName === 'SPAN' && (
       (!!el.nextElementSibling &&
         /^((Rating|Puntuación):|\((Opponent|Rival)\)$)/.test(el.nextElementSibling.textContent.trim())) ||
-      // PvP Replay: "(Opponent)" is a bare text node after the name span
-      (!!el.nextSibling && el.nextSibling.nodeType === Node.TEXT_NODE &&
-        /^\s*\((Opponent|Rival)\)/.test(el.nextSibling.nodeValue)));
+      // PvP Replay: "Krow (Opponent)", with "(Opponent)" as loose text after the
+      // name span (or after a wrapper around it), maybe split by React comments
+      (() => {
+        const name = el.textContent.trim();
+        for (let p = el.parentElement, i = 0; p && i < 3; p = p.parentElement, i++) {
+          const text = p.textContent.replace(/\s+/g, ' ').trim();
+          if (text === name) continue;
+          return text.startsWith(name) && /^\s*\((Opponent|Rival)\)$/.test(text.slice(name.length));
+        }
+        return false;
+      })());
 
   // MVP Boss damage ranking: the name span right before its "0%" share, unless it is a known label
   const isDamageShareName = (el) =>
@@ -3156,11 +3212,22 @@
     (el.tagName === 'DD' && !!el.previousElementSibling && el.previousElementSibling.tagName === 'DT' &&
       /^GM$/.test(el.previousElementSibling.textContent.trim()));
 
+  // WoE castle defense rows: "<span>Sayoki</span><span>· Front wall</span>",
+  // plus the owner tag repeating that name further along the same row
+  const isRowOwnerName = (el) => {
+    const name = el.textContent.trim();
+    if (el.tagName !== 'SPAN' || !name || Object.prototype.hasOwnProperty.call(DICTIONARY, name)) return false;
+    const row = el.parentElement && (el.parentElement.parentElement || el.parentElement);
+    return !!row && [...row.querySelectorAll('span')].some((s) =>
+      s.textContent.trim() === name && !!s.nextElementSibling && /^·\s/.test(s.nextElementSibling.textContent.trim()));
+  };
+
   const isPlayerText = (el) =>
     el.hasAttribute('data-poring-es-totals') || // our own totals box, already in Spanish
     isPlayerChatRow(el) || isPartyName(el) || isLeaderboardName(el) || isGuildName(el) ||
     isGuildMemberName(el) || isWoeGuildName(el) || isArenaFighterName(el) || isOpponentName(el) ||
-    isRatedName(el) || isDamageShareName(el) || isEloName(el) || isProfileButton(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el);
+    isRatedName(el) || isDamageShareName(el) || isEloName(el) || isProfileButton(el) || isNewsPost(el) || isProfileLink(el) || isLogName(el) ||
+    isRowOwnerName(el);
 
   function shouldSkip(node) {
     if (node.nodeType === Node.TEXT_NODE && node.previousSibling &&
@@ -3173,7 +3240,12 @@
         !/^\s*(Attackers|Defenders|Atacantes|Defensores|·)?\s*$/.test(englishOf(node))) return true;
     let el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
     while (el) {
-      if (SKIP_TAGS.has(el.tagName) || el.isContentEditable || isPlayerText(el)) return true;
+      if (SKIP_TAGS.has(el.tagName) || el.isContentEditable) return true;
+      if (isPlayerText(el)) {
+        const name = el.textContent.trim();
+        if (name.length <= 24 && !/\s/.test(name)) playerNames.add(name);
+        return true;
+      }
       el = el.parentElement;
     }
     return false;
@@ -3583,7 +3655,8 @@
 
   // Lines of the TOON table (header first), so .join('\n') gives the full text
   const untranslatedList = () => {
-    const rows = [...missing].sort(([a], [b]) => a.localeCompare(b));
+    // A name may be listed before it was recognised as a player elsewhere
+    const rows = [...missing].filter(([text]) => !playerNames.has(text)).sort(([a], [b]) => a.localeCompare(b));
     return [
       `untranslated[${rows.length}]{text,page,element,section,sentence}:`,
       ...rows.map(([text, w]) =>
@@ -3636,7 +3709,7 @@
       const t = translateCore(trimmed);
       if (t != null) out = text.replace(trimmed, t);
       else if (!measure && !missing.has(trimmed) && !ignoredNames.has(trimmed) &&
-          (/\s/.test(trimmed) || trimmed === trimmed.toUpperCase())) {
+          trimmed.length > 1 && (/\s/.test(trimmed) || trimmed === trimmed.toUpperCase())) {
         // labels are drawn in capitals; a lone mixed-case word is a player's name
         missing.set(trimmed, { page: location.pathname, element: '<canvas>', section: '', sentence: '' });
       }
