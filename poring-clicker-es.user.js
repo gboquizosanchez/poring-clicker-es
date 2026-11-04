@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.51
+// @version      1.24.52
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -2037,6 +2037,12 @@
     'guilds': 'clanes',
     'queued': 'en cola',
     'Guild cooldown': 'Reutilización del clan',
+    'Your cooldown': 'Tu reutilización',
+    'Shield damage:': 'Daño a escudos:',
+    'Upgrade:': 'Mejora:',
+    'z + 3-star surplus cards': 'z + cartas sobrantes de 3 estrellas',
+    'Break shields and burn the target over its next actions': 'Rompe escudos y quema al objetivo durante sus próximas acciones',
+    'Add another pet to discover a formation or cross-element bond.': 'Añade otra mascota para descubrir una formación o un vínculo entre elementos.',
     'Guild must be': 'El clan debe tener',
     'days old (currently': 'días (ahora',
     'd)': 'd)',
@@ -2742,6 +2748,16 @@
       `Fila ${{ front: 'delantera', middle: 'central', back: 'trasera' }[row.toLowerCase()]} · ${n} de`],
     [/^([\d.,]+) defender rows?$/i, (_, n) => `${n} ${n === '1' ? 'fila' : 'filas'} de defensores`],
     [/^Castle breather (.+)$/i, 'Descanso del castillo $1'],
+    [/^([\d.,]+)% ATK to one enemy(,?)$/, '$1% de ATQ a un enemigo$2'],
+    [/^Hit all enemies and slow them ([\d.,]+)% for ([\d.,]+) actions?$/,
+      'Golpea a todos los enemigos y los ralentiza un $1% durante $2 acciones'],
+    [/^Restore ([\d.,]+)% maximum HP to all allies$/, 'Restaura el $1% de PV máx. a todos los aliados'],
+    [/^Restore ([\d.,]+)% maximum HP to the most wounded ally$/,
+      'Restaura el $1% de PV máx. al aliado más herido'],
+    [/^(.+) revives in (\S+(?: \S+)?) \(all castles\)$/, (_, name, t) =>
+      `${tr(name)} revive en ${t} (todos los castillos)`],
+    [/^You attack (.+) at most once every ([\d.,]+) minutes\. This timer follows you if you change guilds\.$/,
+      (_, c, n) => `Solo puedes atacar ${tr(c)} una vez cada ${n} minutos. Este temporizador te sigue si cambias de clan.`],
     [/^([\d.,]+) tokens?$/i, (_, n) => `${n} ${n === '1' ? 'ficha' : 'fichas'}`],
     [/^([\d.,]+) guilds? queued$/i, (_, n) => `${n} ${n === '1' ? 'clan' : 'clanes'} en cola`],
     [/^(.+) rests ([\d.,]+) minutes after every siege, for every guild\. It does not heal defenders\.$/i,
