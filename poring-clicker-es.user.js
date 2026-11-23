@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.55
+// @version      1.25.0
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -2070,6 +2070,21 @@
     'stun Front pets protect the back row.': 'aturde. Las mascotas de delante protegen la fila trasera.',
     'to unlock it for free. Need 9g more.': 'para desbloquearla gratis. Te faltan 9g.',
     'back row.': 'fila trasera.',
+    'Click a pet, then this spot.': 'Haz clic en una mascota y luego en esta casilla.',
+    'Protected while your front row is alive.': 'Protegida mientras tu fila delantera siga viva.',
+    'Hunter Fly\'s Dive can reach here.': 'El Picado de Hunter Fly llega aquí.',
+    'Hunter Fly’s Dive can reach here.': 'El Picado de Hunter Fly llega aquí.',
+    'Front pets protect the back row.': 'Las mascotas de delante protegen la fila trasera.',
+    'Lock in your team.': 'Fija tu equipo.',
+    'Bench pets fill open slots.': 'Las mascotas del banquillo ocupan los huecos libres.',
+    'Battle starts when everyone’s ready or time runs out.': 'El combate empieza cuando todos están listos o se acaba el tiempo.',
+    'Team locked.': 'Equipo fijado.',
+    'Click again to edit.': 'Vuelve a hacer clic para editarlo.',
+    'Buy a pet first.': 'Compra antes una mascota.',
+    'Click a pet, then this spot. Protected while': 'Haz clic en una mascota y luego en esta casilla. Protegida mientras',
+    'stun Protected while your front row is alive.': 'aturde. Protegida mientras tu fila delantera siga viva.',
+    'your front row is alive. Hunter Fly\'s Dive can reach': 'tu fila delantera siga viva. El Picado de Hunter Fly llega',
+    'your front row is alive. Hunter Fly’s Dive can reach': 'tu fila delantera siga viva. El Picado de Hunter Fly llega',
     'runs out.': 'el tiempo.',
     'Lock in your team. Bench pets fill open': 'Fija tu equipo. Las mascotas del banquillo ocupan los',
     'slots. Battle starts when everyone’s ready or time': 'huecos libres. El combate empieza cuando todos están listos o se acaba',
@@ -2783,9 +2798,20 @@
     [/^([\d.,]+) defender rows?$/i, (_, n) => `${n} ${n === '1' ? 'fila' : 'filas'} de defensores`],
     [/^Castle breather (.+)$/i, 'Descanso del castillo $1'],
     [/^Sell ([\d.,]+)g$/, 'Vender $1g'],
+    [/^Field ([\d.,]+) pets for ([\d.,]+)g\.$/, 'Alinea $1 mascotas por $2g.'],
+    [/^([\d.,]+\/[\d.,]+) XP; earn ([\d.,]+) XP per round to unlock it for free\.$/,
+      '$1 EXP; gana $2 EXP por ronda para desbloquearla gratis.'],
+    [/^Need ([\d.,]+)g more\.$/, 'Te faltan $1g.'],
+    [/^(?:([\d.,]+) )?ATK \/ ([\d.,]+) speed\.?$/, (_, atk, spd) => `${atk ? `${atk} ` : ''}ATQ / ${spd} vel.`],
+    [/^Strike and lower the target['’]s DEF by ([\d.,]+)%\.?$/, (m, n) =>
+      `Golpea y reduce la DEF del objetivo un ${n}%${m.endsWith('.') ? '.' : ''}`],
     [/^(Win|Loss) · #([\d.,]+)$/, (_, r, n) => `${r === 'Win' ? 'Victoria' : 'Derrota'} · n.º ${n}`],
     [/^earned on ([\d.,]+)g saved\. \+([\d.,]+) XP\.$/, 'ganado sobre $1g ahorrados. +$2 EXP.'],
-    [/^round to unlock it for free\. Need ([\d.,]+)g more\.$/, 'ronda para desbloquearla gratis. Te faltan $1g.'],
+    [/^(per )?round to unlock it for free\.(?: Need ([\d.,]+)g more\.)?$/, (_, per, need) =>
+      `${per ? 'por ' : ''}ronda para desbloquearla gratis.${need ? ` Te faltan ${need}g.` : ''}`],
+    [/^Interest earned on ([\d.,]+)g saved\. \+([\d.,]+) XP\.$/, 'Interés ganado sobre $1g ahorrados. +$2 EXP.'],
+    [/^Round ([\d.,]+): \+([\d.,]+)g\. ([\d.,]+) base \+ ([\d.,]+) win \+ ([\d.,]+) interest\.$/,
+      'Ronda $1: +$2g. $3 base + $4 por victoria + $5 de interés.'],
     [/^Round ([\d.,]+): \+([\d.,]+)g\. ([\d.,]+) base \+ ([\d.,]+) win \+ ([\d.,]+) interest\. Interest$/,
       'Ronda $1: +$2g. $3 base + $4 por victoria + $5 de interés. Interés'],
     [/^(.+) free$/, (_, name) => `${name} gratis`],
@@ -2798,11 +2824,15 @@
       'Cada golpe se tira por separado e inflige como máximo el $1% de los PV máx. del objetivo'],
     [/^Give all allies ([\d.,]+)% haste for ([\d.,]+) actions?$/, (_, n, a) =>
       `Da a todos los aliados un ${n}% de celeridad durante ${a} ${a === '1' ? 'acción' : 'acciones'}`],
-    [/^Field ([\d.,]+) pets for ([\d.,]+)g\. ([\d.,]+\/[\d.,]+) XP; earn ([\d.,]+) XP per( round)?$/,
-      (_, n, g, xp, e, r) => `Alinea ${n} mascotas por ${g}g. ${xp} EXP; gana ${e} EXP por${r ? ' ronda' : ''}`],
+    [/^Field ([\d.,]+) pets for ([\d.,]+)g\. ([\d.,]+\/[\d.,]+) XP; earn ([\d.,]+) XP( per)?( round)?$/,
+      (_, n, g, xp, e, per, r) => `Alinea ${n} mascotas por ${g}g. ${xp} EXP; gana ${e} EXP${per ? ' por' : ''}${r ? ' ronda' : ''}`],
     [/^(the )?target['’]s DEF by ([\d.,]+)%\. Front pets protect the( back)?$/, (_, the, n, back) =>
       `${the ? 'la ' : ''}DEF del objetivo un ${n}%. Las mascotas de delante protegen la${back ? ' fila trasera' : ''}`],
     [/^ally for ([\d.,]+)% max HP\.$/, 'aliado un $1% de sus PV máx.'],
+    [/^ally for ([\d.,]+)% max HP\. Front pets protect the( back)?$/, (_, n, back) =>
+      `aliado un ${n}% de sus PV máx. Las mascotas de delante protegen la${back ? ' fila trasera' : ''}`],
+    [/^steal life\.( Front pets protect the back row\.)?$/, (_, rest) =>
+      `roba vida.${rest ? ' Las mascotas de delante protegen la fila trasera.' : ''}`],
     [/^ally for ([\d.,]+)% max HP\. Protected while your front$/,
       'aliado un $1% de sus PV máx. Protegida mientras tu fila'],
     // Wrapped skill card on the canvas: each line arrives alone, so the pieces must read on in Spanish
@@ -2819,6 +2849,11 @@
       `${tr(name)} revive en ${t} (todos los castillos)`],
     [/^You attack (.+) at most once every ([\d.,]+) minutes\. This timer follows you if you change guilds\.$/,
       (_, c, n) => `Solo puedes atacar ${tr(c)} una vez cada ${n} minutos. Este temporizador te sigue si cambias de clan.`],
+    [/^([A-Z][^:.]{1,40}): (.+?)(\.?)$/, (_, name, desc, dot) => {
+      const n = translateCore(name);
+      const d = translateCore(desc);
+      return n == null || d == null ? null : `${n}: ${d}${dot}`;
+    }],
     [/^([\d.,]+) tokens?$/i, (_, n) => `${n} ${n === '1' ? 'ficha' : 'fichas'}`],
     [/^([\d.,]+) guilds? queued$/i, (_, n) => `${n} ${n === '1' ? 'clan' : 'clanes'} en cola`],
     [/^(.+) rests ([\d.,]+) minutes after every siege, for every guild\. It does not heal defenders\.$/i,
@@ -3772,24 +3807,62 @@
     bridge.remove();
   } catch (e) { /* the page's security policy may block it: use the shortcut */ }
 
-  // Canvas text (the Pet Arena battle is drawn, not written): a page-side patch
-  // of fillText/strokeText/measureText asks the sandbox for each new text
-  // through the same kind of synchronous DOM event, and caches the answer.
+  // Canvas text (the Pet Arena battle is drawn, not written). The game wraps long
+  // texts into one fillText per line, so a line alone is rarely a translatable
+  // sentence. The page-side patch (below) translates each line as it is drawn, then
+  // joins the lines of a block, asks for the whole text once per frame, and from then
+  // on draws the translation re-wrapped to the same width and number of lines.
   const ARENA_ID = /^p\d+_pet\d+$/;
+  const canvasEligible = (t) => /[A-Za-z]/.test(t) && !NUMERIC.test(t) && !DURATION.test(t) && !ARENA_ID.test(t);
+  // translateCore with the final full stop optional ("Hit Ready." is keyed with it, "Need 9g more" without)
+  const canvasTr = (t) => {
+    const whole = translateCore(t, true);
+    if (whole != null || !t.endsWith('.')) return whole;
+    const bare = translateCore(t.slice(0, -1), true);
+    return bare == null ? null : `${bare}.`;
+  };
+  const reportCanvas = (t) => {
+    // labels are drawn in capitals; a lone mixed-case word is a player's name
+    if (canvasEligible(t) && !missing.has(t) && !ignoredNames.has(t) &&
+        t.length > 1 && (/\s/.test(t) || t === t.toUpperCase())) {
+      missing.set(t, { page: location.pathname, element: '<canvas>', section: '', sentence: '' });
+    }
+  };
+  // The whole block first, then its sentences (longest run that translates first);
+  // all-or-nothing, so a half-translated block keeps the per-line fallback.
+  function translateCanvasBlock(text) {
+    const whole = canvasTr(text);
+    if (whole != null) return whole;
+    const sentences = text.split(/(?<=[.!?])\s+/);
+    const out = [];
+    let complete = true;
+    for (let i = 0; i < sentences.length;) {
+      let j = sentences.length;
+      let hit = null;
+      for (; j > i; j--) {
+        hit = canvasTr(sentences.slice(i, j).join(' '));
+        if (hit != null) break;
+      }
+      if (hit == null) {
+        complete = false;
+        reportCanvas(sentences[i]);
+        i += 1;
+      } else {
+        out.push(hit);
+        i = j;
+      }
+    }
+    return complete ? out.join(' ') : text;
+  }
   document.addEventListener('poring-es:canvas', () => {
     const root = document.documentElement;
     const text = root.dataset.poringEsCanvasIn || '';
-    const measure = root.dataset.poringEsCanvasMeasure === '1';
+    const mode = root.dataset.poringEsCanvasMode || 'draw';
     const trimmed = text.trim();
     let out = text;
-    if (/[A-Za-z]/.test(trimmed) && !NUMERIC.test(trimmed) && !DURATION.test(trimmed) && !ARENA_ID.test(trimmed)) {
-      const t = translateCore(trimmed);
+    if (canvasEligible(trimmed)) {
+      const t = mode === 'block' ? translateCanvasBlock(trimmed) : translateCore(trimmed);
       if (t != null) out = text.replace(trimmed, t);
-      else if (!measure && !missing.has(trimmed) && !ignoredNames.has(trimmed) &&
-          trimmed.length > 1 && (/\s/.test(trimmed) || trimmed === trimmed.toUpperCase())) {
-        // labels are drawn in capitals; a lone mixed-case word is a player's name
-        missing.set(trimmed, { page: location.pathname, element: '<canvas>', section: '', sentence: '' });
-      }
     }
     root.dataset.poringEsCanvasOut = out;
   });
@@ -3798,29 +3871,107 @@
     canvasBridge.textContent = `(() => {
       const proto = CanvasRenderingContext2D.prototype;
       const root = document.documentElement;
+      const origMeasure = proto.measureText;
       const cache = new Map();
-      const translate = (text, measure) => {
+      const lineCtx = new Map();  // previous line + \\u0001 + line -> translated line
+      const lineAny = new Map();  // line -> translated line
+      const done = new Set();
+      let frame = [];
+      let scheduled = false;
+      let meter = null;
+      const ask = (text, mode) => {
+        root.dataset.poringEsCanvasIn = text;
+        root.dataset.poringEsCanvasMode = mode;
+        document.dispatchEvent(new CustomEvent('poring-es:canvas'));
+        const out = root.dataset.poringEsCanvasOut ?? text;
+        delete root.dataset.poringEsCanvasIn;
+        delete root.dataset.poringEsCanvasOut;
+        delete root.dataset.poringEsCanvasMode;
+        return out;
+      };
+      const size = (font) => parseFloat((/([\\d.]+)px/.exec(font) || [])[1]) || 12;
+      // two lines belong to one block: same x, font and alignment, the next one just below
+      const joins = (a, b) => !!a && a.x === b.x && a.font === b.font && a.align === b.align &&
+        b.y > a.y && b.y - a.y <= size(b.font) * 2.4;
+      const translate = (text, mode, prev) => {
         if (typeof text !== 'string' || !/[A-Za-z]/.test(text)) return text;
-        const key = (measure ? 'm' : 'd') + text;
+        let hit = mode === 'draw' ? lineCtx.get(prev + '\\u0001' + text) : undefined;
+        if (hit === undefined) hit = lineAny.get(text);
+        if (hit !== undefined) return hit;
+        const key = mode + text;
         let out = cache.get(key);
         if (out === undefined) {
-          root.dataset.poringEsCanvasIn = text;
-          if (measure) root.dataset.poringEsCanvasMeasure = '1';
-          document.dispatchEvent(new CustomEvent('poring-es:canvas'));
-          out = root.dataset.poringEsCanvasOut ?? text;
-          delete root.dataset.poringEsCanvasIn;
-          delete root.dataset.poringEsCanvasOut;
-          delete root.dataset.poringEsCanvasMeasure;
+          out = ask(text, mode);
           if (cache.size > 4000) cache.clear();
           cache.set(key, out);
         }
         return out;
       };
-      for (const name of ['fillText', 'strokeText', 'measureText']) {
-        const original = proto[name];
-        const measure = name === 'measureText';
-        proto[name] = function (text, ...rest) { return original.call(this, translate(text, measure), ...rest); };
-      }
+      // translated text in as many lines as the original, no wider than its widest line
+      const wrap = (text, block) => {
+        meter = meter || document.createElement('canvas').getContext('2d');
+        meter.font = block[0].font;
+        const width = (t) => origMeasure.call(meter, t).width;
+        const limit = Math.max(...block.map((r) => width(r.text)));
+        const words = text.split(' ');
+        let lines = [];
+        for (let k = 1; k <= 1.5; k += 0.05) {
+          lines = [];
+          let cur = '';
+          for (const w of words) {
+            const t = cur ? cur + ' ' + w : w;
+            if (cur && width(t) > limit * k) { lines.push(cur); cur = w; } else cur = t;
+          }
+          lines.push(cur);
+          if (lines.length <= block.length) break;
+        }
+        if (lines.length > block.length) {
+          lines = lines.slice(0, block.length - 1).concat(lines.slice(block.length - 1).join(' '));
+        }
+        while (lines.length < block.length) lines.push('');
+        return lines;
+      };
+      const handle = (block) => {
+        const texts = block.map((r) => r.text);
+        const joined = texts.join(' ').replace(/\\s+/g, ' ').trim();
+        const sig = block[0].font + '|' + joined;
+        if (done.has(sig)) return;
+        if (done.size > 4000) done.clear();
+        done.add(sig);
+        const out = ask(joined, 'block');
+        if (out === joined) return;
+        wrap(out, block).forEach((line, i) => {
+          lineCtx.set((i ? texts[i - 1] : '') + '\\u0001' + texts[i], line);
+          lineAny.set(texts[i], line);
+        });
+      };
+      const flush = () => {
+        scheduled = false;
+        const recs = frame;
+        frame = [];
+        let block = [];
+        for (const rec of recs) {
+          if (block.length && !joins(block[block.length - 1], rec)) { handle(block); block = []; }
+          block.push(rec);
+        }
+        if (block.length) handle(block);
+      };
+      const orig = { fillText: proto.fillText, strokeText: proto.strokeText };
+      proto.fillText = function (text, x, y, ...rest) {
+        let prev = '';
+        if (typeof text === 'string' && /[A-Za-z]/.test(text)) {
+          const rec = { text, x, y, font: this.font, align: this.textAlign };
+          const last = frame[frame.length - 1];
+          if (joins(last, rec)) prev = last.text;
+          frame.push(rec);
+          if (!scheduled) { scheduled = true; Promise.resolve().then(flush); }
+        }
+        return orig.fillText.call(this, translate(text, 'draw', prev), x, y, ...rest);
+      };
+      proto.strokeText = function (text, ...rest) {
+        return orig.strokeText.call(this, translate(text, 'draw', ''), ...rest);
+      };
+      proto.measureText = function (text) { return origMeasure.call(this, translate(text, 'measure', '')); };
     })();`;
     (document.head || document.documentElement).appendChild(canvasBridge);
     canvasBridge.remove();
