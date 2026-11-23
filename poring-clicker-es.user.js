@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.25.1
+// @version      1.25.2
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -2813,6 +2813,7 @@
     [/^Castle breather (.+)$/i, 'Descanso del castillo $1'],
     [/^Sell ([\d.,]+)g$/, 'Vender $1g'],
     [/^#([\d.,]+) · Elo pending$/, '#$1 · ELO pendiente'],
+    [/^([\d.,]+) base \+ ([\d.,]+) win \+ ([\d.,]+) interest$/, '$1 base + $2 por victoria + $3 de interés'],
     [/^([\d.,]+) new offers for ([\d.,]+)g\.$/, '$1 ofertas nuevas por $2g.'],
     [/^(\S+): ([\d.,]+) (?:lives|lifes?)\.$/, (_, name, n) => `${name}: ${n} ${n === '1' ? 'vida' : 'vidas'}.`],
     [/^#([\d.,]+) · Watching$/, '#$1 · Observando'],
@@ -3847,9 +3848,10 @@
   const canvasEligible = (t) => /[A-Za-z]/.test(t) && !NUMERIC.test(t) && !DURATION.test(t) && !ARENA_ID.test(t);
   // translateCore with the final full stop optional ("Hit Ready." is keyed with it, "Need 9g more" without)
   const canvasTr = (t) => {
-    const whole = translateCore(t, true);
+    const curly = t.replace(/'/g, '’');
+    const whole = translateCore(t, true) ?? translateCore(curly, true);
     if (whole != null || !t.endsWith('.')) return whole;
-    const bare = translateCore(t.slice(0, -1), true);
+    const bare = translateCore(t.slice(0, -1), true) ?? translateCore(curly.slice(0, -1), true);
     return bare == null ? null : `${bare}.`;
   };
   const reportCanvas = (t) => {
@@ -3910,6 +3912,10 @@
       let frame = [];
       let scheduled = false;
       let meter = null;
+      let mouse = { clientX: 0, clientY: 0 };
+      let nudge = null;
+      // the game may draw a tooltip only once: the first draw is English, so poke it to draw again
+      addEventListener('mousemove', (e) => { mouse = { clientX: e.clientX, clientY: e.clientY }; }, true);
       const ask = (text, mode) => {
         root.dataset.poringEsCanvasIn = text;
         root.dataset.poringEsCanvasMode = mode;
@@ -3971,6 +3977,7 @@
         done.add(sig);
         const out = ask(joined, 'block');
         if (out === joined) return;
+        nudge = block[0].canvas;
         wrap(out, block).forEach((line, i) => {
           lineCtx.set((i ? texts[i - 1] : '') + '\\u0001' + texts[i], line);
           lineAny.set(texts[i], line);
@@ -3986,12 +3993,17 @@
           block.push(rec);
         }
         if (block.length) handle(block);
+        if (nudge) {
+          const canvas = nudge;
+          nudge = null;
+          setTimeout(() => canvas.dispatchEvent(new MouseEvent('mousemove', { ...mouse, bubbles: true })), 0);
+        }
       };
       const orig = { fillText: proto.fillText, strokeText: proto.strokeText };
       proto.fillText = function (text, x, y, ...rest) {
         let prev = '';
         if (typeof text === 'string' && /[A-Za-z]/.test(text)) {
-          const rec = { text, x, y, font: this.font, align: this.textAlign };
+          const rec = { text, x, y, font: this.font, align: this.textAlign, canvas: this.canvas };
           const last = frame[frame.length - 1];
           if (joins(last, rec)) prev = last.text;
           frame.push(rec);
