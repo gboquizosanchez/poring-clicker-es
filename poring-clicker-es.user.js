@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.54
+// @version      1.24.55
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -2061,10 +2061,21 @@
     'Team locked. Click again to edit. Battle starts': 'Equipo fijado. Vuelve a hacer clic para editarlo. El combate empieza',
     'Buy a pet first. Ready fills open slots from your': 'Compra antes una mascota. Listo llena los huecos libres con tu',
     'Click a pet, then this spot. Protected while your': 'Haz clic en una mascota y luego en esta casilla. Protegida mientras tu',
-    'Protected while your front row is alive. Hunter': 'Protegida mientras tu fila delantera siga viva. El Picado de Hunter',
     'front row is alive. Hunter Fly’s Dive can reach': 'fila delantera siga viva. El Picado de Hunter Fly llega',
-    'Fly’s Dive can reach here.': 'Picado de Fly llega aquí.',
+    'Hunter Fly\'s Dive can reach here.': 'El Picado de Hunter Fly llega aquí.',
+    'row is alive. Hunter Fly\'s Dive can reach here.': 'delantera siga viva. El Picado de Hunter Fly llega aquí.',
+    'front row is alive. Hunter Fly\'s Dive can reach': 'fila delantera siga viva. El Picado de Hunter Fly llega',
+    'Protected while your front row is alive. Hunter': 'Protegida mientras tu fila delantera siga viva. El Picado de Hunter',
+    'steal life. Protected while your front row is alive.': 'roba vida. Protegida mientras tu fila delantera siga viva.',
+    'stun Front pets protect the back row.': 'aturde. Las mascotas de delante protegen la fila trasera.',
     'to unlock it for free. Need 9g more.': 'para desbloquearla gratis. Te faltan 9g.',
+    'back row.': 'fila trasera.',
+    'runs out.': 'el tiempo.',
+    'Lock in your team. Bench pets fill open': 'Fija tu equipo. Las mascotas del banquillo ocupan los',
+    'slots. Battle starts when everyone’s ready or time': 'huecos libres. El combate empieza cuando todos están listos o se acaba',
+    'starts when everyone’s ready or time runs out.': 'empieza cuando todos están listos o se acaba el tiempo.',
+    'Team locked. Click again to edit. Battle': 'Equipo fijado. Vuelve a hacer clic para editarlo. El combate',
+    'Click a pet, then this spot. Front pets protect the': 'Haz clic en una mascota y luego en esta casilla. Las mascotas de delante protegen la',
     'Guild must be': 'El clan debe tener',
     'days old (currently': 'días (ahora',
     'd)': 'd)',
@@ -2772,6 +2783,11 @@
     [/^([\d.,]+) defender rows?$/i, (_, n) => `${n} ${n === '1' ? 'fila' : 'filas'} de defensores`],
     [/^Castle breather (.+)$/i, 'Descanso del castillo $1'],
     [/^Sell ([\d.,]+)g$/, 'Vender $1g'],
+    [/^(Win|Loss) · #([\d.,]+)$/, (_, r, n) => `${r === 'Win' ? 'Victoria' : 'Derrota'} · n.º ${n}`],
+    [/^earned on ([\d.,]+)g saved\. \+([\d.,]+) XP\.$/, 'ganado sobre $1g ahorrados. +$2 EXP.'],
+    [/^round to unlock it for free\. Need ([\d.,]+)g more\.$/, 'ronda para desbloquearla gratis. Te faltan $1g.'],
+    [/^Round ([\d.,]+): \+([\d.,]+)g\. ([\d.,]+) base \+ ([\d.,]+) win \+ ([\d.,]+) interest\. Interest$/,
+      'Ronda $1: +$2g. $3 base + $4 por victoria + $5 de interés. Interés'],
     [/^(.+) free$/, (_, name) => `${name} gratis`],
     [/^☠ poison · -([\d.,]+)% healing$/, '☠ veneno · -$1% de curación'],
     [/^([\d.,]+)x MVP raid rewards, \+([\d.,]+)% arena coin bonus$/,
@@ -2782,10 +2798,13 @@
       'Cada golpe se tira por separado e inflige como máximo el $1% de los PV máx. del objetivo'],
     [/^Give all allies ([\d.,]+)% haste for ([\d.,]+) actions?$/, (_, n, a) =>
       `Da a todos los aliados un ${n}% de celeridad durante ${a} ${a === '1' ? 'acción' : 'acciones'}`],
-    [/^Field ([\d.,]+) pets for ([\d.,]+)g\. ([\d.,]+\/[\d.,]+) XP; earn ([\d.,]+) XP per round$/,
-      'Alinea $1 mascotas por $2g. $3 EXP; gana $4 EXP por ronda'],
-    [/^target['’]s DEF by ([\d.,]+)%\. Front pets protect the back$/,
-      'DEF del objetivo un $1%. Las mascotas de delante protegen la trasera'],
+    [/^Field ([\d.,]+) pets for ([\d.,]+)g\. ([\d.,]+\/[\d.,]+) XP; earn ([\d.,]+) XP per( round)?$/,
+      (_, n, g, xp, e, r) => `Alinea ${n} mascotas por ${g}g. ${xp} EXP; gana ${e} EXP por${r ? ' ronda' : ''}`],
+    [/^(the )?target['’]s DEF by ([\d.,]+)%\. Front pets protect the( back)?$/, (_, the, n, back) =>
+      `${the ? 'la ' : ''}DEF del objetivo un ${n}%. Las mascotas de delante protegen la${back ? ' fila trasera' : ''}`],
+    [/^ally for ([\d.,]+)% max HP\.$/, 'aliado un $1% de sus PV máx.'],
+    [/^ally for ([\d.,]+)% max HP\. Protected while your front$/,
+      'aliado un $1% de sus PV máx. Protegida mientras tu fila'],
     // Wrapped skill card on the canvas: each line arrives alone, so the pieces must read on in Spanish
     [/^(?:([\d.,]+) )?(?:ATK )?\/ ([\d.,]+) speed\. (.+?): (.+)$/, (m, atk, spd, name, rest) =>
       `${atk ? `${atk} ` : ''}${m.includes('ATK /') ? 'ATQ ' : ''}/ ${spd} vel. ${tr(name)}: ` +
