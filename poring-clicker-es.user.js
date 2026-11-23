@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.25.0
+// @version      1.25.1
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -869,6 +869,19 @@
     'Hit all enemies': 'Golpea a todos los enemigos',
     'High crit single-target strike': 'Golpe a un objetivo con alta prob. de crítico',
     'Low damage + stun': 'Daño bajo + aturdimiento',
+    'Hit one enemy row, front first': 'Golpea una fila enemiga, la delantera primero',
+    'Loading result…': 'Cargando resultado…',
+    'Pet prices don’t change.': 'Los precios de las mascotas no cambian.',
+    'Check their last team.': 'Mira su último equipo.',
+    'Click your name to see your team.': 'Haz clic en tu nombre para ver tu equipo.',
+    'Strike the back row and steal life': 'Golpea la fila trasera y roba vida',
+    'Enemies hit this row first.': 'Los enemigos golpean primero esta fila.',
+    'Put pets that can take a hit here.': 'Pon aquí mascotas que aguanten golpes.',
+    'Keep unsold pets for next round.': 'Conserva las mascotas no vendidas para la siguiente ronda.',
+    'Shop again next round.': 'Vuelve a comprar la próxima ronda.',
+    'Melee': 'Cuerpo a cuerpo',
+    'Ranged': 'A distancia',
+    'Front': 'Delante',
     'Damage + DEF down': 'Daño + reduce la DEF',
     'Burning - taking fire DoT': 'Quemado: recibe daño de fuego continuo',
     'Poisoned - taking poison DoT': 'Envenenado: recibe daño de veneno continuo',
@@ -2071,6 +2084,7 @@
     'to unlock it for free. Need 9g more.': 'para desbloquearla gratis. Te faltan 9g.',
     'back row.': 'fila trasera.',
     'Click a pet, then this spot.': 'Haz clic en una mascota y luego en esta casilla.',
+    'Low damage + stun': 'Daño bajo + aturdimiento',
     'Protected while your front row is alive.': 'Protegida mientras tu fila delantera siga viva.',
     'Hunter Fly\'s Dive can reach here.': 'El Picado de Hunter Fly llega aquí.',
     'Hunter Fly’s Dive can reach here.': 'El Picado de Hunter Fly llega aquí.',
@@ -2798,6 +2812,21 @@
     [/^([\d.,]+) defender rows?$/i, (_, n) => `${n} ${n === '1' ? 'fila' : 'filas'} de defensores`],
     [/^Castle breather (.+)$/i, 'Descanso del castillo $1'],
     [/^Sell ([\d.,]+)g$/, 'Vender $1g'],
+    [/^#([\d.,]+) · Elo pending$/, '#$1 · ELO pendiente'],
+    [/^([\d.,]+) new offers for ([\d.,]+)g\.$/, '$1 ofertas nuevas por $2g.'],
+    [/^(\S+): ([\d.,]+) (?:lives|lifes?)\.$/, (_, name, n) => `${name}: ${n} ${n === '1' ? 'vida' : 'vidas'}.`],
+    [/^#([\d.,]+) · Watching$/, '#$1 · Observando'],
+    [/^(\w+) (Trinity|Pair|Triangle)$/, (_, elem, kind) => {
+      const e = translateCore(elem.toLowerCase());
+      return e == null ? null : `${{ Trinity: 'Trío', Pair: 'Dúo', Triangle: 'Triángulo' }[kind]} de ${e}`;
+    }],
+    [/^Heal the lowest-HP ally for ([\d.,]+)% max HP$/, 'Cura al aliado con menos PV un $1% de sus PV máx.'],
+    [/^Last \+([\d.,]+)g · ([\d.,]+) base \+ ([\d.,]+) win \+ ([\d.,]+) interest$/,
+      'Última +$1g · $2 base + $3 por victoria + $4 de interés'],
+    // Pet tooltip header: "Rocker Champion ★ · Melee · earth · 6314 HP / 459 ATK / 56 speed."
+    [/^(.+? ★+) · (.+?) · (.+?) · ([\d.,]+) HP \/ ([\d.,]+) ATK \/ ([\d.,]+) speed(\.?)$/,
+      (_, name, role, elem, hp, atk, spd, dot) =>
+        `${tr(name)} · ${tr(role)} · ${tr(elem)} · ${hp} PV / ${atk} ATQ / ${spd} vel.${dot}`],
     [/^Field ([\d.,]+) pets for ([\d.,]+)g\.$/, 'Alinea $1 mascotas por $2g.'],
     [/^([\d.,]+\/[\d.,]+) XP; earn ([\d.,]+) XP per round to unlock it for free\.$/,
       '$1 EXP; gana $2 EXP por ronda para desbloquearla gratis.'],
@@ -2849,10 +2878,12 @@
       `${tr(name)} revive en ${t} (todos los castillos)`],
     [/^You attack (.+) at most once every ([\d.,]+) minutes\. This timer follows you if you change guilds\.$/,
       (_, c, n) => `Solo puedes atacar ${tr(c)} una vez cada ${n} minutos. Este temporizador te sigue si cambias de clan.`],
-    [/^([A-Z][^:.]{1,40}): (.+?)(\.?)$/, (_, name, desc, dot) => {
+    // The game drops the full stop before the tail: "Tiger Roar: Team ATK up Front pets protect the back row."
+    [/^([A-Z][^:.]{1,40}): (.+?)(\.?)(?: (Front pets protect the back row|Protected while your front row is alive))?(\.?)$/, (_, name, desc, dot1, tail, dot2) => {
       const n = translateCore(name);
       const d = translateCore(desc);
-      return n == null || d == null ? null : `${n}: ${d}${dot}`;
+      return n == null || d == null ? null
+        : `${n}: ${d}${tail ? `. ${tail[0] === 'F' ? 'Las mascotas de delante protegen la fila trasera' : 'Protegida mientras tu fila delantera siga viva'}${dot2}` : dot1 + dot2}`;
     }],
     [/^([\d.,]+) tokens?$/i, (_, n) => `${n} ${n === '1' ? 'ficha' : 'fichas'}`],
     [/^([\d.,]+) guilds? queued$/i, (_, n) => `${n} ${n === '1' ? 'clan' : 'clanes'} en cola`],
