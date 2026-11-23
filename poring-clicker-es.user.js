@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.25.2
+// @version      1.25.3
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -390,6 +390,7 @@
     'Won': 'Ganada',
     'Lost': 'Perdida',
     'Last match: #': 'Último combate: #',
+    '· Elo pending': '· ELO pendiente',
     'Back to the lobby.': 'Volver al vestíbulo.',
     'wins': 'victorias',
     'How to play': 'Cómo se juega',
@@ -582,6 +583,9 @@
 
     // WoE battle pets: names stay (like monster names), skills are translated
     'Ancient Worm': 'Ancient Worm',
+    'Uncle DenDen': 'Uncle DenDen',
+    'Tower Crest': 'Emblema de la torre',
+    'BLOCK MISS': 'BLOQUEO FALLIDO',
     'Angeling Warden': 'Angeling Warden',
     'Aqua Elemental': 'Aqua Elemental',
     'Argiope Recruit': 'Argiope Recruit',
@@ -873,6 +877,8 @@
     'Loading result…': 'Cargando resultado…',
     'Pet prices don’t change.': 'Los precios de las mascotas no cambian.',
     'Check their last team.': 'Mira su último equipo.',
+    'Watch their fight.': 'Mira su combate.',
+    'Mirror defeated · no health lost': 'Espejo derrotado · sin perder vida',
     'Click your name to see your team.': 'Haz clic en tu nombre para ver tu equipo.',
     'Strike the back row and steal life': 'Golpea la fila trasera y roba vida',
     'Enemies hit this row first.': 'Los enemigos golpean primero esta fila.',
@@ -2612,10 +2618,10 @@
     [/^Round ([\d.,]+): \+([\d.,]+)g\. ([\d.,]+) base \+ ([\d.,]+) win \+ ([\d.,]+) interest\. Interest earned on ([\d.,]+)g saved\. \+([\d.,]+) XP\.$/,
       'Ronda $1: +$2g. $3 base + $4 por victoria + $5 de interés. Interés sobre $6g ahorrados. +$7 EXP.'],
     [/^Round income \+([\d.,]+) gold(?:\. (.+))?$/, (_, n, rest) => `Ingresos de la ronda +${n} de oro` + (rest ? `. ${tr(rest)}` : '')],
-    [/^(Scout|Watch) (\S+)$/, (_, what, name) => `${what === 'Scout' ? 'Espiar a' : 'Ver a'} ${name}`],
-    [/^(Scout|Watch) (\S+)\. (.+): ([\d.,]+) (?:lives?|life)\. (?:Check their last team\. Click your name to see your team|Watch their fight)\.$/,
+    [/^(Scout|Watch) (.+?)\. (.+): ([\d.,]+) (?:lives?|life)\. (?:Check their last team\. Click your name to see your team|Watch their fight)\.$/,
       (_, what, name, who, lives) => `${what === 'Scout' ? 'Espiar a' : 'Ver a'} ${name}. ${who}: ${lives} ${lives === '1' ? 'vida' : 'vidas'}. ` +
         (what === 'Scout' ? 'Mira su último equipo. Haz clic en tu nombre para ver tu equipo.' : 'Mira su combate.')],
+    [/^(Scout|Watch) (.+)$/, (_, what, name) => `${what === 'Scout' ? 'Espiar a' : 'Ver a'} ${name}`],
     [/^Team ([\d.,]+\/[\d.,]+)( · .+?)?(?:\. ([\d.,]+) slots\. Click a lock to buy more, or earn ([\d.,]+) XP per round to unlock them for free\. Moving pets is free\. Bench pets sit out\.)?$/,
       (_, team, syn, slots, xp) => `Equipo ${team}${syn ? ' · ' + tr(syn.slice(3)) : ''}` + (slots
         ? `. ${slots} casillas. Haz clic en un candado para comprar más o gana ${xp} EXP por ronda para desbloquearlas gratis. Mover mascotas es gratis. Las del banquillo no luchan.` : '')],
@@ -2812,6 +2818,9 @@
     [/^([\d.,]+) defender rows?$/i, (_, n) => `${n} ${n === '1' ? 'fila' : 'filas'} de defensores`],
     [/^Castle breather (.+)$/i, 'Descanso del castillo $1'],
     [/^Sell ([\d.,]+)g$/, 'Vender $1g'],
+    [/^#([\d.,]+) · ([+\-−]?[\d.,]+) Elo$/, '#$1 · $2 Elo'],
+    [/^One per first-place Tower finish\. Kafra consumes them at Prestige ([\d.,]+)\. Each permanently moves ([\d.,]+)% from Common enchants to Legendary\.$/,
+      'Uno por cada primer puesto en la Torre. Kafra los consume en el Prestigio $1. Cada uno traslada de forma permanente un $2% de los encantamientos Comunes a Legendarios.'],
     [/^#([\d.,]+) · Elo pending$/, '#$1 · ELO pendiente'],
     [/^([\d.,]+) base \+ ([\d.,]+) win \+ ([\d.,]+) interest$/, '$1 base + $2 por victoria + $3 de interés'],
     [/^([\d.,]+) new offers for ([\d.,]+)g\.$/, '$1 ofertas nuevas por $2g.'],
@@ -2821,13 +2830,14 @@
       const e = translateCore(elem.toLowerCase());
       return e == null ? null : `${{ Trinity: 'Trío', Pair: 'Dúo', Triangle: 'Triángulo' }[kind]} de ${e}`;
     }],
+    [/^Heal all allies for ([\d.,]+)% max HP$/, 'Cura a todos los aliados un $1% de sus PV máx.'],
     [/^Heal the lowest-HP ally for ([\d.,]+)% max HP$/, 'Cura al aliado con menos PV un $1% de sus PV máx.'],
     [/^Last \+([\d.,]+)g · ([\d.,]+) base \+ ([\d.,]+) win \+ ([\d.,]+) interest$/,
       'Última +$1g · $2 base + $3 por victoria + $4 de interés'],
     // Pet tooltip header: "Rocker Champion ★ · Melee · earth · 6314 HP / 459 ATK / 56 speed."
     [/^(.+? ★+) · (.+?) · (.+?) · ([\d.,]+) HP \/ ([\d.,]+) ATK \/ ([\d.,]+) speed(\.?)$/,
-      (_, name, role, elem, hp, atk, spd, dot) =>
-        `${tr(name)} · ${tr(role)} · ${tr(elem)} · ${hp} PV / ${atk} ATQ / ${spd} vel.${dot}`],
+      (_, name, role, elem, hp, atk, spd) =>
+        `${tr(name)} · ${tr(role)} · ${tr(elem)} · ${hp} PV / ${atk} ATQ / ${spd} vel.`],
     [/^Field ([\d.,]+) pets for ([\d.,]+)g\.$/, 'Alinea $1 mascotas por $2g.'],
     [/^([\d.,]+\/[\d.,]+) XP; earn ([\d.,]+) XP per round to unlock it for free\.$/,
       '$1 EXP; gana $2 EXP por ronda para desbloquearla gratis.'],
@@ -2884,7 +2894,7 @@
       const n = translateCore(name);
       const d = translateCore(desc);
       return n == null || d == null ? null
-        : `${n}: ${d}${tail ? `. ${tail[0] === 'F' ? 'Las mascotas de delante protegen la fila trasera' : 'Protegida mientras tu fila delantera siga viva'}${dot2}` : dot1 + dot2}`;
+        : `${n}: ${d}${tail ? `. ${tail[0] === 'F' ? 'Las mascotas de delante protegen la fila trasera' : 'Protegida mientras tu fila delantera siga viva'}${dot2}` : (d.endsWith(".") ? "" : dot1) + dot2}`;
     }],
     [/^([\d.,]+) tokens?$/i, (_, n) => `${n} ${n === '1' ? 'ficha' : 'fichas'}`],
     [/^([\d.,]+) guilds? queued$/i, (_, n) => `${n} ${n === '1' ? 'clan' : 'clanes'} en cola`],
