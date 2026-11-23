@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.24.53
+// @version      1.24.54
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -2043,6 +2043,28 @@
     'z + 3-star surplus cards': 'z + cartas sobrantes de 3 estrellas',
     'Break shields and burn the target over its next actions': 'Rompe escudos y quema al objetivo durante sus próximas acciones',
     'Add another pet to discover a formation or cross-element bond.': 'Añade otra mascota para descubrir una formación o un vínculo entre elementos.',
+    'Battle Calculator': 'Calculadora de combate',
+    'Roadmap': 'Hoja de ruta',
+    'Holy Formation': 'Formación sagrada',
+    'Steady Ground': 'Terreno firme',
+    'Max': 'Máx.',
+    'hits': 'golpes',
+    '◌ dodge': '◌ esquiva',
+    'SLOW': 'LENTO',
+    'RES': 'RES',
+    'Strike and lower the': 'Golpea y reduce la',
+    'target’s DEF by 50%.': 'DEF del objetivo un 50%.',
+    'single-target strike': 'a un objetivo',
+    'Lock in your team. Bench pets fill open slots.': 'Fija tu equipo. Las mascotas del banquillo ocupan los huecos libres.',
+    'Battle starts when everyone’s ready or time runs': 'El combate empieza cuando todos están listos o se acaba',
+    'when everyone’s ready or time runs out.': 'cuando todos están listos o se acaba el tiempo.',
+    'Team locked. Click again to edit. Battle starts': 'Equipo fijado. Vuelve a hacer clic para editarlo. El combate empieza',
+    'Buy a pet first. Ready fills open slots from your': 'Compra antes una mascota. Listo llena los huecos libres con tu',
+    'Click a pet, then this spot. Protected while your': 'Haz clic en una mascota y luego en esta casilla. Protegida mientras tu',
+    'Protected while your front row is alive. Hunter': 'Protegida mientras tu fila delantera siga viva. El Picado de Hunter',
+    'front row is alive. Hunter Fly’s Dive can reach': 'fila delantera siga viva. El Picado de Hunter Fly llega',
+    'Fly’s Dive can reach here.': 'Picado de Fly llega aquí.',
+    'to unlock it for free. Need 9g more.': 'para desbloquearla gratis. Te faltan 9g.',
     'Guild must be': 'El clan debe tener',
     'days old (currently': 'días (ahora',
     'd)': 'd)',
@@ -2502,7 +2524,7 @@
       n ? `Buscando jugadores · ${n} / ${max}` : `Buscando jugadores${dots ? '...' : ''}`],
     [/^\/ ([\d.,]+) players$/, '/ $1 jugadores'],
     [/^Rejoin\. (.+)$/, (_, rest) => `Volver a unirse. ${tr(rest)}`],
-    [/^Scout (.+?)\. (.+?): ([\d.,]+) lifes?\. Away\. Their saved team keeps fighting\. Click your name to see your team\.$/,
+    [/^Scout (.+?)\. (.+?): ([\d.,]+) (?:lives|lifes?)\. Away\. Their saved team keeps fighting\. Click your name to see your team\.$/,
       (_, who, name, n) => `Espiar a ${who}. ${name}: ${n} ${n === '1' ? 'vida' : 'vidas'}. Ausente. Su equipo guardado sigue luchando. Haz clic en tu nombre para ver tu equipo.`],
     [/^· includes \+([\d.,]+)% MVP bonus$/, '· incluye +$1% de bonus MVP'],
     [/^Still queued, but a teammate isn['’]t ready \(see the team below\)\. Ready guilds can go first meanwhile\.$/,
@@ -2749,6 +2771,25 @@
       `Fila ${{ front: 'delantera', middle: 'central', back: 'trasera' }[row.toLowerCase()]} · ${n} de`],
     [/^([\d.,]+) defender rows?$/i, (_, n) => `${n} ${n === '1' ? 'fila' : 'filas'} de defensores`],
     [/^Castle breather (.+)$/i, 'Descanso del castillo $1'],
+    [/^Sell ([\d.,]+)g$/, 'Vender $1g'],
+    [/^(.+) free$/, (_, name) => `${name} gratis`],
+    [/^☠ poison · -([\d.,]+)% healing$/, '☠ veneno · -$1% de curación'],
+    [/^([\d.,]+)x MVP raid rewards, \+([\d.,]+)% arena coin bonus$/,
+      '$1x recompensas de incursión MVP, +$2% de monedas de arena'],
+    [/^OCA exclusive\. \+([\d.,]+)% Dmg, \+([\d.,]+)% Pet DPS, \+([\d.,]+)% Drop Rate, \+([\d.,]+)% PvP\/WoE HP \(([\d.,]+x)\)$/,
+      'Exclusivo OCA. +$1% de daño, +$2% de DPS de mascotas, +$3% de prob. de botín, +$4% de PV en PvP/WoE ($5)'],
+    [/^Each hit rolls separately and deals at most ([\d.,]+)% of the target['’]s maximum HP$/,
+      'Cada golpe se tira por separado e inflige como máximo el $1% de los PV máx. del objetivo'],
+    [/^Give all allies ([\d.,]+)% haste for ([\d.,]+) actions?$/, (_, n, a) =>
+      `Da a todos los aliados un ${n}% de celeridad durante ${a} ${a === '1' ? 'acción' : 'acciones'}`],
+    [/^Field ([\d.,]+) pets for ([\d.,]+)g\. ([\d.,]+\/[\d.,]+) XP; earn ([\d.,]+) XP per round$/,
+      'Alinea $1 mascotas por $2g. $3 EXP; gana $4 EXP por ronda'],
+    [/^target['’]s DEF by ([\d.,]+)%\. Front pets protect the back$/,
+      'DEF del objetivo un $1%. Las mascotas de delante protegen la trasera'],
+    // Wrapped skill card on the canvas: each line arrives alone, so the pieces must read on in Spanish
+    [/^(?:([\d.,]+) )?(?:ATK )?\/ ([\d.,]+) speed\. (.+?): (.+)$/, (m, atk, spd, name, rest) =>
+      `${atk ? `${atk} ` : ''}${m.includes('ATK /') ? 'ATQ ' : ''}/ ${spd} vel. ${tr(name)}: ` +
+      ({ 'Fast': 'Golpe rápido', 'Team reflect stance': 'Postura de reflejo del equipo', 'High single-target': 'Mucho daño a un' }[rest] ?? tr(rest))],
     [/^([\d.,]+)% ATK to one enemy(,?)$/, '$1% de ATQ a un enemigo$2'],
     [/^Hit all enemies and slow them ([\d.,]+)% for ([\d.,]+) actions?$/,
       'Golpea a todos los enemigos y los ralentiza un $1% durante $2 acciones'],
