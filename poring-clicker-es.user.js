@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Poring Clicker en español (SpringRO)
 // @namespace    https://springro.com/
-// @version      1.25.3
+// @version      1.25.4
 // @description  Translates the SpringRO Poring Clicker UI into Spanish on the fly.
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCA2NCc+PHBhdGggZD0nTTMyIDhjMyAwIDQgMyA3IDYgMTEgMyAxOSAxMyAxOSAyNiAwIDEyLTEyIDE4LTI2IDE4UzYgNTIgNiA0MGMwLTEzIDgtMjMgMTktMjYgMy0zIDQtNiA3LTZ6JyBmaWxsPScjZjlhOGM0JyBzdHJva2U9JyNjMjQ1NmUnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9JzI0JyBjeT0nMzYnIHI9JzMuNScvPjxjaXJjbGUgY3g9JzQwJyBjeT0nMzYnIHI9JzMuNScvPjxwYXRoIGQ9J00yNyA0NHE1IDUgMTAgMCcgc3Ryb2tlPScjMDAwJyBzdHJva2Utd2lkdGg9JzIuNScgZmlsbD0nbm9uZScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+
 // @match        https://springro.com/clicker*
@@ -585,6 +585,9 @@
     'Ancient Worm': 'Ancient Worm',
     'Uncle DenDen': 'Uncle DenDen',
     'Tower Crest': 'Emblema de la torre',
+    'Confirming...': 'Confirmando...',
+    'all Perfects guarantee MVP': 'todos los Perfectos garantizan MVP',
+    'Using…': 'Usando…',
     'BLOCK MISS': 'BLOQUEO FALLIDO',
     'Angeling Warden': 'Angeling Warden',
     'Aqua Elemental': 'Aqua Elemental',
@@ -2818,6 +2821,8 @@
     [/^([\d.,]+) defender rows?$/i, (_, n) => `${n} ${n === '1' ? 'fila' : 'filas'} de defensores`],
     [/^Castle breather (.+)$/i, 'Descanso del castillo $1'],
     [/^Sell ([\d.,]+)g$/, 'Vender $1g'],
+    [/^MVP adds \+([\d.,]+)% card chance$/, 'MVP suma +$1% de prob. de carta'],
+    [/^Use ([\d.,]+)$/, 'Usar $1'],
     [/^#([\d.,]+) · ([+\-−]?[\d.,]+) Elo$/, '#$1 · $2 Elo'],
     [/^One per first-place Tower finish\. Kafra consumes them at Prestige ([\d.,]+)\. Each permanently moves ([\d.,]+)% from Common enchants to Legendary\.$/,
       'Uno por cada primer puesto en la Torre. Kafra los consume en el Prestigio $1. Cada uno traslada de forma permanente un $2% de los encantamientos Comunes a Legendarios.'],
